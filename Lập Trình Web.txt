@@ -82,3 +82,19 @@ sau nút search là link(dạng button) đến chức năng bổ sung(create).
 - Bảng hiển thị danh sách thông tin cần hiển thị: Tên nhà cung cấp, Tên giao dịch, Điện Thoại,Email,Địa chỉ,Tỉnh/Thành.
 Tại ô cuối của mỗi dòng có link dạng nút đến chức năng Edit và Delete
 - Thanh phân trang(pagingnation) được bố trí bên phải.
+
+
+Viết code HTML cho view để nhập các dữ liệu sau:
+- Tên nhà cung cấp
+- Tên giao dịch
+- Điện thoại
+- email
+- địa chỉ
+- tỉnh thành(chọn từ select)
+
+Viết code HTML cho chức năng xóa nhà cung cấp hiển thị thông tin nhà cung cấp cần xóa,
+hiện xác nhận trước lúc xóa
+
+(Tôi chọn cách bố trí giao diện của view hiển thị, tìm kiếm dữ liệu theo cách như đoạn mã html sau)
+
+Viết code HTML Cho người giao hàng

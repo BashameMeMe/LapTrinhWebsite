@@ -10,10 +10,12 @@ namespace SV22T1020193.Admin.Controllers
         }
         public IActionResult Create()
         {
-            return View();
+            ViewBag.Title = "Bổ sung nhà cung cấp";
+            return View("Edit");
         }
         public IActionResult Edit()
         {
+            ViewBag.Title = "Cập nhật nhà cung cấp";
             return View();
         }
         public IActionResult Delete()

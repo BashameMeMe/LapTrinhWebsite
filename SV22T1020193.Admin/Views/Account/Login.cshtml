@@ -1,27 +1,87 @@
-﻿<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>LiteCommerce | Đăng nhập</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+﻿@{
+    ViewData["Title"] = "Đăng nhập";
+}
 
-    <!-- AdminLTE + Bootstrap -->
-    <link rel="stylesheet" href="~/lib/overlay-scrollbars/overlayscrollbars.min.css">
-    <link rel="stylesheet" href="~/lib/bootstrap/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="~/lib/adminlte/css/adminlte.css">
-</head>
+<style>
+    /* Ẩn Header */
+    .app-header,
+    header {
+        display: none !important;
+    }
 
-<body class="login-page bg-body-tertiary">
+    /* Ẩn Sidebar */
+    .app-sidebar,
+    aside {
+        display: none !important;
+    }
 
-    <div class="login-box">
-        @RenderBody()
+    /* Ẩn Footer */
+    footer {
+        display: none !important;
+    }
+
+    /* Reset main layout */
+    .app-main {
+        margin-left: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    body {
+        background-color: #f4f6f9 !important;
+    }
+</style>
+
+<div class="d-flex justify-content-center align-items-center" style="min-height:100vh;">
+    <div class="login-box" style="width:400px;">
+        <div class="card card-outline card-primary shadow">
+            <div class="card-header text-center">
+                <h3 class="fw-bold mb-0">LiteCommerce</h3>
+                <small class="text-muted">Đăng nhập hệ thống</small>
+            </div>
+
+            <div class="card-body">
+                <form asp-action="Login" asp-controller="Account" method="post">
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <div class="input-group">
+                            <input type="email"
+                                   name="Email"
+                                   class="form-control"
+                                   placeholder="Nhập email"
+                                   required />
+                            <span class="input-group-text">
+                                <i class="bi bi-envelope"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label class="form-label">Mật khẩu</label>
+                        <div class="input-group">
+                            <input type="password"
+                                   name="Password"
+                                   class="form-control"
+                                   placeholder="Nhập mật khẩu"
+                                   required />
+                            <span class="input-group-text">
+                                <i class="bi bi-lock"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Button -->
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>
+                            Đăng Nhập
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
-
-    <!-- Scripts -->
-    <script src="~/lib/overlay-scrollbars/overlayscrollbars.browser.es6.min.js"></script>
-    <script src="~/lib/popperjs/popper.min.js"></script>
-    <script src="~/lib/bootstrap/bootstrap.bundle.min.js"></script>
-    <script type="module" src="~/lib/adminlte/js/adminlte.js"></script>
-
-</body>
-</html>
+</div>

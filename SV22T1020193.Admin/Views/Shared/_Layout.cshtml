@@ -1,4 +1,9 @@
-﻿<!doctype html>
+﻿@{
+    bool hideLayout = ViewData["HideLayout"] != null;
+    Layout = null;
+}
+
+<!doctype html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -10,50 +15,32 @@
 </head>
 
 <body class="layout-fixed fixed-header fixed-footer sidebar-expand-lg sidebar-open bg-body-tertiary">
-    <div class="app-wrapper">
-        <!--begin::Header-->
-        <partial name="_Header" />
-        <!--end::Header-->
-        <!--begin::Sidebar-->
-        <partial name="_Sidebar" />
-        <!--end::Sidebar-->
-        <!--begin::App Main-->
-        <main class="app-main">
-            <!--begin::App Content Header-->
-            @RenderBody()
-            <!--end::App Content-->
-        </main>
-        <!--end::App Main-->
-        <!--begin::Footer-->
-        <partial name="_Footer" />
-        <!--end::Footer-->
-    </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    @if (!hideLayout)
+    {
+        <div class="app-wrapper">
+            <!-- Header -->
+            <partial name="_Header" />
 
-                <div class="modal-header">
-                    <h5 class="modal-title">Tiêu đề Modal</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
+            <!-- Sidebar -->
+            <partial name="_SideBar" />
 
-                <div class="modal-body">
-                    Nội dung modal ở đây...
-                </div>
+            <!-- Main -->
+            <main class="app-main">
+                @RenderBody()
+            </main>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Đóng
-                    </button>
-                    <button type="button" class="btn btn-primary">
-                        Lưu
-                    </button>
-                </div>
-
-            </div>
+            <!-- Footer -->
+            <partial name="_Footer" />
         </div>
-    </div>
+    }
+    else
+    {
+        <!-- Layout dành riêng cho Login -->
+        <main class="login-page d-flex align-items-center justify-content-center min-vh-100">
+            @RenderBody()
+        </main>
+    }
 
     <script src="lib/overlay-scrollbars/overlayscrollbars.browser.es6.min.js"></script>
     <script src="lib/popperjs/popper.min.js"></script>
