@@ -12,11 +12,11 @@ namespace SV22T1020193.Admin.Controllers
         {
             return View();
         }
-        public IActionResult Edit()
+        public IActionResult Edit(int id)
         {
             return View();
         }
-        public IActionResult Delete()
+        public IActionResult Delete(int id)
         {
             return View();
         }

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Danh sách sản phẩm";
+    ViewData["Title"] = "Danh sách nhân viên";
 }
 
 <!-- Header -->
@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-                <h3 class="mb-0">Sản phẩm</h3>
+                <h3 class="mb-0">Nhân viên</h3>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
         <div class="card mb-3">
             <div class="card-body">
                 <form method="get"
-                      asp-controller="Product"
+                      asp-controller="Employee"
                       asp-action="Index"
                       class="row g-2 align-items-center">
 
@@ -29,7 +29,7 @@
                         <input type="text"
                                name="searchValue"
                                class="form-control"
-                               placeholder="Nhập tên sản phẩm cần tìm..." />
+                               placeholder="Nhập tên nhân viên cần tìm..." />
                     </div>
 
                     <div class="col-auto">
@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="col-auto">
-                        <a asp-controller="Product"
+                        <a asp-controller="Employee"
                            asp-action="Create"
                            class="btn btn-success">
                             <i class="bi bi-plus-circle"></i> Thêm mới
@@ -62,14 +62,14 @@
                 <table class="table table-bordered table-hover align-middle">
                     <thead class="table-light">
                         <tr>
-                            <th>Product Name</th>
-                            <th>Description</th>
-                            <th>Supplier</th>
-                            <th>Category</th>
-                            <th>Unit</th>
-                            <th>Price</th>
-                            <th>Photo</th>
-                            <th>Is Selling</th>
+                            <th>Họ tên</th>
+                            <th>Ngày sinh</th>
+                            <th>Địa chỉ</th>
+                            <th>Điện thoại</th>
+                            <th>Email</th>
+                            <th>Ảnh</th>
+                            <th>Trạng thái</th>
+                            <th>Vai trò</th>
                             <th style="width:120px"></th>
                         </tr>
                     </thead>
@@ -77,21 +77,23 @@
 
                         <!-- Sample row -->
                         <tr>
-                            <td>Cà phê sữa</td>
-                            <td>Cà phê pha sẵn đóng chai</td>
-                            <td>Supplier 1</td>
-                            <td>Đồ uống</td>
-                            <td>Chai</td>
-                            <td class="text-end">15,000</td>
+                            <td>Nguyễn Văn A</td>
+                            <td>15/03/1995</td>
+                            <td>Hà Nội</td>
+                            <td>0909 111 222</td>
+                            <td>vana@gmail.com</td>
                             <td class="text-center">
-                                <img src="~/images/products/default.png"
+                                <img src="~/images/employees/default.png"
+                                     class="rounded-circle"
                                      width="40"
                                      height="40"
-                                     class="rounded"
-                                     alt="Product Photo" />
+                                     alt="Photo" />
                             </td>
                             <td class="text-center">
-                                <span class="badge bg-success">Đang bán</span>
+                                <span class="badge bg-success">Đang làm</span>
+                            </td>
+                            <td>
+                                Admin, Sales
                             </td>
                             <td class="text-center">
                                 <a href="#"
@@ -106,21 +108,23 @@
                         </tr>
 
                         <tr>
-                            <td>Bánh quy bơ</td>
-                            <td>Bánh quy nhập khẩu</td>
-                            <td>Supplier 2</td>
-                            <td>Thực phẩm</td>
-                            <td>Hộp</td>
-                            <td class="text-end">45,000</td>
+                            <td>Trần Thị B</td>
+                            <td>22/08/1998</td>
+                            <td>TP. Hồ Chí Minh</td>
+                            <td>0912 333 444</td>
+                            <td>thib@gmail.com</td>
                             <td class="text-center">
-                                <img src="~/images/products/default.png"
+                                <img src="~/images/employees/default.png"
+                                     class="rounded-circle"
                                      width="40"
                                      height="40"
-                                     class="rounded"
-                                     alt="Product Photo" />
+                                     alt="Photo" />
                             </td>
                             <td class="text-center">
-                                <span class="badge bg-secondary">Ngừng bán</span>
+                                <span class="badge bg-secondary">Nghỉ việc</span>
+                            </td>
+                            <td>
+                                Shipper
                             </td>
                             <td class="text-center">
                                 <a href="#"

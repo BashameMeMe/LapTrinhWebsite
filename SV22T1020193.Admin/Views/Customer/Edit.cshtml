@@ -1,5 +1,114 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = ViewBag.Title ?? "Cập nhật khách hàng";
+    Layout = "_Layout";
 }
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3 class="mb-0">@ViewData["Title"]</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-body">
+
+                <form method="post">
+
+                    <!-- Customer Name -->
+                    <div class="mb-3">
+                        <label class="form-label">Tên khách hàng</label>
+                        <input type="text"
+                               name="CustomerName"
+                               class="form-control"
+                               placeholder="Nhập tên khách hàng"
+                               required />
+                    </div>
+
+                    <!-- Contact Name -->
+                    <div class="mb-3">
+                        <label class="form-label">Người liên hệ</label>
+                        <input type="text"
+                               name="ContactName"
+                               class="form-control"
+                               placeholder="Nhập tên người liên hệ" />
+                    </div>
+
+                    <!-- Province -->
+                    <div class="mb-3">
+                        <label class="form-label">Tỉnh / Thành</label>
+                        <input type="text"
+                               name="Province"
+                               class="form-control"
+                               placeholder="Tỉnh / Thành phố" />
+                    </div>
+
+                    <!-- Address -->
+                    <div class="mb-3">
+                        <label class="form-label">Địa chỉ</label>
+                        <input type="text"
+                               name="Address"
+                               class="form-control"
+                               placeholder="Địa chỉ" />
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="mb-3">
+                        <label class="form-label">Điện thoại</label>
+                        <input type="text"
+                               name="Phone"
+                               class="form-control"
+                               placeholder="Số điện thoại" />
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email"
+                               name="Email"
+                               class="form-control"
+                               placeholder="Email" />
+                    </div>
+
+                    <!-- Is Locked -->
+                    <div class="form-check mb-4">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="IsLocked"
+                               id="IsLocked" />
+                        <label class="form-check-label" for="IsLocked">
+                            Khóa tài khoản
+                        </label>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="text-end">
+                        <a asp-action="Index"
+                           class="btn btn-secondary me-2">
+                            <i class="bi bi-arrow-left"></i> Hủy
+                        </a>
+
+                        <button type="reset"
+                                class="btn btn-warning me-2">
+                            <i class="bi bi-arrow-counterclockwise"></i> Reset
+                        </button>
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> Xác nhận
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>

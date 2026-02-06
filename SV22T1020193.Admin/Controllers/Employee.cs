@@ -2,7 +2,7 @@
 
 namespace SV22T1020193.Admin.Controllers
 {
-    public class Supplier : Controller
+    public class Employee : Controller
     {
         public IActionResult Index()
         {
@@ -10,17 +10,24 @@ namespace SV22T1020193.Admin.Controllers
         }
         public IActionResult Create()
         {
-            ViewBag.Title = "Bổ sung nhà cung cấp";
-            return View("Edit");
+            return View();
         }
         public IActionResult Edit(int id)
         {
-            ViewBag.Title = "Cập nhật nhà cung cấp";
             return View();
         }
         public IActionResult Delete(int id)
         {
             return View();
         }
+        public IActionResult Changepassword(int id)
+        {
+            return View();
+        }
+        public IActionResult Changerole(int id)
+        {
+            return View();
+        }
+
     }
 }

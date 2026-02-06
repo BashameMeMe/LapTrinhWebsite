@@ -1,5 +1,60 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Xóa nhà cung cấp";
+    Layout = "_Layout";
 }
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <h3 class="mb-0 text-danger">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            Xác nhận xóa nhà cung cấp
+        </h3>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+
+        <div class="card border-danger">
+            <div class="card-body">
+
+                <p class="fs-5">
+                    Bạn có chắc chắn muốn <strong class="text-danger">xóa</strong>
+                    nhà cung cấp này không?
+                </p>
+
+                <div class="alert alert-warning">
+                    <i class="bi bi-info-circle"></i>
+                    Thao tác này <strong>không thể hoàn tác</strong>.
+                </div>
+
+                <!-- Thông tin hiển thị (chỉ đọc) -->
+                <dl class="row mb-4">
+                    <dt class="col-sm-3">Tên nhà cung cấp</dt>
+                    <dd class="col-sm-9">Công ty ABC</dd>
+
+                    <dt class="col-sm-3">Tên giao dịch</dt>
+                    <dd class="col-sm-9">ABC Trading</dd>
+
+                    <dt class="col-sm-3">Điện thoại</dt>
+                    <dd class="col-sm-9">0909123456</dd>
+                </dl>
+
+                <!-- Buttons -->
+                <form method="post" class="text-end">
+                    <a asp-action="Index"
+                       class="btn btn-secondary me-2">
+                        <i class="bi bi-x-circle"></i> Hủy
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Xác nhận xóa
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
