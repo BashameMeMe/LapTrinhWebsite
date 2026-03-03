@@ -5,11 +5,7 @@
 <!-- Header -->
 <div class="app-content-header">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6">
-                <h3 class="mb-0">Nhân viên</h3>
-            </div>
-        </div>
+        <h3 class="mb-0">Nhân viên</h3>
     </div>
 </div>
 
@@ -39,12 +35,12 @@
                     </div>
 
                     <div class="col-auto">
-                        <a asp-controller="Employee"
-                           asp-action="Create"
+                        <a asp-action="Create"
                            class="btn btn-success">
                             <i class="bi bi-plus-circle"></i> Thêm mới
                         </a>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -59,8 +55,8 @@
         <!-- Table -->
         <div class="card">
             <div class="card-body table-responsive p-0">
-                <table class="table table-bordered table-hover align-middle">
-                    <thead class="table-light">
+                <table class="table table-bordered table-hover align-middle mb-0">
+                    <thead class="table-light text-center">
                         <tr>
                             <th>Họ tên</th>
                             <th>Ngày sinh</th>
@@ -70,12 +66,12 @@
                             <th>Ảnh</th>
                             <th>Trạng thái</th>
                             <th>Vai trò</th>
-                            <th style="width:120px"></th>
+                            <th style="width:200px">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        <!-- Sample row -->
+                        <!-- Row 1 -->
                         <tr>
                             <td>Nguyễn Văn A</td>
                             <td>15/03/1995</td>
@@ -92,21 +88,41 @@
                             <td class="text-center">
                                 <span class="badge bg-success">Đang làm</span>
                             </td>
-                            <td>
-                                Admin, Sales
-                            </td>
+                            <td>Admin, Sales</td>
                             <td class="text-center">
-                                <a href="#"
-                                   class="btn btn-sm btn-warning">
+
+                                <a asp-action="Edit"
+                                   asp-route-id="1"
+                                   class="btn btn-sm btn-warning"
+                                   title="Cập nhật">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <a href="#"
-                                   class="btn btn-sm btn-danger">
+
+                                <a asp-action="Delete"
+                                   asp-route-id="1"
+                                   class="btn btn-sm btn-danger"
+                                   title="Xóa">
                                     <i class="bi bi-trash"></i>
                                 </a>
+
+                                <a asp-action="ChangeRole"
+                                   asp-route-id="1"
+                                   class="btn btn-sm btn-info"
+                                   title="Phân quyền">
+                                    <i class="bi bi-person-gear"></i>
+                                </a>
+
+                                <a asp-action="ChangePassword"
+                                   asp-route-id="1"
+                                   class="btn btn-sm btn-secondary"
+                                   title="Đổi mật khẩu">
+                                    <i class="bi bi-key"></i>
+                                </a>
+
                             </td>
                         </tr>
 
+                        <!-- Row 2 -->
                         <tr>
                             <td>Trần Thị B</td>
                             <td>22/08/1998</td>
@@ -123,18 +139,37 @@
                             <td class="text-center">
                                 <span class="badge bg-secondary">Nghỉ việc</span>
                             </td>
-                            <td>
-                                Shipper
-                            </td>
+                            <td>Shipper</td>
                             <td class="text-center">
-                                <a href="#"
-                                   class="btn btn-sm btn-warning">
+
+                                <a asp-action="Edit"
+                                   asp-route-id="2"
+                                   class="btn btn-sm btn-warning"
+                                   title="Cập nhật">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <a href="#"
-                                   class="btn btn-sm btn-danger">
+
+                                <a asp-action="Delete"
+                                   asp-route-id="2"
+                                   class="btn btn-sm btn-danger"
+                                   title="Xóa">
                                     <i class="bi bi-trash"></i>
                                 </a>
+
+                                <a asp-action="ChangeRole"
+                                   asp-route-id="2"
+                                   class="btn btn-sm btn-info"
+                                   title="Phân quyền">
+                                    <i class="bi bi-person-gear"></i>
+                                </a>
+
+                                <a asp-action="ChangePassword"
+                                   asp-route-id="2"
+                                   class="btn btn-sm btn-secondary"
+                                   title="Đổi mật khẩu">
+                                    <i class="bi bi-key"></i>
+                                </a>
+
                             </td>
                         </tr>
 
@@ -159,6 +194,7 @@
                     </li>
                 </ul>
             </div>
+
         </div>
 
     </div>

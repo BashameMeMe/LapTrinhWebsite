@@ -4,6 +4,9 @@ namespace SV22T1020193.Admin.Controllers
 {
     public class Account : Controller
     {
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Login()
         {

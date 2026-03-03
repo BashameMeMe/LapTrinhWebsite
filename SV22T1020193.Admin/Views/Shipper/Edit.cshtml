@@ -1,5 +1,72 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Cập nhật Shipper";
 }
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <h3>✏️ Cập nhật thông tin Shipper</h3>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <form method="post">
+
+                    <!-- Hidden ID -->
+                    <input type="hidden" name="ShipperID" value="1" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Tên Shipper</label>
+                        <input type="text"
+                               name="ShipperName"
+                               value="Nguyễn Văn A"
+                               class="form-control"
+                               required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="text"
+                               name="Phone"
+                               value="0901234567"
+                               class="form-control"
+                               required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-select" name="Status">
+                            <option value="1" selected>Hoạt động</option>
+                            <option value="0">Tạm nghỉ</option>
+                            <option value="-1">Bị khóa</option>
+                        </select>
+                    </div>
+
+                    <div class="text-end">
+                        <a asp-action="Index"
+                           class="btn btn-secondary me-2">
+                            Hủy
+                        </a>
+
+                        <button type="reset"
+                                class="btn btn-warning me-2">
+                            Reset
+                        </button>
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Cập nhật
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>

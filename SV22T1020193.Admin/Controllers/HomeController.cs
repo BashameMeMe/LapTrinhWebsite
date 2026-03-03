@@ -28,5 +28,8 @@ namespace SV22T1020193.Admin.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        ///<summarry>
+        /// Trang Chu /DashBoard
+        /// 
     }
 }
