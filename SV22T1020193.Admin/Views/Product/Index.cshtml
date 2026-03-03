@@ -1,161 +1,129 @@
 ﻿@{
-    ViewData["Title"] = "Danh sách sản phẩm";
+    ViewBag.Title = "Quản lý Mặt hàng";
+}
+@section PageToolBar {
+    <a href="~/Product/Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>
+        Bổ sung
+    </a>
 }
 
-<!-- Header -->
-<div class="app-content-header">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6">
-                <h3 class="mb-0">Sản phẩm</h3>
+<div class="card mb-3">
+    <div class="card-body">
+        <form id="formSearch">
+            <div class="row g-2">
+                <div class="col-md-3">
+                    <label class="form-label">Loại hàng</label>
+                    <select class="form-select">
+                        <option value="">-- Tất cả --</option>
+                        <option>Đồ uống</option>
+                        <option>Thực phẩm</option>
+                        <option>Gia dụng</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Nhà cung cấp</label>
+                    <select class="form-select">
+                        <option value="">-- Tất cả --</option>
+                        <option>Công ty ABC</option>
+                        <option>Công ty XYZ</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Khoảng giá</label>
+                    <div class="input-group">
+                        <input type="text"
+                               name="minPrice" 
+                               class="form-control money-input"
+                               placeholder="Từ" />
+                        <span class="input-group-text">-</span>
+                        <input type="text"
+                               name="maxPrice"
+                               class="form-control money-input"
+                               placeholder="Đến" />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Tên mặt hàng</label>
+                    <div class="input-group">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Tên mặt hàng..." autofocus />
+                        <button class="btn btn-info d-flex align-items-center">
+                            <i class="bi bi-search me-1"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
-<!-- Content -->
-<div class="app-content">
-    <div class="container-fluid">
+<div class="mb-2 text-muted">
+    Danh sách này có <strong>20</strong> mặt hàng
+</div>
 
-        <!-- Search + Create -->
-        <div class="card mb-3">
-            <div class="card-body">
-                <form method="get"
-                      asp-controller="Product"
-                      asp-action="Index"
-                      class="row g-2 align-items-center">
+<div class="card">
+    <div class="card-body p-1">
+        <table class="table table-bordered table-hover mb-0 align-middle">
+            <thead class="table-secondary">
+                <tr>
+                    <th style="width:80px;">Ảnh</th>
+                    <th>Mặt hàng</th>
+                    <th style="width:120px;">Đơn vị</th>
+                    <th style="width:120px;">Giá</th>
+                    <th class="text-center" style="width:140px;">Trạng thái</th>
+                    <th class="text-center" style="width:100px;">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 1; i <= 10; i++)
+                {
+                    <tr>
+                        <td class="text-center">
+                            <img src="~/images/products/demo.png"
+                                 class="img-thumbnail"
+                                 alt="Ảnh mặt hàng" />
+                        </td>
+                        <td>
+                            <strong>Nước suối Aquafina</strong><br />
+                            <small class="text-muted">
+                                Nước uống tinh khiết đóng chai 500ml
+                            </small>
+                        </td>
+                        <td>Chai</td>
+                        <td class="text-end">5,000</td>
+                        <td class="text-center">
+                            <span class="badge bg-success">Đang bán</span>
+                        </td>
+                        <td class="text-center text-nowrap">
+                            <a href="~/Product/Edit/123" class="btn btn-sm btn-primary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="~/Product/Delete/123" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-                    <div class="col-md-4">
-                        <input type="text"
-                               name="searchValue"
-                               class="form-control"
-                               placeholder="Nhập tên sản phẩm cần tìm..." />
-                    </div>
-
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-search"></i> Search
-                        </button>
-                    </div>
-
-                    <div class="col-auto">
-                        <a asp-controller="Product"
-                           asp-action="Create"
-                           class="btn btn-success">
-                            <i class="bi bi-plus-circle"></i> Thêm mới
-                        </a>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Result count -->
-        <div class="mb-2">
-            <span class="text-muted">
-                Tìm thấy <strong>2</strong> dòng dữ liệu
-            </span>
-        </div>
-
-        <!-- Table -->
-        <div class="card">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-bordered table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Description</th>
-                            <th>Supplier</th>
-                            <th>Category</th>
-                            <th>Unit</th>
-                            <th>Price</th>
-                            <th>Photo</th>
-                            <th>Is Selling</th>
-                            <th style="width:120px"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <!-- Sample row -->
-                        <tr>
-                            <td>Cà phê sữa</td>
-                            <td>Cà phê pha sẵn đóng chai</td>
-                            <td>Supplier 1</td>
-                            <td>Đồ uống</td>
-                            <td>Chai</td>
-                            <td class="text-end">15,000</td>
-                            <td class="text-center">
-                                <img src="~/images/products/default.png"
-                                     width="40"
-                                     height="40"
-                                     class="rounded"
-                                     alt="Product Photo" />
-                            </td>
-                            <td class="text-center">
-                                <span class="badge bg-success">Đang bán</span>
-                            </td>
-                            <td class="text-center">
-                                <a href="#"
-                                   class="btn btn-sm btn-warning">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <a href="#"
-                                   class="btn btn-sm btn-danger">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Bánh quy bơ</td>
-                            <td>Bánh quy nhập khẩu</td>
-                            <td>Supplier 2</td>
-                            <td>Thực phẩm</td>
-                            <td>Hộp</td>
-                            <td class="text-end">45,000</td>
-                            <td class="text-center">
-                                <img src="~/images/products/default.png"
-                                     width="40"
-                                     height="40"
-                                     class="rounded"
-                                     alt="Product Photo" />
-                            </td>
-                            <td class="text-center">
-                                <span class="badge bg-secondary">Ngừng bán</span>
-                            </td>
-                            <td class="text-center">
-                                <a href="#"
-                                   class="btn btn-sm btn-warning">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <a href="#"
-                                   class="btn btn-sm btn-danger">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-end">
-                    <li class="page-item disabled">
-                        <a class="page-link">«</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link">»</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
+    <div class="card-footer">
+        <ul class="pagination justify-content-center mb-0">
+            <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">3</a>
+            </li>
+        </ul>
     </div>
 </div>

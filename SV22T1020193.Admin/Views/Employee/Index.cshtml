@@ -1,201 +1,89 @@
 ﻿@{
-    ViewData["Title"] = "Danh sách nhân viên";
+    ViewBag.Title = "Quản lý Nhân viên";
 }
-
-<!-- Header -->
-<div class="app-content-header">
-    <div class="container-fluid">
-        <h3 class="mb-0">Nhân viên</h3>
+@section PageToolBar {
+    <a href="~/Employee/Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>
+        Bổ sung
+    </a>
+}
+<div class="card mb-3">
+    <div class="card-body">
+        <form id="formSearch">
+            <div class="input-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Tên nhân viên..." autofocus />
+                <button class="btn btn-info d-flex align-items-center">
+                    <i class="bi bi-search me-1"></i>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
-<!-- Content -->
-<div class="app-content">
-    <div class="container-fluid">
+<div class="mb-2 text-muted">
+    Danh sách này có <strong>15</strong> nhân viên
+</div>
 
-        <!-- Search + Create -->
-        <div class="card mb-3">
-            <div class="card-body">
-                <form method="get"
-                      asp-controller="Employee"
-                      asp-action="Index"
-                      class="row g-2 align-items-center">
+<div class="card">
+    <div class="card-body p-1">
+        <table class="table table-bordered table-hover mb-0">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Họ tên</th>
+                    <th>Ngày sinh</th>
+                    <th>Điện thoại</th>
+                    <th>Email</th>
+                    <th>Địa chỉ</th>
+                    <th class="text-center" style="width:140px;">Trạng thái</th>
+                    <th class="text-center" style="width:100px;">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 1; i <= 10; i++)
+                {
+                    <tr>
+                        <td>Nguyễn Văn A</td>
+                        <td>15/08/1990</td>
+                        <td>0912345678</td>
+                        <td>a.nguyen@gmail.com</td>
+                        <td>123 Lê Lợi</td>
+                        <td class="text-center">
+                            <span class="badge bg-success">Đang làm việc</span>
+                        </td>
+                        <td class="text-center text-nowrap">
+                            <a href="~/Employee/Edit/123" class="btn btn-sm btn-primary" title="Cập nhật">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="~/Employee/Delete/123" class="btn btn-sm btn-danger" title="Xóa">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                            <a href="~/Employee/ChangePassword/123" class="btn btn-sm btn-warning ms-2" title="Đổi mật khẩu">
+                                <i class="bi bi-key"></i>
+                            </a>
+                            <a href="~/Employee/ChangeRole/123" class="btn btn-sm btn-info" title="Cấp quyền">
+                                <i class="bi bi-shield-check"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-                    <div class="col-md-4">
-                        <input type="text"
-                               name="searchValue"
-                               class="form-control"
-                               placeholder="Nhập tên nhân viên cần tìm..." />
-                    </div>
-
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-search"></i> Search
-                        </button>
-                    </div>
-
-                    <div class="col-auto">
-                        <a asp-action="Create"
-                           class="btn btn-success">
-                            <i class="bi bi-plus-circle"></i> Thêm mới
-                        </a>
-                    </div>
-
-                </form>
-            </div>
-        </div>
-
-        <!-- Result count -->
-        <div class="mb-2">
-            <span class="text-muted">
-                Tìm thấy <strong>2</strong> dòng dữ liệu
-            </span>
-        </div>
-
-        <!-- Table -->
-        <div class="card">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-bordered table-hover align-middle mb-0">
-                    <thead class="table-light text-center">
-                        <tr>
-                            <th>Họ tên</th>
-                            <th>Ngày sinh</th>
-                            <th>Địa chỉ</th>
-                            <th>Điện thoại</th>
-                            <th>Email</th>
-                            <th>Ảnh</th>
-                            <th>Trạng thái</th>
-                            <th>Vai trò</th>
-                            <th style="width:200px">Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <!-- Row 1 -->
-                        <tr>
-                            <td>Nguyễn Văn A</td>
-                            <td>15/03/1995</td>
-                            <td>Hà Nội</td>
-                            <td>0909 111 222</td>
-                            <td>vana@gmail.com</td>
-                            <td class="text-center">
-                                <img src="~/images/employees/default.png"
-                                     class="rounded-circle"
-                                     width="40"
-                                     height="40"
-                                     alt="Photo" />
-                            </td>
-                            <td class="text-center">
-                                <span class="badge bg-success">Đang làm</span>
-                            </td>
-                            <td>Admin, Sales</td>
-                            <td class="text-center">
-
-                                <a asp-action="Edit"
-                                   asp-route-id="1"
-                                   class="btn btn-sm btn-warning"
-                                   title="Cập nhật">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-
-                                <a asp-action="Delete"
-                                   asp-route-id="1"
-                                   class="btn btn-sm btn-danger"
-                                   title="Xóa">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-
-                                <a asp-action="ChangeRole"
-                                   asp-route-id="1"
-                                   class="btn btn-sm btn-info"
-                                   title="Phân quyền">
-                                    <i class="bi bi-person-gear"></i>
-                                </a>
-
-                                <a asp-action="ChangePassword"
-                                   asp-route-id="1"
-                                   class="btn btn-sm btn-secondary"
-                                   title="Đổi mật khẩu">
-                                    <i class="bi bi-key"></i>
-                                </a>
-
-                            </td>
-                        </tr>
-
-                        <!-- Row 2 -->
-                        <tr>
-                            <td>Trần Thị B</td>
-                            <td>22/08/1998</td>
-                            <td>TP. Hồ Chí Minh</td>
-                            <td>0912 333 444</td>
-                            <td>thib@gmail.com</td>
-                            <td class="text-center">
-                                <img src="~/images/employees/default.png"
-                                     class="rounded-circle"
-                                     width="40"
-                                     height="40"
-                                     alt="Photo" />
-                            </td>
-                            <td class="text-center">
-                                <span class="badge bg-secondary">Nghỉ việc</span>
-                            </td>
-                            <td>Shipper</td>
-                            <td class="text-center">
-
-                                <a asp-action="Edit"
-                                   asp-route-id="2"
-                                   class="btn btn-sm btn-warning"
-                                   title="Cập nhật">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-
-                                <a asp-action="Delete"
-                                   asp-route-id="2"
-                                   class="btn btn-sm btn-danger"
-                                   title="Xóa">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-
-                                <a asp-action="ChangeRole"
-                                   asp-route-id="2"
-                                   class="btn btn-sm btn-info"
-                                   title="Phân quyền">
-                                    <i class="bi bi-person-gear"></i>
-                                </a>
-
-                                <a asp-action="ChangePassword"
-                                   asp-route-id="2"
-                                   class="btn btn-sm btn-secondary"
-                                   title="Đổi mật khẩu">
-                                    <i class="bi bi-key"></i>
-                                </a>
-
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-end">
-                    <li class="page-item disabled">
-                        <a class="page-link">«</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link">»</a>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-
+    <div class="card-footer">
+        <ul class="pagination justify-content-center">
+            <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">3</a>
+            </li>
+        </ul>
     </div>
 </div>
+

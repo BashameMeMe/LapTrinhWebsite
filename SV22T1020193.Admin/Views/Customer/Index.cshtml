@@ -1,151 +1,88 @@
-﻿
-@{
-    ViewData["Title"] = "Danh sách khách hàng";
+﻿@{
+    ViewBag.Title = "Quản lý Khách hàng";
 }
-
-<!-- Header -->
-<div class="app-content-header">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6">
-                <h3 class="mb-0">Danh sách khách hàng</h3>
+@section PageToolBar {
+    <a href="~/Customer/Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>
+        Bổ sung
+    </a>
+}
+<div class="card mb-3">
+    <div class="card-body">
+        <form id="formSearch">
+            <div class="input-group">
+                <input type="text"
+                       class="form-control"
+                       placeholder="Tên khách hàng..." autofocus />
+                <button class="btn btn-info d-flex align-items-center">
+                    <i class="bi bi-search me-1"></i>
+                </button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
-<!-- Content -->
-<div class="app-content">
-    <div class="container-fluid">
+<div class="mb-2 text-muted">
+    Danh sách này có <strong>25</strong> khách hàng
+</div>
 
-        <!-- Search + Create -->
-        <div class="card mb-3">
-            <div class="card-body">
-                <form method="get"
-                      asp-controller="Customer"
-                      asp-action="Index"
-                      class="row g-2 align-items-center">
+<div class="card">
+    <div class="card-body p-1">
+        <table class="table table-bordered table-hover mb-0">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Tên khách hàng</th>
+                    <th>Tên giao dịch</th>
+                    <th>Điện thoại</th>
+                    <th>Email</th>
+                    <th>Địa chỉ</th>
+                    <th>Tỉnh / Thành</th>
+                    <th class="text-center" style="width:120px;">Trạng thái</th>
+                    <th class="text-center" style="width:100px;">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 1; i <= 10; i++)
+                {
+                    <tr>
+                        <td>Nguyễn Văn A</td>
+                        <td>A Trading</td>
+                        <td>0912345678</td>
+                        <td>a@gmail.com</td>
+                        <td>456 Nguyễn Huệ</td>
+                        <td>Hà Nội</td>
+                        <td class="text-center">
+                            <span class="badge bg-success">Hoạt động</span>
+                        </td>
+                        <td class="text-center text-nowrap">
+                            <a href="~/Customer/Edit/123" class="btn btn-sm btn-primary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="~/Customer/Delete/123" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                            <a href="~/Customer/ChangePassword/123" class="btn btn-sm btn-warning ms-2">
+                                <i class="bi bi-key"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-                    <div class="col-md-4">
-                        <input type="text"
-                               name="searchValue"
-                               value="@ViewBag.SearchValue"
-                               class="form-control"
-                               placeholder="Nhập tên khách hàng cần tìm..." />
-                    </div>
-
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-search"></i> Search
-                        </button>
-                    </div>
-
-                    <div class="col-auto">
-                        <a asp-controller="Customer"
-                           asp-action="Create"
-                           class="btn btn-success">
-                            <i class="bi bi-plus-circle"></i> Thêm mới
-                        </a>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Result count -->
-        <div class="mb-2">
-            <span class="text-muted">
-                Tìm thấy <strong>@ViewBag.RowCount</strong> dòng dữ liệu
-            </span>
-        </div>
-
-        <!-- Table -->
-        <div class="card">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-bordered table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Customer Name</th>
-                            <th>Contact Name</th>
-                            <th>Province</th>
-                            <th>Address</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Is Locked</th>
-                            <th style="width:120px"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Sample row -->
-                        <tr>
-                            <td>Công ty TNHH ABC</td>
-                            <td>Nguyễn Văn A</td>
-                            <td>Hà Nội</td>
-                            <td>123 Trần Duy Hưng</td>
-                            <td>0909 000 111</td>
-                            <td>abc@gmail.com</td>
-                            <td class="text-center">
-                                <span class="badge bg-success">Active</span>
-                            </td>
-                            <td class="text-center">
-                                <a asp-controller="Customer"
-                                   asp-action="Edit"
-                                   asp-route-id="1"
-                                   class="btn btn-sm btn-warning">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-
-                                <a asp-controller="Customer"
-                                   asp-action="Delete"
-                                   asp-route-id="1"
-                                   class="btn btn-sm btn-danger">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </td>
-
-                        </tr>
-
-                        <tr>
-                            <td>Công ty XYZ</td>
-                            <td>Trần Thị B</td>
-                            <td>TP. Hồ Chí Minh</td>
-                            <td>45 Lê Lợi, Q1</td>
-                            <td>0912 345 678</td>
-                            <td>xyz@gmail.com</td>
-                            <td class="text-center">
-                                <span class="badge bg-danger">Locked</span>
-                            </td>
-                            <td class="text-center">
-                                <a href="#" class="btn btn-sm btn-warning">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <a href="#" class="btn btn-sm btn-danger">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-end">
-                    <li class="page-item disabled">
-                        <a class="page-link">«</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link">»</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
+    <div class="card-footer">
+        <!-- Pagination -->
+        <ul class="pagination justify-content-center">
+            <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">3</a>
+            </li>
+        </ul>
     </div>
 </div>

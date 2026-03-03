@@ -1,67 +1,101 @@
 ﻿@{
-    ViewData["Title"] = ViewBag.Title ?? "Cập nhật nhân viên";
-    Layout = "_Layout";
+}
+@section PageToolBar {
+    <button type="submit" form="formEdit" class="btn btn-primary">
+        <i class="bi bi-save"></i>
+        Lưu dữ liệu
+    </button>
+    <a href="~/Employee" class="btn btn-secondary ms-1">
+        <i class="bi bi-arrow-left"></i>
+        Quay lại
+    </a>
 }
 
-<div class="app-content-header">
-    <div class="container-fluid">
-        <h3>@ViewData["Title"]</h3>
-    </div>
-</div>
+<div class="row justify-content-center">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-person-badge me-2"></i>
+                    Thông tin nhân viên
+                </h5>
+            </div>
 
-<div class="app-content">
-    <div class="container-fluid">
-
-        <div class="card">
             <div class="card-body">
+                <form id="formEdit" method="post" enctype="multipart/form-data">
 
-                <form method="post" enctype="multipart/form-data">
-
-                    <div class="mb-3">
-                        <label class="form-label">Họ tên</label>
-                        <input type="text" name="FullName" class="form-control" required />
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">Họ và tên</label>
+                        <div class="col-sm-5">
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Nhập họ và tên" autofocus />
+                        </div>
+                        <label class="col-sm-2 col-form-label text-end">Ngày sinh</label>
+                        <div class="col-sm-2">
+                            <input type="text"
+                                   class="form-control date-picker" />
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Ngày sinh</label>
-                        <input type="date" name="BirthDate" class="form-control" />
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">Địa chỉ</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control"
+                                      rows="3"
+                                      placeholder="Nhập địa chỉ"></textarea>
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Địa chỉ</label>
-                        <input type="text" name="Address" class="form-control" />
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">Điện thoại</label>
+                        <div class="col-sm-2">
+                            <input type="tel"
+                                   class="form-control"
+                                   placeholder="Nhập số điện thoại" />
+                        </div>
+                        <label class="col-sm-1 col-form-label text-end">Email</label>
+                        <div class="col-sm-6">
+                            <input type="email"
+                                   class="form-control"
+                                   placeholder="Nhập email" />
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Điện thoại</label>
-                        <input type="text" name="Phone" class="form-control" />
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">Ảnh</label>
+                        <div class="col-sm-9">
+                            <input type="file"
+                                   class="form-control"
+                                   accept="image/*"
+                                   data-img-preview="imgPreview"
+                                   onchange="previewImage(this)" />
+                            <div class="mt-2">
+                                <img id="imgPreview"
+                                     src="~/images/employees/nophoto.png"
+                                     class="img-thumbnail"
+                                     style="max-height: 150px;" />
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="Email" class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Ảnh</label>
-                        <input type="file" name="Photo" class="form-control" />
-                    </div>
-
-                    <div class="form-check mb-4">
-                        <input type="checkbox" name="IsWorking" class="form-check-input" id="IsWorking" />
-                        <label class="form-check-label" for="IsWorking">Đang làm việc</label>
-                    </div>
-
-                    <div class="text-end">
-                        <a asp-action="Index" class="btn btn-secondary me-2">Hủy</a>
-                        <button type="reset" class="btn btn-warning me-2">Reset</button>
-                        <button type="submit" class="btn btn-primary">Xác nhận</button>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">Trạng thái</label>
+                        <div class="col-sm-9">
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="IsWorking"
+                                       checked />
+                                <label class="form-check-label" for="IsWorking">
+                                    Đang làm việc
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
                 </form>
-
             </div>
         </div>
-
     </div>
 </div>
