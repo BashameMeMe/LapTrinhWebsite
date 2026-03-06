@@ -29,6 +29,7 @@
     <None Include="Views\Order\Create.cshtml" />
     <None Include="Views\Order\Index.cshtml" />
     <None Include="Views\Product\Create.cshtml" />
+	  
     <None Include="Views\Product\CreateAttributes.cshtml" />
     <None Include="Views\Product\CreateListPhoto.cshtml" />
     <None Include="Views\Product\Delete.cshtml" />
