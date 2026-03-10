@@ -1,4 +1,4 @@
-﻿namespace SV22T1020193.Models.Partner
+﻿namespace LiteCommerce.Models.Partner
 {
     /// <summary>
     /// Người giao hàng

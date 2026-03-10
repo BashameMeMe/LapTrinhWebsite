@@ -1,4 +1,4 @@
-﻿namespace SV22T1020193.Models.Security
+﻿namespace LiteCommerce.Models.Security
 {
     /// <summary>
     /// Thông tin tài khoản người dùng

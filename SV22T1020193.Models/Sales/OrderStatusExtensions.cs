@@ -1,4 +1,4 @@
-﻿namespace SV22T1020193.Models.Sales
+﻿namespace LiteCommerce.Models.Sales
 {
     /// <summary>
     /// Mở rộng các phương thức cho enum OrderStatusEnum
