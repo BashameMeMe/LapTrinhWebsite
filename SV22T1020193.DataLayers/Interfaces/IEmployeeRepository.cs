@@ -1,11 +1,11 @@
-﻿using LiteCommerce.Models.HR;
+﻿using 22T1020193.Models.HR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LiteCommerce.DataLayers.Interfaces
+namespace 22T1020193.DataLayers.Interfaces
 {
     /// <summary>
     /// Định nghĩa các phép xử lý dữ liệu trên Employee

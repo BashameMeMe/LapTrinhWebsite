@@ -1,6 +1,6 @@
-﻿using LiteCommerce.Models.Partner;
+﻿using 22T1020193.Models.Partner;
 
-namespace LiteCommerce.DataLayers.Interfaces
+namespace 22T1020193.DataLayers.Interfaces
 {
     /// <summary>
     /// Định nghĩa các phép xử lý dữ liệu trên Customer

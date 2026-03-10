@@ -1,7 +1,7 @@
-﻿using LiteCommerce.Models.Catalog;
-using LiteCommerce.Models.Common;
+﻿using 22T1020193.Models.Catalog;
+using 22T1020193.Models.Common;
 
-namespace LiteCommerce.DataLayers.Interfaces
+namespace 22T1020193.DataLayers.Interfaces
 {
     /// <summary>
     /// Định nghĩa các phép xử lý dữ liệu cho mặt hàng

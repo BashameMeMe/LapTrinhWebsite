@@ -1,4 +1,4 @@
-﻿namespace LiteCommerce.Models.Sales
+﻿namespace 22T1020193.Models.Sales
 {
     /// <summary>
     /// DTO hiển thị thông tin chi tiết của mặt hàng trong đơn hàng

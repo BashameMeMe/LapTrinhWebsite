@@ -1,4 +1,4 @@
-﻿namespace LiteCommerce.Models.Catalog
+﻿namespace 22T1020193.Models.Catalog
 {
     /// <summary>
     /// Ảnh của mặt hàng

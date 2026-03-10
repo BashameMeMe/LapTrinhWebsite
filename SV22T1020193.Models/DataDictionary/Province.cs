@@ -1,4 +1,4 @@
-﻿namespace LiteCommerce.Models.DataDictionary
+﻿namespace 22T1020193.Models.DataDictionary
 {
     /// <summary>
     /// Tỉnh thành

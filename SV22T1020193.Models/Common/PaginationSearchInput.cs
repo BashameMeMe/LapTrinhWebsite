@@ -1,4 +1,4 @@
-﻿namespace LiteCommerce.Models.Common
+﻿namespace 22T1020193.Models.Common
 {
     /// <summary>
     /// Lớp dùng để biểu diễn thông tin đầu vào của một truy vấn/tìm kiếm 

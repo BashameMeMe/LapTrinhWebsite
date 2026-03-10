@@ -1,4 +1,4 @@
-﻿namespace LiteCommerce.Models.Sales
+﻿namespace 22T1020193.Models.Sales
 {
     /// <summary>
     /// Thông tin chi tiết của mặt hàng được bán trong đơn hàng

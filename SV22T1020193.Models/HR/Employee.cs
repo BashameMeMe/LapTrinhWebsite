@@ -1,4 +1,4 @@
-﻿namespace LiteCommerce.Models.HR
+﻿namespace 22T1020193.Models.HR
 {
     /// <summary>
     /// Nhân viên
