@@ -1,7 +1,7 @@
-﻿using 22T1020193.Models.Common;
-using 22T1020193.Models.Sales;
+﻿using SV22T1020193.Models.Common;
+using SV22T1020193.Models.Sales;
 
-namespace 22T1020193.DataLayers.Interfaces
+namespace SV22T1020193.DataLayers.Interfaces
 {
     /// <summary>
     /// Định nghĩa các chức năng xử lý dữ liệu cho đơn hàng

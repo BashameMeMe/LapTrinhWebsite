@@ -1,4 +1,4 @@
-﻿namespace 22T1020193.DataLayers.Interfaces
+﻿namespace SV22T1020193.DataLayers.Interfaces
 {
     /// <summary>
     /// Định nghĩa các phép xử lý dữ liệu sử dụng cho từ điển dữ liệu

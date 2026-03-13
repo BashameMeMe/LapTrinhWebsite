@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -73,6 +73,10 @@
     <None Include="wwwroot\lib\font-awesome\fonts\fontawesome-webfont.woff2" />
     <None Include="wwwroot\lib\overlay-scrollbars\overlayscrollbars.browser.es6.min.js" />
     <None Include="wwwroot\lib\popperjs\popper.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>

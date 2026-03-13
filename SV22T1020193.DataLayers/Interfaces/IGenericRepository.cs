@@ -1,6 +1,6 @@
-﻿using 22T1020193.Models.Common;
+﻿using SV22T1020193.Models.Common;
 
-namespace 22T1020193.DataLayers.Interfaces
+namespace SV22T1020193.DataLayers.Interfaces
 {
     /// <summary>
     /// Định nghĩa các phép xử lý dữ liệu đơn giản trên một

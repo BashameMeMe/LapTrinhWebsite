@@ -1,4 +1,4 @@
-﻿namespace 22T1020193.Models.Security
+﻿namespace SV22T1020193.Models.Security
 {
     /// <summary>
     /// Thông tin tài khoản người dùng

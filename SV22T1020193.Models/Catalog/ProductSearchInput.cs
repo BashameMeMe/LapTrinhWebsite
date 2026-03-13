@@ -1,11 +1,11 @@
-﻿using 22T1020193.Models.Common;
+﻿using SV22T1020193.Models.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace 22T1020193.Models.Catalog
+namespace SV22T1020193.Models.Catalog
 {
     /// <summary>
     /// Biểu diễn dữ liệu đầu vào tìm kiếm, phân trang đối với mặt hàng

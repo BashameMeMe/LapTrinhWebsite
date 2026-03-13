@@ -1,6 +1,6 @@
-﻿using 22T1020193.Models.Security;
+﻿using SV22T1020193.Models.Security;
 
-namespace 22T1020193.DataLayers.Interfaces
+namespace SV22T1020193.DataLayers.Interfaces
 {
     /// <summary>
     /// Định nghĩa các phép xử lý dữ liệu liên quan đến tài khoản

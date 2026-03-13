@@ -1,4 +1,4 @@
-﻿namespace 22T1020193.Models.Partner
+﻿namespace SV22T1020193.Models.Partner
 {
     /// <summary>
     /// Người giao hàng

@@ -1,4 +1,4 @@
-﻿namespace 22T1020193.Models.Catalog
+﻿namespace SV22T1020193.Models.Catalog
 {
     /// <summary>
     /// Loại hàng

@@ -1,4 +1,4 @@
-﻿namespace 22T1020193.Models.Sales
+﻿namespace SV22T1020193.Models.Sales
 {
     /// <summary>
     /// Đơn hàng

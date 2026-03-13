@@ -1,4 +1,4 @@
-﻿namespace 22T1020193.Models.Common
+﻿namespace SV22T1020193.Models.Common
 {
     /// <summary>
     /// Phần tử trên thanh phân trang, có thể là một số trang hoặc dấu "..." để phân cách các nhóm trang
