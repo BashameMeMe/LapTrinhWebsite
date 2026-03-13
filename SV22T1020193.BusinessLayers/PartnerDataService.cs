@@ -241,6 +241,19 @@ namespace SV22T1020193.BusinessLayers
         {
             return await customerDB.IsUsedAsync(customerId);
         }
+        /// <summary>
+        /// Kiểm tra xem email của khách hàng có hợp lệ hay không
+        /// (Email hợp lệ nếu không trùng với khách hàng khác)
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="customerId">
+        /// nếu bằng 0 là kiểm trả email đối với kh mới.
+        /// nếu khác không là kiểm tra email của khác hàng có mã là custommerId</param>
+        /// <returns></returns>
+        public static async Task<bool> ValidateCustomerEmailAsync(String email,int customerId = 0)
+        {
+            return await customerDB.ValidateEmailAsync(email, customerId); 
+        }
 
         #endregion
     }
