@@ -18,6 +18,10 @@ namespace SV22T1020193.BusinessLayers
         /// </summary>
        static PartnerDataService()
         {
-            supplierDB = new SupplierRepository()       }
+            supplierDB = new SupplierRepository(Configuration.ConnectionString);
+            shipperDB = new ShipperRepository(Configuration.ConnectionString);
+            customerdb = new CustomerRepository(Configuration.ConnectionString);
+        }
+
     }
 }
