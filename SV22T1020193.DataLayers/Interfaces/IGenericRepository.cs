@@ -44,6 +44,6 @@ namespace SV22T1020193.DataLayers.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<bool> IsUsed(int id);
+        Task<bool> IsUsedAsync(int id);
     }
 }

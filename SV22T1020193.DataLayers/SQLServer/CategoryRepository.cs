@@ -65,7 +65,7 @@ namespace SV22T1020193.Datalayers.SQLServer
         /// <summary>
         /// Kiểm tra xem loại hàng đã có mặt hàng (Products) nào thuộc về nó chưa
         /// </summary>
-        public async Task<bool> IsUsed(int id)
+        public async Task<bool> IsUsedAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {

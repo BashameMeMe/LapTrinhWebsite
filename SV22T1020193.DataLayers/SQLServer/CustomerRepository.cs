@@ -66,7 +66,7 @@ namespace SV22T1020193.DataLayers.SQLServer
         /// <summary>
         /// Kiểm tra xem khách hàng có đang được sử dụng ở bảng khác không, ví dụ trong bảng Đơn hàng (Orders)
         /// </summary>
-        public async Task<bool> IsUsed(int id)
+        public async Task<bool> IsUsedAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {

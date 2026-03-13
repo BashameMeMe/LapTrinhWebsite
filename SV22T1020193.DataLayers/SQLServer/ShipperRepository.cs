@@ -74,7 +74,7 @@ namespace SV22T1020193.DataLayers.SQLServer
         /// </summary>
         /// <param name="id">Mã của người giao hàng cần kiểm tra</param>
         /// <returns>Trả về True nếu có dữ liệu liên quan, ngược lại là False.</returns>
-        public async Task<bool> IsUsed(int id)
+        public async Task<bool> IsUsedAsync(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
