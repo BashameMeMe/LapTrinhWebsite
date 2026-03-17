@@ -69,6 +69,6 @@ string connectionString = builder.Configuration.GetConnectionString("LiteCommerc
     ?? throw new InvalidOperationException("ConnectionString 'LiteCommerceDB' not found.");
 
 // Initialize Business Layer Configuration
-//LiteCommerce.BusinessLayers.Configuration.Initialize(connectionString);
+SV22T1020193.BusinessLayers.Configuration.Initialize(connectionString);
 
 app.Run();

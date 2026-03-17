@@ -19,7 +19,7 @@ namespace SV22T1020193.Admin.Controllers
                 input = new PaginationSearchInput()
             {
                 Page = 1,
-                PageSize = ApplicationContext.PageSize,
+                PageSize = 5,
                 SearchValue = ""
             };
             return View(input);
