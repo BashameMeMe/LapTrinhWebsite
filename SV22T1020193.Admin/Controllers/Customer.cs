@@ -1,12 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SV22T1020193.Models.Common;
 
 namespace SV22T1020193.Admin.Controllers
 {
     public class Customer : Controller
     {
+        /// <summary>
+        /// Nhập đầu vào tìm kiếm,Hiển thị kết quả tìm kiếm
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
-            return View();
+            var input = new PaginationSearchInput()
+            {
+                Page = 1,
+                PageSize = 5,
+                SearchValue = ""
+            };
+            return View(input);
+        }
+        /// <summary>
+        /// Tìm kiếm và trả về kết quả
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> Search(PaginationSearchInput input)
+        {
+            var result = await PartnerDataService.ListCustomersAsync(input);
+            return View(result);
         }
 
         // GET: Customer/Create

@@ -1,6 +1,7 @@
 using Dapper;
 using SV22T1020193.DataLayers.Interfaces;
 using Microsoft.Data.SqlClient;
+using SV22T1020193.Models.DataDictionary;
 
 namespace SV22T1020193.DataLayers.SQLServer
 {
@@ -8,7 +9,7 @@ namespace SV22T1020193.DataLayers.SQLServer
     /// Cài đặt chức năng lấy danh sách Tỉnh/Thành phố
     /// Kế thừa và triển khai các phương thức từ IDataDictionaryRepository cho kiểu string
     /// </summary>
-    public class ProvinceRepository : IDataDictionaryRepository<string>
+    public class ProvinceRepository : IDataDictionaryRepository<Province>
     {
         private readonly string _connectionString;
 
@@ -17,7 +18,7 @@ namespace SV22T1020193.DataLayers.SQLServer
             _connectionString = connectionString;
         }
 
-        public async Task<List<string>> ListAsync()
+        public async Task<List<Province>> ListAsync()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -25,7 +26,7 @@ namespace SV22T1020193.DataLayers.SQLServer
                 // Nếu bạn có bảng cụ thể, hãy thay đổi SQL dưới đây nhé. 
                 // Ở đây tôi dùng cách phổ biến khi không có bảng riêng là lấy danh sách các tỉnh thành đã nhập.
                 string sql = "SELECT ProvinceName FROM Provinces ORDER BY ProvinceName";
-                var result = await connection.QueryAsync<string>(sql);
+                var result = await connection.QueryAsync<Province>(sql);
                 return result.ToList();
             }
         }

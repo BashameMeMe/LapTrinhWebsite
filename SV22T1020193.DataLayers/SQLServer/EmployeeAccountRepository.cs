@@ -17,7 +17,7 @@ namespace SV22T1020193.DataLayers.SQLServer
             _connectionString = connectionString;
         }
 
-        public async Task<UserAccount?> Authorize(string userName, string password)
+        public async Task<UserAccount?> AuthorizeAsync(string userName, string password)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -35,7 +35,7 @@ namespace SV22T1020193.DataLayers.SQLServer
             }
         }
 
-        public async Task<bool> ChangePassword(string userName, string password)
+        public async Task<bool> ChangePasswordAsync(string userName, string password)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
