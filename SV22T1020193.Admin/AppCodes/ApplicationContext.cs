@@ -115,6 +115,6 @@ namespace SV22T1020193.Admin
             _configuration?.GetSection(name).Bind(value);
             return value;
         }
-
+        public static int PageSize => Convert.ToInt32(GetConfigValue("PageSize"));
     }
 }

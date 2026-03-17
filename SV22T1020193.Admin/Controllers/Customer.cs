@@ -4,19 +4,22 @@ using SV22T1020193.Models.Common;
 namespace SV22T1020193.Admin.Controllers
 {
     public class Customer : Controller
-    {
+  {/// <summary>
+        /// Lưu điều kiện tìm kiếm khách hàng trong session
+        /// </summary>
+        private const string Customer_search = "CustomerSearchInput";
         /// <summary>
         /// Nhập đầu vào tìm kiếm,Hiển thị kết quả tìm kiếm
         /// </summary>
         /// <returns></returns>
         public IActionResult Index()
         {
-            var input = ApplicationContext.GetSessionData<PaginationSearchInput>("CustomerSearchInput");
+            var input = ApplicationContext.GetSessionData<PaginationSearchInput>(Customer_search);
             if(input == null)
                 input = new PaginationSearchInput()
             {
                 Page = 1,
-                PageSize = 5,
+                PageSize = ApplicationContext.PageSize,
                 SearchValue = ""
             };
             return View(input);
@@ -28,7 +31,7 @@ namespace SV22T1020193.Admin.Controllers
         public async Task<IActionResult> Search(PaginationSearchInput input)
         {
             var result = await PartnerDataService.ListCustomersAsync(input);
-            ApplicationContext.SetSessionData("CustomerSearchInput",input);
+            ApplicationContext.SetSessionData(Customer_search, input);
             return View(result);
         }
 
