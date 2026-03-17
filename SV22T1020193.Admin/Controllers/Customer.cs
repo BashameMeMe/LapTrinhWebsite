@@ -11,7 +11,9 @@ namespace SV22T1020193.Admin.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            var input = new PaginationSearchInput()
+            var input = ApplicationContext.GetSessionData<PaginationSearchInput>("CustomerSearchInput");
+            if(input == null)
+                input = new PaginationSearchInput()
             {
                 Page = 1,
                 PageSize = 5,
@@ -26,6 +28,7 @@ namespace SV22T1020193.Admin.Controllers
         public async Task<IActionResult> Search(PaginationSearchInput input)
         {
             var result = await PartnerDataService.ListCustomersAsync(input);
+            ApplicationContext.SetSessionData("CustomerSearchInput",input);
             return View(result);
         }
 
