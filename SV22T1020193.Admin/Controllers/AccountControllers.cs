@@ -2,7 +2,7 @@
 
 namespace SV22T1020193.Admin.Controllers
 {
-    public class Account : Controller
+    public class AccountControllers : Controller
     {
         /// <summary>
         /// </summary>

@@ -2,7 +2,7 @@
 
 namespace SV22T1020193.Admin.Controllers
 {
-    public class Order : Controller
+    public class OrderControllers : Controller
     {
         /// <summary>
         /// Nhập đầu vào tìm kiếm và hiển thị kết quả tìm kiếm đơn hàng

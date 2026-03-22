@@ -2,7 +2,7 @@
 
 namespace SV22T1020193.Admin.Controllers
 {
-    public class Category : Controller
+    public class EmployeeControllers : Controller
     {
         public IActionResult Index()
         {
@@ -20,5 +20,14 @@ namespace SV22T1020193.Admin.Controllers
         {
             return View();
         }
+        public IActionResult Changepassword(int id)
+        {
+            return View();
+        }
+        public IActionResult Changerole(int id)
+        {
+            return View();
+        }
+
     }
 }

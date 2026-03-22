@@ -3,7 +3,7 @@ using SV22T1020193.Models.Common;
 
 namespace SV22T1020193.Admin.Controllers
 {
-    public class Customer : Controller
+    public class CustomerControllers : Controller
   {/// <summary>
         /// Lưu điều kiện tìm kiếm khách hàng trong session
         /// </summary>

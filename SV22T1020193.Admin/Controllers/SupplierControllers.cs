@@ -3,7 +3,7 @@ using SV22T1020193.Models.Common;
 
 namespace SV22T1020193.Admin.Controllers
 {
-    public class Supplier : Controller
+    public class SupplierControllers : Controller
     {
         /// <summary>
         /// Lưu điều kiện tìm kiếm trong session

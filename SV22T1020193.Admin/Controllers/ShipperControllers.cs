@@ -3,7 +3,7 @@ using SV22T1020193.Models.Common;
 
 namespace SV22T1020193.Admin.Controllers
 {
-    public class Shipper : Controller
+    public class ShipperControllers : Controller
     {
         private const string Shipper_search = "ShipperSearchInput";
 

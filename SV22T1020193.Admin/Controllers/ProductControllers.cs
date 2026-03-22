@@ -3,7 +3,7 @@ using System;
 
 namespace SV22T1020193.Admin.Controllers
 {
-    public class Product : Controller
+    public class ProductControllers : Controller
     {
         public IActionResult Index()
         {
