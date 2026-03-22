@@ -1,72 +1,75 @@
-﻿@{
+﻿@model SV22T1020193.Models.Common.PaginationSearchInput
+
+@{
     ViewBag.Title = "Quản lý Người giao hàng";
 }
-@section PageToolBar {
-    <a href="~/Shipper/Create" class="btn btn-primary">
-        <i class="bi bi-plus-circle me-1"></i>
-        Bổ sung
-    </a>
-}
-<div class="card mb-3">
-    <div class="card-body">
-        <form id="formSearch">
-            <div class="input-group">
-                <input type="text"
-                       class="form-control"
-                       placeholder="Tên người giao hàng..." autofocus />
-                <button class="btn btn-info d-flex align-items-center">
-                    <i class="bi bi-search me-1"></i>
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
 
-<div class="mb-2 text-muted">
-    Danh sách này có <strong>10</strong> người giao hàng
-</div>
+<h2>Quản lý Người giao hàng</h2>
 
-<div class="card">
-    <div class="card-body p-1">
-        <table class="table table-bordered table-hover mb-0">
-            <thead class="table-secondary">
-                <tr>
-                    <th>Tên người giao hàng</th>
-                    <th>Điện thoại</th>
-                    <th class="text-center" style="width:100px;">Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 1; i <= 10; i++)
-                {
-                    <tr>
-                        <td>Nguyễn Văn Giao</td>
-                        <td>0909876543</td>
-                        <td class="text-center text-nowrap">
-                            <a href="~/Shipper/Edit/123" class="btn btn-sm btn-primary">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <a href="~/Shipper/Delete/123" class="btn btn-sm btn-danger">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<form id="formSearch" method="post" action="~/Shipper/Search">
+    <div class="row mb-2">
+
+        <div class="col-md-4">
+            <input type="text"
+                   name="SearchValue"
+                   class="form-control"
+                   placeholder="Tên người giao hàng..."
+                   value="@Model.SearchValue" />
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-info">
+                <i class="bi bi-search"></i> Tìm kiếm
+            </button>
+        </div>
+
+        <div class="col-md-3 text-end">
+            <a href="~/Shipper/Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Bổ sung
+            </a>
+        </div>
+
     </div>
 
-    <div class="card-footer">
-        <ul class="pagination justify-content-center">
-            <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">2</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">3</a>
-            </li>
-        </ul>
-    </div>
-</div>
+    <!-- phân trang -->
+    <input type="hidden" name="Page" value="@Model.Page" />
+    <input type="hidden" name="PageSize" value="@Model.PageSize" />
+</form>
+
+<!-- nơi hiển thị dữ liệu từ DB -->
+<div id="searchResult"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        // load dữ liệu lần đầu từ DB
+        loadData();
+
+        // submit form -> gọi AJAX
+        $("#formSearch").submit(function (e) {
+            e.preventDefault();
+            loadData();
+        });
+    });
+
+    function loadData() {
+        $.ajax({
+            url: '/Shipper/Search',
+            type: 'POST',
+            data: $("#formSearch").serialize(),
+            success: function (data) {
+                $("#searchResult").html(data);
+            },
+            error: function () {
+                alert("Lỗi tải dữ liệu");
+            }
+        });
+    }
+
+    function paginationSearch(page) {
+        $("input[name='Page']").val(page);
+        loadData();
+    }
+</script>
