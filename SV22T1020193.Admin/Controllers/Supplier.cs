@@ -1,44 +1,87 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SV22T1020193.Models.Common;
 
 namespace SV22T1020193.Admin.Controllers
 {
-    /// <summary>
-    /// Cac chuc nang lien quan den nha cung cap
-    /// </summary>
     public class Supplier : Controller
-    {/// <summary>
-    /// TIm kiem va hien thi danh sach nha cung cap
-    /// </summary>
-    /// <returns></returns>
+    {
+        /// <summary>
+        /// Lưu điều kiện tìm kiếm trong session
+        /// </summary>
+        private const string Supplier_search = "SupplierSearchInput";
+
+        /// <summary>
+        /// Hiển thị trang chính
+        /// </summary>
         public IActionResult Index()
         {
-            return View();
+            var input = ApplicationContext.GetSessionData<PaginationSearchInput>(Supplier_search);
+
+            if (input == null)
+            {
+                input = new PaginationSearchInput()
+                {
+                    Page = 1,
+                    PageSize = 5,
+                    SearchValue = ""
+                };
+            }
+
+            return View(input);
         }
+
         /// <summary>
-        /// Bo sung nha cung cap moi
+        /// Tìm kiếm (AJAX)
         /// </summary>
-        /// <returns></returns>
+        public async Task<IActionResult> Search(PaginationSearchInput input)
+        {
+            var result = await PartnerDataService.ListSuppliersAsync(input);
+
+            // lưu lại điều kiện tìm kiếm
+            ApplicationContext.SetSessionData(Supplier_search, input);
+
+            return PartialView("Search", result);
+        }
+
+        /// <summary>
+        /// Thêm mới
+        /// </summary>
         public IActionResult Create()
         {
             ViewBag.Title = "Bổ sung nhà cung cấp";
             return View("Edit");
-        }/// <summary>
-        /// Chinh sua,cap nhat nha cung 
+        }
+
+        /// <summary>
+        /// Chỉnh sửa
         /// </summary>
-        /// <param name="id">Ma nha cap cap can cap nhat</param>
-        /// <returns></returns>
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             ViewBag.Title = "Cập nhật nhà cung cấp";
-            return View();
-        }/// <summary>
-        /// Xoa nha cung cap
+
+            var data = await PartnerDataService.GetSupplierAsync(id);
+            return View(data);
+        }
+
+        /// <summary>
+        /// Xóa (GET)
         /// </summary>
-        /// <param name="id">Ma nha cung cap can xoa</param>
-        /// <returns></returns>
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            ViewBag.Title = "Xóa nhà cung cấp";
+
+            var data = await PartnerDataService.GetSupplierAsync(id);
+            return View(data);
+        }
+
+        /// <summary>
+        /// Xóa (POST)
+        /// </summary>
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, IFormCollection form)
+        {
+            await PartnerDataService.DeleteSupplierAsync(id);
+            return RedirectToAction("Index");
         }
     }
 }
