@@ -94,12 +94,21 @@ namespace SV22T1020193.Admin.Controllers
         }
 
         // GET: Customer/Delete/5
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            ViewBag.Title = "Xóa khách hàng";
-            return View();
+            if(Request.Method =="POST")
+            {
+                await PartnerDataService.DeleteSupplierAsync(id);
+                return RedirectToAction("Index");
+            }
+            //GET
+            var model = await PartnerDataService.GetCustomerAsync(id);
+            if (model == null) 
+                return RedirectToAction("Index");
+             ViewBag.CanDelete = !await PartnerDataService.IsUsedCustomerAsync(id);
+            return View(model);
         }
-
+        
         // POST: Customer/Delete/5
         [HttpPost]
         public IActionResult Delete(int id, IFormCollection form)
