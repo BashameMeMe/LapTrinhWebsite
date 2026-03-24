@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SV22T1020193.Models.Common;
+using SV22T1020193.Models.Partner;
 namespace SV22T1020193.Admin.Controllers
 {
     public class CustomerController : Controller
@@ -42,10 +43,49 @@ namespace SV22T1020193.Admin.Controllers
         }
 
         // GET: Customer/Edit/5
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             ViewBag.Title = "Cập nhật khách hàng";
-            return View();
+            var model = await PartnerDataService.GetCustomerAsync(id);
+            if (model == null)
+                return RedirectToAction("Index");
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveDaTa(Customer data)
+        {
+            ViewBag.Title = data.CustomerID == 0 ? "Bổ sung khách hàng" : "cập nhật thông tin khách hàng";
+            //Kiểm tra dữ liệu đầu vào có hợp lệ không
+            //Sử dụng ModelState để lưu trữ các tình huống(thông báo) lỗi và gửi thông báo lỗi cho View
+            //Giải thiết: chỉ cần nhập tên,email và tỉnh thành
+         
+            if (string.IsNullOrWhiteSpace(data.CustomerName))
+                ModelState.AddModelError(nameof(data.CustomerName),"Nhập Tên đi thằng Ngu");
+            if (string.IsNullOrWhiteSpace(data.Email))
+                ModelState.AddModelError(nameof(data.Email), "Nhập Email thằng Ngu");
+            else if(!await PartnerDataService.ValidatelCustomerEmailAsync(data.Email,data.CustomerID))
+                ModelState.AddModelError(nameof(data.Email), "Không thể sử dụng email này");
+            if (string.IsNullOrWhiteSpace(data.Province))
+                ModelState.AddModelError(nameof(data.Province), "Nhập tỉnh/thành đi thằng Ngu");
+            if (!ModelState.IsValid)
+            {
+                return View("Edit",data);
+            }
+            //(Tùy chọn) Hiệu chỉnh dữ liệu theo qui tắc của phần mềm
+            if (string.IsNullOrWhiteSpace(data.ContactName)) data.ContactName = data.ContactName;
+            if (string.IsNullOrEmpty(data.Phone)) data.Phone = data.Phone ="";
+            if (string.IsNullOrEmpty(data.Address)) data.Address = data.Address = "";
+            // Lưu vào CSDL
+            if (data.CustomerID == 0)
+            {
+                await PartnerDataService.AddCustomerAsync(data);
+            }
+            else
+            {
+                await PartnerDataService.UpdateCustomerAsync(data);
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Customer/Delete/5

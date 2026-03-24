@@ -14,7 +14,7 @@ namespace SV22T1020193.Admin
         /// Tỉnh thành
         /// </summary>
         /// <returns></returns>
-        public static async Task<List<SelectListItem>> Provinces()
+        public static async Task<List<SelectListItem>> ProvincesAsync()
         {
             var list = new List<SelectListItem>()
             {
