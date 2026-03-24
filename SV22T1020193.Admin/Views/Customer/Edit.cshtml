@@ -22,30 +22,28 @@
             </div>
 
             <div class="card-body">
-                <form id="formEdit" method="post">
+                <form id="formEdit" method="post" action="~/Customer/SaveData">
                     <input type="hidden" asp-for="CustomerID" />
                     <div class="row align-items-end">
                         <div class="col-md-5 mb-3">
                             <label class="form-label">Tên khách hàng</label>
-                            <input type="text" asp-for="CustomerName"
-                                   class="form-control"
-                                    autofocus />
+                            <input type="text" asp-for="CustomerName" class="form-control"autofocus />
+                                    <span asp-validation-for="CustomerName" class="text-danger"></span>
                         </div>
-                        <div class="col-md-5 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label class="form-label">Tên giao dịch</label>
-                            <input type="text" asp-for= "ContactName"
-                                   class="form-control"
-                                    />
+                            <input type="text" asp-for="ContactName" class="form-control" />
                         </div>
                         <div class="col-md-2 mb-3">
                             <label class="form-label d-block">Trạng thái</label>
                             <div class="form-check form-switch mt-2">
-                                <input class="form-check-input" asp-for ="IsLocked"
+                                <input class="form-check-input"
                                        type="checkbox"
-                                       id="IsActive"
-                                       checked />
-                                <label class="form-check-label" for="IsActive">
-                                    Đang hoạt động
+                                       name="IsLocked"
+                                       value="true"
+                                @(Model.IsLocked == true ? "checked" : "") />
+                                <label class="form-check-label">
+                                    Đã Khóa
                                 </label>
                             </div>
                         </div>
@@ -60,8 +58,8 @@
 
                         <div class="col-md-7 mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email"
-                                   class="form-control"/>
+                            <input type="email"class="form-control"/>
+                            <span asp-validation-for="CustomerName" class="text-danger"></span>
                         </div>
                     </div>
 
@@ -78,6 +76,7 @@
                         asp-for="Province"
                         asp-items="await SelectListHelper.ProvincesAsync()">
                         </select>
+                        <span asp-validation-for="Province" class="text-danger"></span>
                     </div>
                 </form>
             </div>

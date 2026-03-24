@@ -39,7 +39,12 @@ namespace SV22T1020193.Admin.Controllers
         public IActionResult Create()
         {
             ViewBag.Title = "Bổ sung khách hàng";
-            return View("Edit");
+            var model = new Customer()
+            {
+                CustomerID = 0,
+                IsLocked = false
+            };
+            return View("Edit",model);
         }
 
         // GET: Customer/Edit/5
