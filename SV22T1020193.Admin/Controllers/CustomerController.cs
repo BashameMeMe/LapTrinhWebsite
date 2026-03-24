@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SV22T1020193.Models.Common;
-
 namespace SV22T1020193.Admin.Controllers
 {
-    public class CustomerControllers : Controller
+    public class CustomerController : Controller
   {/// <summary>
         /// Lưu điều kiện tìm kiếm khách hàng trong session
         /// </summary>

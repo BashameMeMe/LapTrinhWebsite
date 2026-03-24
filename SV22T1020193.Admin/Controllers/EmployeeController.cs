@@ -2,7 +2,7 @@
 
 namespace SV22T1020193.Admin.Controllers
 {
-    public class EmployeeControllers : Controller
+    public class EmployeeController : Controller
     {
         public IActionResult Index()
         {

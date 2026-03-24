@@ -2,7 +2,7 @@
 
 namespace SV22T1020193.Admin.Controllers
 {
-    public class CategoryControllers : Controller
+    public class CategoryController : Controller
     {
         public IActionResult Index()
         {
