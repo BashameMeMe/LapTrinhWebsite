@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SV22T1020193.Admin.AppCodes;
 using SV22T1020193.BusinessLayers;
 using SV22T1020193.Models.Catalog;
+using SV22T1020193.Models.Sales;
 using System.Buffers;
 
 namespace SV22T1020193.Admin.Controllers
@@ -176,6 +177,90 @@ namespace SV22T1020193.Admin.Controllers
                 return Json(new ApiResult(1));
             }
             return PartialView();
+        }
+        public async Task<IActionResult> CreateOrder(int customerId, string province, string address)
+        {
+            // 1. Kiểm tra khách hàng
+            if (customerId <= 0)
+            {
+                return Json(new ApiResult(0, "Vui lòng chọn khách hàng"));
+            }
+
+            // 2. Kiểm tra địa chỉ giao hàng
+            if (string.IsNullOrWhiteSpace(province))
+            {
+                return Json(new ApiResult(0, "Vui lòng chọn tỉnh/thành"));
+            }
+
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                return Json(new ApiResult(0, "Vui lòng nhập địa chỉ giao hàng"));
+            }
+
+            // 3. Lấy giỏ hàng
+            var cart = ShoppingCartService.GetShoppingCart();
+
+            if (cart == null || !cart.Any())
+            {
+                return Json(new ApiResult(0, "Giỏ hàng đang trống"));
+            }
+
+            // 4. Kiểm tra từng mặt hàng trong giỏ
+            foreach (var item in cart)
+            {
+                // Số lượng
+                if (item.Quantity <= 0)
+                {
+                    return Json(new ApiResult(0, $"Số lượng không hợp lệ: {item.ProductName}"));
+                }
+
+                // Giá
+                if (item.SalePrice < 0)
+                {
+                    return Json(new ApiResult(0, $"Giá không hợp lệ: {item.ProductName}"));
+                }
+
+                // Kiểm tra sản phẩm còn tồn tại & đang bán
+                var product = await CatalogDataService.GetProductAsync(item.ProductID);
+                if (product == null)
+                {
+                    return Json(new ApiResult(0, $"Mặt hàng không tồn tại: {item.ProductName}"));
+                }
+
+                if (!product.IsSelling)
+                {
+                    return Json(new ApiResult(0, $"Mặt hàng đã ngừng bán: {item.ProductName}"));
+                }
+            }
+
+            // 5. Tạo đơn hàng
+            var order = new Order()
+            {
+                CustomerID = customerId,
+                DeliveryProvince = province,
+                DeliveryAddress = address,
+                OrderTime = DateTime.Now,
+                Status = 0 // 0 = đơn mới
+            };
+
+            int orderID = await SalesDataService.AddOrderAsync(order);
+
+            // 6. Lưu chi tiết đơn hàng
+            foreach (var item in cart)
+            {
+                item.OrderID = orderID;
+
+                // (Khuyến nghị) lấy lại giá từ DB để tránh sửa giá
+                var product = await CatalogDataService.GetProductAsync(item.ProductID);
+                item.SalePrice = product.Price;
+
+                await SalesDataService.AddDetailAsync(item);
+            }
+
+            // 7. Xóa giỏ hàng
+            ShoppingCartService.ClearCart();
+
+            return Json(new ApiResult(1, "Tạo đơn hàng thành công", orderID));
         }
         public IActionResult Accept(int id = 0)
         {

@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="code"></param>
         /// <param name="message"></param>
-        public ApiResult(int code,string message = "") 
+        public ApiResult(int code,string message = "", int orderID = 0) 
         {
             Code = code;
             Message = message;
