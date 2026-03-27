@@ -2,6 +2,7 @@
 
 namespace SV22T1020193.Admin.Controllers
 {
+    private const string PRODUCT_SEARCH = "SearchProductToSale";
     public class OrderController : Controller
     {
         /// <summary>
