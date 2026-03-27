@@ -3,7 +3,7 @@ using SV22T1020193.Models.Common;
 using SV22T1020193.Models.Sales;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace SV22T1020193.Admin
+namespace SV22T1020193.Admin.AppCodes
 {
     /// <summary>
     /// Lớp cung cấp các hàm tiện ích dùng cho SelectList (DropDownList)
@@ -51,7 +51,7 @@ namespace SV22T1020193.Admin
                     Value = item.CategoryID.ToString(),
                     Text = item.CategoryName
                 });
-            }    
+            }
             return list;
         }
 
