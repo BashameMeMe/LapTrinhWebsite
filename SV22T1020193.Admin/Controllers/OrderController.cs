@@ -1,14 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using SV22T1020193.BusinessLayers;
+using SV22T1020193.Models.Catalog;
+using System.Buffers;
 
 namespace SV22T1020193.Admin.Controllers
 {
-    private const string PRODUCT_SEARCH = "SearchProductToSale";
+    
     public class OrderController : Controller
     {
+        private const string PRODUCT_SEARCH = "SearchProductToSale";
         /// <summary>
         /// Nhập đầu vào tìm kiếm và hiển thị kết quả tìm kiếm đơn hàng
         /// </summary>
         /// <returns></returns>
+
         public IActionResult Index()
         {
             return View();
@@ -19,7 +25,20 @@ namespace SV22T1020193.Admin.Controllers
         /// <returns></returns>
         public IActionResult Create()
         {
+            var input = ApplicationContext.GetSessionData<ProductSearchInput>(PRODUCT_SEARCH);
+            if(input == null) input = new ProductSearchInput()
+            {
+                Page = 1,
+                PageSize = 5,
+                SearchValue = ""
+            };
             return View();
+        }
+        public async Task<IActionResult> SearchProduct(ProductSearchInput intput) 
+        {
+            var result = await CatalogDataService.ListProductsAsync(intput);
+            ApplicationContext.SetSessionData(PRODUCT_SEARCH,intput);
+            return View(result);
         }
        /// <summary>
        /// Tìm kiếm đơn hàng

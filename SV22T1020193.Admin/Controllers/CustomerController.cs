@@ -21,7 +21,7 @@ namespace SV22T1020193.Admin.Controllers
                 Page = 1,
                 PageSize = 5,
                 SearchValue = ""
-            };
+                };
             return View(input);
         }
         /// <summary>
