@@ -77,6 +77,28 @@ namespace SV22T1020193.Admin.AppCodes
             }
             return list;
         }
+        /// <summary>
+        /// Danh sách khách hàng
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<List<SelectListItem>> Customers()
+        {
+            var list = new List<SelectListItem>()
+            {
+                new SelectListItem() { Value = "0", Text = "-- Khách hàng --"}
+            };
+            var input = new PaginationSearchInput() { Page = 1, PageSize = 1000, SearchValue = "" };
+            var result = await PartnerDataService.ListCustomersAsync(input);
+            foreach (var item in result.DataItems)
+            {
+                list.Add(new SelectListItem()
+                {
+                    Value = item.CustomerID.ToString(),
+                    Text = item.CustomerName
+                });
+            }
+            return list;
+        }
 
         /// <summary>
         /// Các trạng thái của đơn hàng
