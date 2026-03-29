@@ -1,4 +1,4 @@
-﻿@    using SV22T1020193.Models.Common
+﻿@using SV22T1020193.Models.Common
 @model Customer
 @section PageToolBar {
     <button type="submit" form="formEdit" class="btn btn-primary">
@@ -73,8 +73,7 @@
                     <div class="mb-3">
                         <label class="form-label">Tỉnh / Thành</label>
                         <select class="form-select"
-                        asp-for="Province"
-                        asp-items="await SelectListHelper.ProvincesAsync()">
+                        asp-for="Province">
                         </select>
                         <span asp-validation-for="Province" class="text-danger"></span>
                     </div>

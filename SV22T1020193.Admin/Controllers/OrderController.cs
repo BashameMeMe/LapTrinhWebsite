@@ -38,9 +38,15 @@ namespace SV22T1020193.Admin.Controllers
         }
         public async Task<IActionResult> SearchProduct(ProductSearchInput intput)
         {
+            var input = new ProductSearchInput()
+            {
+                Page = 1,
+                PageSize = 5,
+                SearchValue = ""
+            };
             var result = await CatalogDataService.ListProductsAsync(intput);
             ApplicationContext.SetSessionData(PRODUCT_SEARCH, intput);
-            return View(result);
+            return PartialView(result);
         }
         /// <summary>
         /// Tìm kiếm đơn hàng
@@ -67,7 +73,7 @@ namespace SV22T1020193.Admin.Controllers
         public IActionResult ShowCart()
         {
             var cart = ShoppingCartService.GetShoppingCart();
-            return View(cart);
+            return PartialView(cart);
         }
         [HttpPost]
         public async Task<IActionResult> AddCartItem(int productId, int quantity, decimal price)
