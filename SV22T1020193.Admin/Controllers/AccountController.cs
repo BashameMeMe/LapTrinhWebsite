@@ -95,6 +95,10 @@ namespace SV22T1020193.Admin.Controllers
             // TODO: xử lý đổi mật khẩu
             return RedirectToAction("Index", "Home");
         }
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
 
     }

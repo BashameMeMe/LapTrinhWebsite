@@ -29,18 +29,19 @@ namespace SV22T1020193.Admin
             }
         }
     }
-   //nguyên tắt chung:
-        //Người sử dụng cung cấp thông tin để kiểm tra(Username+password/Sinh trắc học) AuthID/OpenID
-        //Hệ thộng kiểm tra thông tin có hợp lệ không?
-        //Nếu hợp lệ cấp cho người dùng chứng chỉ/Chứng nhận(Principal) và giao cho user(cookie)
-        //Phía clinent lưu trữ cookie, và đính kèm cookie(Trong phần header) mooix khi cos requett len server
-        //Phia server dua vao cookie de kiem tra user co hop le k
-        // Authentication
-        // Authorization
-        // Trong ASP.NET Core, muốn sử dụng Auth thì phải đăng ký.
-        // Để sử udngj cơ chế Authorization đối với các Controller hoặc Action, đặt chỉ thị sau ở phía trước:
-        // [Autherization]
-        // Dùng [AllowAnonymous] trong acction (sử dụng ở acction thì quyền sẽ cao hơn và bỏ qua [Autherization]
-        //Trong action haowcj View, thông qua thuộc tính user để lấy được "Giấy chứng nhận" đã cấp cho client
-        //
+    //nguyên tắt chung:
+    //Người sử dụng cung cấp thông tin để kiểm tra(Username+password/Sinh trắc học) AuthID/OpenID
+    //Hệ thộng kiểm tra thông tin có hợp lệ không?
+    //Nếu hợp lệ cấp cho người dùng chứng chỉ/Chứng nhận(Principal) và giao cho user(cookie)
+    //Phía clinent lưu trữ cookie, và đính kèm cookie(Trong phần header) mooix khi cos requett len server
+    //Phia server dua vao cookie de kiem tra user co hop le k
+    // Authentication
+    // Authorization
+    // Trong ASP.NET Core, muốn sử dụng Auth thì phải đăng ký.
+    // Để sử udngj cơ chế Authorization đối với các Controller hoặc Action, đặt chỉ thị sau ở phía trước:
+    // [Autherization]
+    // Dùng [AllowAnonymous] trong acction (sử dụng ở acction thì quyền sẽ cao hơn và bỏ qua [Autherization]
+    //Trong action haowcj View, thông qua thuộc tính user để lấy được "Giấy chứng nhận" đã cấp cho client
+    //Trong trường hợp cần kiểm tra quyền của người dùng (đã đăng nhập), sử dụng chỉ thị: [Authorize(Role = "Danh_sách_quyền")]
+    //Danh_sách_quyền: Chuỗi tên các "role" phân cách nhau bởi dấy phẩy.
 }
