@@ -41,4 +41,6 @@ namespace SV22T1020193.Admin
         // Để sử udngj cơ chế Authorization đối với các Controller hoặc Action, đặt chỉ thị sau ở phía trước:
         // [Autherization]
         // Dùng [AllowAnonymous] trong acction (sử dụng ở acction thì quyền sẽ cao hơn và bỏ qua [Autherization]
+        //Trong action haowcj View, thông qua thuộc tính user để lấy được "Giấy chứng nhận" đã cấp cho client
+        //
 }

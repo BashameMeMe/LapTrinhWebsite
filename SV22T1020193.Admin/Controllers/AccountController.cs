@@ -16,6 +16,7 @@ namespace SV22T1020193.Admin.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
+            User.GetUserData();
             return View();
         }
 
