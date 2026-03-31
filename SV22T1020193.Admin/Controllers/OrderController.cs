@@ -9,7 +9,7 @@ using System.Buffers;
 
 namespace SV22T1020193.Admin.Controllers
 {
-    [Authorize(Roles = "sales")]
+    [Authorize(Roles = $"{WebUserRoles.Sales},{WebUserRoles.Administrator}")]
     public class OrderController : Controller
     {
         private const string PRODUCT_SEARCH = "SearchProductToSale";
