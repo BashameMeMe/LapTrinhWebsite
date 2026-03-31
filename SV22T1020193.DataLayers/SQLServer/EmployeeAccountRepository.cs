@@ -17,7 +17,7 @@ namespace SV22T1020193.DataLayers.SQLServer
             _connectionString = connectionString;
         }
 
-        public async Task<UserAccount?> AuthorizeAsync(string userName, string password)
+        public async Task<UserAccount?> AuthticateAsync(string userName, string password)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
