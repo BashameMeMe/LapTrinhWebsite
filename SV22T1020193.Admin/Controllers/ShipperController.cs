@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SV22T1020193.Models.Common;
 
 namespace SV22T1020193.Admin.Controllers
 {
+    [Authorize]
     public class ShipperController : Controller
     {
         private const string Shipper_search = "ShipperSearchInput";

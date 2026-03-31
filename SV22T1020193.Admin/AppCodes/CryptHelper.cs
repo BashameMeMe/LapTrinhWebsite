@@ -38,4 +38,6 @@ namespace SV22T1020193.Admin
         // Authentication
         // Authorization
         // Trong ASP.NET Core, muốn sử dụng Auth thì phải đăng ký.
+        // Để sử udngj cơ chế Authorization đối với các Controller hoặc Action, đặt chỉ thị sau ở phía trước:
+        // [Autherization]
 }

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace SV22T1020193.Admin.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         public IActionResult Index()

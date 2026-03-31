@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SV22T1020193.Admin.Controllers
 {
+    [Authorize]   
     public class CategoryController : Controller
     {
         public IActionResult Index()

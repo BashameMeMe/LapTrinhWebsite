@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SV22T1020193.Admin.AppCodes;
 using SV22T1020193.BusinessLayers;
@@ -8,7 +9,7 @@ using System.Buffers;
 
 namespace SV22T1020193.Admin.Controllers
 {
-
+    [Authorize]
     public class OrderController : Controller
     {
         private const string PRODUCT_SEARCH = "SearchProductToSale";

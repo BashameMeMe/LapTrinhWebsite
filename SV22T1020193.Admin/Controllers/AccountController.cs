@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SV22T1020193.Models.Security;
 
 namespace SV22T1020193.Admin.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         /// <summary>
