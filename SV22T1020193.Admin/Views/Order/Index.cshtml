@@ -6,56 +6,94 @@
     ViewBag.Title = "Quản lý đơn hàng";
 }
 
-<div class="card mb-3">
+<div class="card shadow-sm mb-3">
     <div class="card-body">
+
         <form id="formSearch"
               method="get"
               action="~/Order/Search"
-              data-target="searchResult"
+              data-target="#searchResult"
               onsubmit="paginationSearch(event, this, 1)">
 
             <input type="hidden" asp-for="PageSize" />
 
-            <div class="row align-items-end">
-                <div class="col-sm-2 mb-2">
-                    <label class="form-label">Trạng thái:</label>
-                    <select class="form-select" asp-for="Status"
+            <div class="row g-3 align-items-end">
+
+                <!-- STATUS -->
+                <div class="col-md-2">
+                    <label class="form-label">Trạng thái</label>
+                    <select class="form-select"
+                            asp-for="Status"
                             asp-items="SelectListHelper.OrderStatus()"
                             onchange="paginationSearch(event, document.getElementById('formSearch'), 1)">
                     </select>
                 </div>
 
-                <div class="col-sm-2 mb-2">
-                    <label class="form-label">Từ ngày:</label>
-                    <input type="text" asp-for="DateFrom" class="form-control date-picker" placeholder="dd/mm/yyyy" />
+                <!-- DATE FROM -->
+                <div class="col-md-2">
+                    <label class="form-label">Từ ngày</label>
+                    <input type="text"
+                           asp-for="DateFrom"
+                           class="form-control date-picker"
+                           placeholder="dd/mm/yyyy" />
                 </div>
 
-                <div class="col-sm-2 mb-2">
-                    <label class="form-label">Đến ngày:</label>
-                    <input type="text" asp-for="DateTo" class="form-control date-picker" placeholder="dd/mm/yyyy" />
+                <!-- DATE TO -->
+                <div class="col-md-2">
+                    <label class="form-label">Đến ngày</label>
+                    <input type="text"
+                           asp-for="DateTo"
+                           class="form-control date-picker"
+                           placeholder="dd/mm/yyyy" />
                 </div>
 
-                <div class="col-sm-6 mb-2">
-                    <label class="form-label">Tìm theo tên khách hàng hoặc người giao hàng:</label>
+                <!-- SEARCH -->
+                <div class="col-md-6">
+                    <label class="form-label">Tìm kiếm</label>
                     <div class="input-group">
-                        <input type="text" asp-for="SearchValue" class="form-control" placeholder="Tìm kiếm đơn hàng..." autofocus />
-                        <button type="submit" class="btn btn-info">
-                            <i class="bi bi-search me-1"></i>
-                            Tìm kiếm
+                        <input type="text"
+                               asp-for="SearchValue"
+                               class="form-control"
+                               placeholder="Tên khách hàng / người giao..."
+                               autofocus />
+
+                        <button class="btn btn-primary">
+                            <i class="bi bi-search"></i> Tìm
                         </button>
                     </div>
                 </div>
+
             </div>
         </form>
+
     </div>
 </div>
 
+<!-- RESULT -->
 <div id="searchResult"></div>
 
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+
+            // load lần đầu
             paginationSearch(null, document.getElementById("formSearch"), @Model.Page);
+
         });
+
+        // ================= PAGINATION SEARCH =================
+        function paginationSearch(e, form, page) {
+
+            if (e) e.preventDefault();
+
+            var url = form.action;
+            var data = $(form).serializeArray();
+
+            data.push({ name: "Page", value: page });
+
+            $.get(url, data, function (html) {
+                $("#searchResult").html(html);
+            });
+        }
     </script>
 }

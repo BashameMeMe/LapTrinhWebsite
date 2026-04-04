@@ -68,13 +68,13 @@ namespace SV22T1020193.Admin.Controllers
             //Giải thiết: chỉ cần nhập tên,email và tỉnh thành
          
             if (string.IsNullOrWhiteSpace(data.CustomerName))
-                ModelState.AddModelError(nameof(data.CustomerName),"Nhập Tên đi thằng Ngu");
+                ModelState.AddModelError(nameof(data.CustomerName),"Nhập Tên");
             if (string.IsNullOrWhiteSpace(data.Email))
-                ModelState.AddModelError(nameof(data.Email), "Nhập Email thằng Ngu");
+                ModelState.AddModelError(nameof(data.Email), "Nhập Email");
             else if(!await PartnerDataService.ValidatelCustomerEmailAsync(data.Email,data.CustomerID))
                 ModelState.AddModelError(nameof(data.Email), "Không thể sử dụng email này");
             if (string.IsNullOrWhiteSpace(data.Province))
-                ModelState.AddModelError(nameof(data.Province), "Nhập tỉnh/thành đi thằng Ngu");
+                ModelState.AddModelError(nameof(data.Province), "Nhập tỉnh/thành");
             if (!ModelState.IsValid)
             {
                 return View("Edit",data);

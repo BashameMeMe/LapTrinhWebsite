@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Customer
+@{
     ViewBag.Title = "Lập đơn hàng";
 }
 
@@ -35,50 +36,70 @@
         <div id="showCart"></div>
 
         <!-- FORM ORDER giữ nguyên -->
-        <div class="row mt-3">
-            <div class="col-12">
-                <div class="card card-outline card-info">
-                    <div class="card-header">
-                        <h5 class="mb-0">
-                            <i class="bi bi-person"></i>
-                            Thông tin khách hàng & nơi giao hàng
-                        </h5>
-                    </div>
+        <div class="col-12">
+            <div id="showCart"></div>
 
-                    <div class="card-body">
-                        <form id="formOrder" method="post" action="~/Order/CreateOrder">
-                            <div class="row mb-3">
-                                <label class="col-md-2 col-form-label">Khách hàng</label>
-                                <div class="col-md-10">
-                                    <select class="form-select" name="customerId">
-                                        <option value="">-- Chọn khách hàng --</option>
-                                    </select>
-                                </div>
-                            </div>
+            <!-- FORM ORDER -->
+            <div class="card card-outline card-info mt-5">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-person"></i>
+                        Thông tin khách hàng & nơi giao hàng
+                    </h5>
+                </div>
 
-                            <div class="row mb-3">
-                                <label class="col-md-2 col-form-label">Tỉnh/thành</label>
-                                <div class="col-md-10">
-                                    <select class="form-select" name="province">
-                                        <option value="">-- Chọn tỉnh --</option>
-                                    </select>
-                                </div>
-                            </div>
+                <div class="card-body">
+                    <form id="formOrder" method="post" asp-action="CreateOrder" asp-controller="Order">
 
-                            <div class="row mb-3">
-                                <label class="col-md-2 col-form-label">Địa chỉ</label>
-                                <div class="col-md-10">
-                                    <textarea class="form-control" name="address"></textarea>
-                                </div>
+                        <!-- CUSTOMER -->
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-md-3 col-form-label text-md-end">
+                                Khách hàng
+                            </label>
+                            <div class="col-md-9">
+                                <select class="form-select" asp-for="CustomerID">
+                                    <option value="">-- Chọn khách hàng --</option>
+                                </select>
+                                <span asp-validation-for="CustomerID" class="text-danger"></span>
                             </div>
+                        </div>
 
-                            <div class="text-end">
-                                <button class="btn btn-primary">
-                                    Lập đơn hàng
-                                </button>
+                        <!-- PROVINCE -->
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-md-3 col-form-label text-md-end">
+                                Tỉnh / Thành
+                            </label>
+                            <div class="col-md-9">
+                                <select class="form-select" asp-for="Province">
+                                    <option value="">-- Chọn tỉnh --</option>
+                                </select>
+                                <span asp-validation-for="Province" class="text-danger"></span>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+
+                        <!-- ADDRESS -->
+                        <div class="row mb-3">
+                            <label class="col-md-3 col-form-label text-md-end">
+                                Địa chỉ
+                            </label>
+                            <div class="col-md-9">
+                                <textarea class="form-control"
+                                          asp-for="Address"
+                                          rows="3"
+                                          placeholder="Nhập địa chỉ giao hàng"></textarea>
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- BUTTON -->
+                        <div class="text-end">
+                            <button class="btn btn-primary px-4">
+                                <i class="bi bi-check"></i>
+                                Lập đơn hàng
+                            </button>
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>
