@@ -115,66 +115,72 @@ namespace SV22T1020193.Admin.Controllers
         /// <returns></returns>
         public IActionResult EditCartItem(int productId = 0)
         {
-            var item = ShoppingCartService.GetCartItem(productId);
-            return PartialView(item);
-        }
-        public async Task<IActionResult> UpdateCartItemAsync(int productId,int quantity,decimal salePrice)
-        {
             if (productId <= 0)
             {
-                return Json(new ApiResult(0, "Mặt hàng không hợp lệ"));
+                return Content("Mặt hàng không hợp lệ");
             }
 
-            // 2. Kiểm tra số lượng
-            if (quantity <= 0)
-            {
-                return Json(new ApiResult(0, "Số lượng phải lớn hơn 0"));
-            }
-
-            // 3. Kiểm tra giá
-            if (salePrice < 0)
-            {
-                return Json(new ApiResult(0, "Giá bán không hợp lệ"));
-            }
-
-            // 4. Kiểm tra sản phẩm có tồn tại không
-            var product = await CatalogDataService.GetProductAsync(productId);
-            if (product == null)
-            {
-                return Json(new ApiResult(0, "Mặt hàng không tồn tại"));
-            }
-
-            // 5. Kiểm tra còn bán không
-            if (!product.IsSelling)
-            {
-                return Json(new ApiResult(0, "Mặt hàng đã ngừng bán"));
-            }
-
-            // 6. (QUAN TRỌNG) Không cho sửa giá thấp hơn giá gốc (tránh hack)
-            if (salePrice < product.Price)
-            {
-                return Json(new ApiResult(0, "Giá bán không được nhỏ hơn giá niêm yết"));
-            }
-
-            // 7. (Tuỳ chọn) Giới hạn số lượng
-            if (quantity > 1000)
-            {
-                return Json(new ApiResult(0, "Số lượng quá lớn"));
-            }
-
-            // 8. Cập nhật giỏ hàng
-            ShoppingCartService.UpdateCartItem(productId, quantity, salePrice);
-
-            return Json(new ApiResult(1, "Cập nhật thành công"));
-        }
-        public IActionResult DeleteCartItem(int productId = 0)
-        {
-            if(Request.Method == "POST"){
-                ShoppingCartService.RemoveCartItem(productId);
-                return Json(new ApiResult(1));
-            }
             var item = ShoppingCartService.GetCartItem(productId);
+
+            if (item == null)
+            {
+                return Content("Không tìm thấy mặt hàng trong giỏ");
+            }
+
             return PartialView(item);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateCartItem(int productId, int quantity, decimal salePrice)
+        {
+            try
+            {
+                if (productId <= 0)
+                    return Json(new ApiResult(0, "Mặt hàng không hợp lệ"));
+
+                if (quantity <= 0)
+                    return Json(new ApiResult(0, "Số lượng phải lớn hơn 0"));
+
+                if (salePrice < 0)
+                    return Json(new ApiResult(0, "Giá bán không hợp lệ"));
+
+                var product = await CatalogDataService.GetProductAsync(productId);
+                if (product == null)
+                    return Json(new ApiResult(0, "Mặt hàng không tồn tại"));
+
+                if (!product.IsSelling)
+                    return Json(new ApiResult(0, "Mặt hàng đã ngừng bán"));
+
+                if (salePrice < product.Price)
+                    return Json(new ApiResult(0, "Giá bán không hợp lệ"));
+
+                var cart = ShoppingCartService.GetShoppingCart();
+                if (cart == null)
+                    return Json(new ApiResult(0, "Giỏ hàng rỗng"));
+
+                var item = cart.FirstOrDefault(x => x.ProductID == productId);
+                if (item == null)
+                    return Json(new ApiResult(0, "Không tìm thấy mặt hàng"));
+
+                item.Quantity = quantity;
+                item.SalePrice = salePrice;
+                ShoppingCartService.SaveCart(cart);
+                return Json(new ApiResult(1, "Cập nhật thành công"));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ApiResult(0, ex.Message));
+            }
+        }
+
+        public IActionResult DeleteCartItem(int id, int productId)
+        {
+            if (id == 0)
+            {
+                ShoppingCartService.RemoveCartItem(productId);
+                return RedirectToAction("Create");
+            }
+
+            return RedirectToAction("Detail", new { id });
         }
         public IActionResult ClearCart()
         {

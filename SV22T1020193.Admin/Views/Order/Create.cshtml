@@ -86,61 +86,104 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+        $(document).ready(function () {
 
-    $(document).ready(function () {
-
-        searchProduct(1);
-        loadCart();
-
-        $("#formSearchProduct").submit(function (e) {
-            e.preventDefault();
+            // ================= INIT =================
             searchProduct(1);
-        });
+            loadCart();
 
-        $(document).on("submit", ".cart-item-form", function (e) {
-            e.preventDefault();
-            var f = $(this);
-
-            $.post(f.attr("action"), f.serialize(), function () {
-                loadCart();
+            // ================= SEARCH PRODUCT =================
+            $("#formSearchProduct").submit(function (e) {
+                e.preventDefault();
+                searchProduct(1);
             });
-        });
 
-        $(document).on("click", ".ajax-cart-action", function (e) {
-            e.preventDefault();
-            $.get($(this).attr("href"), function (html) {
-                $("#showCart").html(html);
-            });
-        });
+            // ================= ADD / UPDATE ITEM =================
+            $(document).on("submit", ".cart-item-form", function (e) {
+                e.preventDefault();
+                var f = $(this);
 
-        $("#formOrder").submit(function (e) {
-            e.preventDefault();
-            var f = $(this);
-
-            $.post(f.attr("action"), f.serialize(), function (res) {
-                if (res.success) {
-                    alert("Tạo đơn thành công!");
+                $.post(f.attr("action"), f.serialize(), function () {
                     loadCart();
-                } else {
-                    alert(res.message);
-                }
+                });
             });
+
+            // ================= OPEN EDIT =================
+            $(document).on("click", ".open-modal", function (e) {
+                e.preventDefault();
+
+                $.get($(this).attr("href"), function (html) {
+                    $("#showCart").html(html);
+                });
+            });
+
+            // ================= UPDATE CART =================
+            $(document).on("click", "#btnUpdateCart", function () {
+                var f = $("#formEditCart");
+
+                if (f.length === 0) {
+                    console.log("Không tìm thấy formEditCart");
+                    return;
+                }
+
+                $.post(f.attr("action"), f.serialize(), function (res) {
+                    console.log(res);
+
+                    if (res.code == 1) {
+                        loadCart();
+                    } else {
+                        alert(res.message);
+                    }
+                });
+            });
+
+            // ================= DELETE / CLEAR =================
+                $(document).on("click", ".ajax-cart-action", function (e) {
+        e.preventDefault();
+
+        var url = $(this).attr("href");
+
+        $.post(url, function () {
+            loadCart();
         });
     });
 
-    function searchProduct(page) {
-        $.get('@Url.Action("SearchProduct", "Order")', {
-            searchValue: $("input[name='searchValue']").val(),
-            page: page,
-            pageSize: 5
-        }, function (html) {
-            $("#searchProductResult").html(html);
-        });
-    }
+            // ================= CLOSE EDIT =================
+            $(document).on("click", ".btn-close-cart", function () {
+                loadCart();
+            });
 
-    function loadCart() {
-        $.get('@Url.Action("ShowCart", "Order")', function (html) {
-            $("#showCart").html(html);
+            // ================= CREATE ORDER =================
+            $("#formOrder").submit(function (e) {
+                e.preventDefault();
+                var f = $(this);
+
+                $.post(f.attr("action"), f.serialize(), function (res) {
+                    if (res.success) {
+                        alert("Tạo đơn thành công!");
+                        loadCart();
+                    } else {
+                        alert(res.message);
+                    }
+                });
+            });
         });
-    }
+
+        // ================= FUNCTIONS =================
+
+        function searchProduct(page) {
+            $.get('@Url.Action("SearchProduct", "Order")', {
+                searchValue: $("input[name='searchValue']").val(),
+                page: page,
+                pageSize: 5
+            }, function (html) {
+                $("#searchProductResult").html(html);
+            });
+        }
+
+        function loadCart() {
+            $.get('@Url.Action("ShowCart", "Order")', function (html) {
+                $("#showCart").html(html);
+            });
+        }
 </script>

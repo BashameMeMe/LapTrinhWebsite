@@ -64,6 +64,10 @@ namespace SV22T1020193.Admin.AppCodes
                 ApplicationContext.SetSessionData(CART, cart);
             }
         }
+        public static void SaveCart(List<OrderDetailViewInfo> cart)
+        {
+            ApplicationContext.SetSessionData("ShoppingCart", cart);
+        }
         //Xóa giỏ hàng
         public static void ClearCart()
         {
