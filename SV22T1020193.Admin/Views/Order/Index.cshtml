@@ -1,99 +1,84 @@
-﻿@using SV22T1020193.Admin.AppCodes
-@using SV22T1020193.Models.Sales
-@model OrderSearchInput
-
+﻿@model PagedResult<OrderViewInfo>
 @{
-    ViewBag.Title = "Quản lý đơn hàng";
+    ViewBag.Title = "Quản lý Đơn hàng";
 }
-
-<div class="card shadow-sm mb-3">
+@section PageToolBar {
+    <a href="~/Order/Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>
+        Lập đơn hàng mới
+    </a>
+}
+<div class="card mb-3">
     <div class="card-body">
-
         <form id="formSearch"
               method="get"
               action="~/Order/Search"
-              data-target="#searchResult"
+              data-target="searchResult"
               onsubmit="paginationSearch(event, this, 1)">
 
-            <input type="hidden" asp-for="PageSize" />
+            <input type="hidden" name="PageSize" value="@Model.PageSize" />
 
-            <div class="row g-3 align-items-end">
+            <div class="row g-2">
+                <div class="col-md-3">
+                    <label class="form-label">Trạng thái đơn hàng</label>
 
-                <!-- STATUS -->
-                <div class="col-md-2">
-                    <label class="form-label">Trạng thái</label>
-                    <select class="form-select"
-                            asp-for="Status"
-                            asp-items="SelectListHelper.OrderStatus()"
-                            onchange="paginationSearch(event, document.getElementById('formSearch'), 1)">
+                    <select name="Status" class="form-select">
+                        <option value="0" selected="@(ViewBag.Status == null ? "selected" : null)">-- Tất cả --</option>
+                        <option value="1" selected="@(ViewBag.Status == OrderStatusEnum.New ? "selected" : null)">Đang chờ duyệt</option>
+                        <option value="2" selected="@(ViewBag.Status == OrderStatusEnum.Accepted ? "selected" : null)">Đã duyệt</option>
+                        <option value="3" selected="@(ViewBag.Status == OrderStatusEnum.Shipping ? "selected" : null)">Đang giao</option>
+                        <option value="4" selected="@(ViewBag.Status == OrderStatusEnum.Completed ? "selected" : null)">Hoàn tất</option>
+                        <option value="-1" selected="@(ViewBag.Status == OrderStatusEnum.Cancelled ? "selected" : null)">Bị hủy</option>
+                        <option value="-2" selected="@(ViewBag.Status == OrderStatusEnum.Rejected ? "selected" : null)">Bị từ chối</option>
                     </select>
                 </div>
 
-                <!-- DATE FROM -->
-                <div class="col-md-2">
-                    <label class="form-label">Từ ngày</label>
-                    <input type="text"
-                           asp-for="DateFrom"
-                           class="form-control date-picker"
-                           placeholder="dd/mm/yyyy" />
-                </div>
-
-                <!-- DATE TO -->
-                <div class="col-md-2">
-                    <label class="form-label">Đến ngày</label>
-                    <input type="text"
-                           asp-for="DateTo"
-                           class="form-control date-picker"
-                           placeholder="dd/mm/yyyy" />
-                </div>
-
-                <!-- SEARCH -->
-                <div class="col-md-6">
-                    <label class="form-label">Tìm kiếm</label>
+                <div class="col-md-4">
+                    <label class="form-label">Thời gian lập đơn hàng</label>
                     <div class="input-group">
-                        <input type="text"
-                               asp-for="SearchValue"
+                        <input type="date"
+                               name="DateFrom"
                                class="form-control"
-                               placeholder="Tên khách hàng / người giao..."
-                               autofocus />
+                               placeholder="Từ ngày..."
+                               value="@ViewBag.DateFrom" />
 
-                        <button class="btn btn-primary">
-                            <i class="bi bi-search"></i> Tìm
-                        </button>
+                        <span class="input-group-text">-</span>
+
+                        <input type="date"  
+                               name="DateTo"
+                               class="form-control"
+                               placeholder="...đến ngày"
+                               value="@ViewBag.DateTo" />
                     </div>
                 </div>
 
+                <div class="col-md-5">
+                    <label class="form-label">Tên khách hàng</label>
+                    <div class="input-group">
+                        <input type="text"
+                               name="CustomerName"
+                               class="form-control"
+                               placeholder="Tên khách hàng..."
+                               value="@ViewBag.CustomerName"
+                               autofocus />
+
+                        <button class="btn btn-info d-flex align-items-center">
+                            <i class="bi bi-search me-1"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </form>
-
     </div>
 </div>
 
-<!-- RESULT -->
-<div id="searchResult"></div>
+<div id="searchResult">   
+</div>
 
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-
-            // load lần đầu
-            paginationSearch(null, document.getElementById("formSearch"), @Model.Page);
-
+            paginationSearch(null, document.getElementById("formSearch"), 1);
         });
-
-        // ================= PAGINATION SEARCH =================
-        function paginationSearch(e, form, page) {
-
-            if (e) e.preventDefault();
-
-            var url = form.action;
-            var data = $(form).serializeArray();
-
-            data.push({ name: "Page", value: page });
-
-            $.get(url, data, function (html) {
-                $("#searchResult").html(html);
-            });
-        }
     </script>
 }

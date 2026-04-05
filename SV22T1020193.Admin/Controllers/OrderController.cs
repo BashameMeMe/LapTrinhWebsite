@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using SV22T1020193.Admin.AppCodes;
 using SV22T1020193.BusinessLayers;
 using SV22T1020193.Models.Catalog;
+using SV22T1020193.Models.Common;
 using SV22T1020193.Models.Sales;
 using System.Buffers;
 
@@ -18,10 +19,19 @@ namespace SV22T1020193.Admin.Controllers
         /// </summary>
         /// <returns></returns>
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+     public IActionResult Index()
+{
+    var model = new PagedResult<OrderViewInfo>()
+    {
+        Page = 1,
+        PageSize = 20,
+        RowCount = 0,
+        DataItems = new List<OrderViewInfo>()
+    };
+
+    return View(model);
+}
+
         /// <summary>
         /// Giao diện các chức năng hỗ trợ cho nghiệp vụ tạo đơn hàng mới
         /// </summary>
@@ -53,9 +63,11 @@ namespace SV22T1020193.Admin.Controllers
         /// Tìm kiếm đơn hàng
         /// </summary>
         /// <returns></returns>
-        public IActionResult Search()
+         public async Task<IActionResult> Search(OrderSearchInput input)
         {
-            return View();
+            var result = await SalesDataService.ListOrdersAsync(input);
+            ApplicationContext.SetSessionData("OrderSearch", input);
+            return View("Search", result);
         }
         /// <summary>
         /// Hiển thị thông tin chi tiết của một đơn hàng
