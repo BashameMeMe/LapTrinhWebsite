@@ -1,32 +1,29 @@
-using Microsoft.AspNetCore.Mvc;
-using SV22T1020193.Shop.Models;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Mvc;
+using SV22T1020193.BusinessLayers;
+using SV22T1020193.Models.Catalog;
+using SV22T1020193.Models.Common;
 
 namespace SV22T1020193.Shop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private const int PAGE_SIZE = 12;
 
-        public HomeController(ILogger<HomeController> logger)
+        public async Task<IActionResult> Index(ProductSearchInput input)
         {
-            _logger = logger;
+            // Thiết lập các giá trị mặc định nếu chưa có
+            input.PageSize = PAGE_SIZE;
+            if (input.Page < 1) input.Page = 1;
+
+            // Gọi Business Layer để lấy dữ liệu (Dựa trên file CatalogDataService bạn gửi)
+            var model = await CatalogDataService.ListProductsAsync(input);
+
+            // Lưu lại giá trị tìm kiếm để hiển thị trên ô Search
+            ViewBag.SearchValue = input.SearchValue;
+
+            return View(model);
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        public IActionResult Privacy() => View();
     }
 }

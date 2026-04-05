@@ -1,22 +1,25 @@
-html {
-  font-size: 14px;
+#scrollToTop {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: #64646444;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 9999;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+    #scrollToTop:hover {
+        background-color: #0056b3;
+        transform: translateY(-3px);
+    }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
+/* Override bootstrap */
+.page-item .page-link {
+    border-radius: 0;
 }
