@@ -185,6 +185,30 @@ namespace SV22T1020193.BusinessLayers
         {
             return await productDB.IsUsedAsync(productID);
         }
+        /// <summary>
+        /// Lấy danh sách Top sản phẩm nổi bật/mới nhất để hiển thị lên Trang chủ.
+        /// </summary>
+        /// <param name="topCount">Số lượng sản phẩm muốn lấy (Mặc định: 8)</param>
+        /// <returns>Danh sách các mặt hàng</returns>
+        public static async Task<List<Product>> GetTopProductsAsync(int topCount = 8)
+        {
+            // Tận dụng lại cơ chế phân trang: Chỉ lấy trang 1 và số lượng dòng bằng đúng topCount
+            var input = new ProductSearchInput()
+            {
+                Page = 1,
+                PageSize = topCount,
+                SearchValue = "",
+                CategoryID = 0,
+                SupplierID = 0,
+                MinPrice = 0,
+                MaxPrice = 0
+            };
+
+            var result = await productDB.ListAsync(input);
+
+            // Trả về thẳng danh sách DataItems, không cần đối tượng phân trang PagedResult nữa
+            return result.DataItems.ToList();
+        }
 
         #endregion
 

@@ -1,4 +1,6 @@
-﻿using SV22T1020193.Models.Security;
+﻿using SV22T1020193.Models.HR;
+using SV22T1020193.Models.Partner;
+using SV22T1020193.Models.Security;
 
 namespace SV22T1020193.DataLayers.Interfaces
 {

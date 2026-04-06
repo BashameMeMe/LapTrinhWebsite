@@ -1,7 +1,10 @@
 using Dapper;
-using SV22T1020193.DataLayers.Interfaces;
-using SV22T1020193.Models.Security;
 using Microsoft.Data.SqlClient;
+using SV22T1020193.DataLayers.Interfaces;
+using SV22T1020193.Models.HR;
+using SV22T1020193.Models.Partner;
+using SV22T1020193.Models.Security;
+using System.Data;
 
 namespace SV22T1020193.DataLayers.SQLServer
 {
@@ -43,6 +46,45 @@ namespace SV22T1020193.DataLayers.SQLServer
                 int rowsAffected = await connection.ExecuteAsync(sql, new { userName, password });
                 return rowsAffected > 0;
             }
+        }
+        /// <summary>
+        /// Thêm mới / Đăng ký tài khoản Nhân viên
+        /// </summary>
+        public long RegisterEmployee(Employee data, string password)
+        {
+            long id = 0;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                // Câu lệnh SQL bám sát các cột trong CSDL: FullName, BirthDate, Address, Phone, Email, Password, Photo, IsWorking, RoleNames
+                string sql = @"
+                    INSERT INTO Employees (FullName, BirthDate, Address, Phone, Email, Password, Photo, IsWorking)
+                    VALUES (@FullName, @BirthDate, @Address, @Phone, @Email, @Password, @Photo, @IsWorking);
+                    SELECT SCOPE_IDENTITY();
+                ";
+
+                var parameters = new
+                {
+                    FullName = data.FullName ?? "",
+                    BirthDate = data.BirthDate, // Đảm bảo kiểu DateTime hợp lệ
+                    Address = data.Address ?? "",
+                    Phone = data.Phone ?? "",
+                    Email = data.Email ?? "",
+                    Password = password,        // Bơm tham số mật khẩu từ ngoài vào
+                    Photo = data.Photo ?? "",
+                    IsWorking = data.IsWorking // Thường mặc định là true khi mới tạo
+                };
+
+                id = connection.ExecuteScalar<long>(sql, parameters, commandType: CommandType.Text);
+            }
+            return id;
+        }
+
+        // Implement các method rỗng (hoặc ném NotImplementedException) cho các hàm của Customer nếu Interface bắt buộc
+        public long RegisterCustomer(Customer data, string password)
+        {
+            throw new NotImplementedException("Class này chỉ xử lý cho Employee");
         }
     }
 }

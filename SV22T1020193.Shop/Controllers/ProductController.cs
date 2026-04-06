@@ -65,7 +65,7 @@ namespace SV22T1020193.Shop.Controllers
             if (product == null)
                 return NotFound();
 
-            return PartialView("Details", product);
+            return View(product);
         }
     }
 }

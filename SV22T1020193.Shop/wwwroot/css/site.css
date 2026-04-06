@@ -1,25 +1,55 @@
-#scrollToTop {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    border: none;
-    background-color: #64646444;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transition: opacity 0.3s, transform 0.3s;
-    z-index: 9999;
+﻿:root {
+    --primary-color: #2563eb;
+    --secondary-color: #64748b;
+    --accent-color: #ef4444;
+    --bg-light: #f8fafc;
 }
 
-    #scrollToTop:hover {
-        background-color: #0056b3;
-        transform: translateY(-3px);
+body {
+    background-color: var(--bg-light);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: #1e293b;
+}
+
+/* Card thiết kế mềm mại hơn */
+.card {
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
     }
 
-/* Override bootstrap */
-.page-item .page-link {
-    border-radius: 0;
+.card-img-top {
+    transition: transform 0.5s ease;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+/* Nút bấm */
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* Navbar */
+.navbar {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Badge */
+.badge {
+    padding: 6px 12px;
+    font-weight: 500;
+    border-radius: 6px;
 }

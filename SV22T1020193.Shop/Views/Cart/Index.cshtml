@@ -1,0 +1,243 @@
+﻿@model List<SV22T1020193.Models.Sales.OrderDetailViewInfo>
+@{
+    ViewData["Title"] = "Giỏ hàng của bạn";
+    decimal totalAmount = 0;
+}
+
+<style>
+    /* === Theme Xanh Dương Hiện Đại === */
+    .theme-blue {
+        color: #0d6efd !important;
+    }
+
+    .bg-theme-blue {
+        background-color: #0d6efd !important;
+        color: white !important;
+    }
+
+    .border-theme-blue {
+        border-color: #0d6efd !important;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f0f7ff !important; /* Xanh rất nhạt */
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-blue {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+        .btn-blue:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+            transform: translateY(-1px);
+            color: white;
+        }
+
+    .btn-danger-custom {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+        .btn-danger-custom:hover {
+            background-color: #bb2d3b;
+            border-color: #b02a37;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+        }
+
+    .card {
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+    }
+
+    .product-name {
+        font-size: 1.05rem;
+        line-height: 1.4;
+    }
+
+    .price {
+        font-weight: 600;
+    }
+</style>
+
+<div class="container mt-4 mb-5">
+    <h2 class="theme-blue fw-bold mb-4 d-flex align-items-center gap-3">
+        <i class="bi bi-cart3 fs-1"></i>
+        @ViewData["Title"]
+    </h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-info border-0 shadow-sm rounded-3 d-flex align-items-center">
+            <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+            <strong>Thông báo:</strong> @TempData["Message"]
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="card border-theme-blue shadow text-center py-5">
+            <div class="card-body">
+                <div class="mb-4">
+                    <i class="bi bi-cart-x display-1 text-muted"></i>
+                </div>
+                <h3 class="theme-blue fw-bold mb-3">Giỏ hàng của bạn đang trống</h3>
+                <p class="text-muted mb-4 fs-5">Hãy thêm những sản phẩm tuyệt vời vào giỏ hàng nhé!</p>
+                <a href="~/Product" class="btn btn-blue btn-lg rounded-pill px-5 py-3 shadow">
+                    <i class="bi bi-shop me-2"></i>
+                    Tiếp tục mua sắm
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card border-theme-blue shadow-sm mb-4">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-theme-blue text-center">
+                            <tr>
+                                <th class="py-4">Mã SP</th>
+                                <th class="py-4 text-start">Tên sản phẩm</th>
+                                <th class="py-4">Số lượng</th>
+                                <th class="py-4">Giá bán</th>
+                                <th class="py-4">Thành tiền</th>
+                                <th class="py-4">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                var amount = item.Quantity * item.SalePrice;
+                                totalAmount += amount;
+                                <tr class="align-middle">
+                                    <td class="fw-bold text-muted fs-6">#@item.ProductID</td>
+                                    <td class="text-start fw-semibold product-name theme-blue">
+                                        @item.ProductName
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border border-primary px-4 py-2 fs-6">
+                                            @item.Quantity
+                                        </span>
+                                    </td>
+                                    <td class="price text-danger">@item.SalePrice.ToString("N0") ₫</td>
+                                    <td class="price fw-bold text-danger fs-5">@amount.ToString("N0") ₫</td>
+                                    <td>
+                                        <button type="button"
+                                                class="btn btn-sm btn-blue btn-edit-cart rounded-pill px-4 py-2 me-2"
+                                                data-id="@item.ProductID">
+                                            <i class="bi bi-pencil-square"></i> Sửa
+                                        </button>
+                                        <a href="~/Cart/Remove/@item.ProductID"
+                                           class="btn btn-sm btn-danger-custom rounded-pill px-4 py-2"
+                                           onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')">
+                                            <i class="bi bi-trash3"></i> Xóa
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot class="table-light border-top border-2">
+                            <tr>
+                                <td colspan="4" class="text-end fw-bold fs-5 py-4">Tổng thanh toán:</td>
+                                <td class="text-danger fw-bold fs-3 py-4 text-center">
+                                    @totalAmount.ToString("N0") ₫
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <a href="~/Cart/Clear"
+               class="btn btn-danger-custom rounded-pill px-5 py-3"
+               onclick="return confirm('Bạn muốn xóa toàn bộ giỏ hàng? Hành động này không thể hoàn tác!')">
+                <i class="bi bi-trash3 me-2"></i>
+                Xóa toàn bộ giỏ hàng
+            </a>
+
+            <a href="~/Cart/Checkout"
+               class="btn btn-blue btn-lg rounded-pill px-5 py-3 shadow flex-fill flex-md-grow-0 text-center">
+                <i class="bi bi-credit-card-2-front me-2"></i>
+                Xác nhận mua hàng 🚀
+            </a>
+        </div>
+    }
+</div>
+
+<!-- Modal Edit -->
+<div class="modal fade" id="cartEditModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-theme-blue shadow">
+            <div class="modal-header bg-theme-blue text-white border-0">
+                <h5 class="modal-title fw-bold d-flex align-items-center gap-2">
+                    <i class="bi bi-pencil-square"></i>
+                    Cập nhật số lượng
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4" id="cartEditModalBody">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.btn-edit-cart').click(function () {
+                var productId = $(this).data('id');
+
+                $.ajax({
+                    url: '/Cart/Edit/' + productId,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#cartEditModalBody').html(data);
+                        $('#cartEditModal').modal('show');
+                    },
+                    error: function () {
+                        alert('Không tải được dữ liệu!');
+                    }
+                });
+            });
+
+            $(document).on('submit', '#frmUpdateCart', function (e) {
+                e.preventDefault();
+                var form = $(this);
+
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            $('#cartEditModal').modal('hide');
+                            location.reload();
+                        }
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra khi cập nhật!');
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies; // BỔ SUNG USING NÀY
 using SV22T1020193.BusinessLayers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews()
     .AddMvcOptions(option => option.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 
-// Cấu hình Session (Cần thiết cho Giỏ hàng)
+// 1. Cấu hình Session (Cần thiết cho Giỏ hàng)
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -15,14 +16,22 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// 2. BỔ SUNG: Cấu hình Authentication (Xác thực bằng Cookie)
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(option =>
+    {
+        option.Cookie.Name = "ShopAuthenticationCookie"; // Tên cookie
+        option.LoginPath = "/Account/Login";             // Đường dẫn tự động chuyển hướng khi cần đăng nhập
+        option.AccessDeniedPath = "/Account/AccessDenied";
+        option.ExpireTimeSpan = TimeSpan.FromDays(30);   // Thời gian sống của phiên đăng nhập (vd: 30 ngày)
+    });
+
 var app = builder.Build();
 
-// Khởi tạo cấu hình cho BusinessLayer (Lấy chuỗi kết nối từ appsettings.json)
-// Lấy chuỗi kết nối từ mục DefaultConnection trong appsettings.json
+// Khởi tạo cấu hình cho BusinessLayer
 string connectionString = builder.Configuration.GetConnectionString("LiteCommerceDB")
     ?? throw new InvalidOperationException("ConnectionString 'LiteCommerceDB' not found.");
 
-// Initialize Business Layer Configuration
 SV22T1020193.BusinessLayers.Configuration.Initialize(connectionString);
 
 // Configure the HTTP request pipeline.
@@ -37,7 +46,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseSession(); // Kích hoạt sử dụng Session cho Giỏ hàng
+app.UseSession(); // Kích hoạt Session cho Giỏ hàng
+
+// 3. BỔ SUNG: Kích hoạt Authentication
+app.UseAuthentication(); // BẮT BUỘC phải nằm trước UseAuthorization()
 
 app.UseAuthorization();
 

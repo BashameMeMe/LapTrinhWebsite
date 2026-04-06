@@ -1,7 +1,9 @@
 using Dapper;
-using SV22T1020193.DataLayers.Interfaces;
-using SV22T1020193.Models.Security;
 using Microsoft.Data.SqlClient;
+using SV22T1020193.DataLayers.Interfaces;
+using SV22T1020193.Models.Partner;
+using SV22T1020193.Models.Security;
+using System.Data;
 
 namespace SV22T1020193.DataLayers.SQLServer
 {
@@ -41,6 +43,40 @@ namespace SV22T1020193.DataLayers.SQLServer
                 int rowsAffected = await connection.ExecuteAsync(sql, new { userName, password });
                 return rowsAffected > 0;
             }
+        }
+        /// <summary>
+        /// Thêm khách hàng mới (Đăng ký)
+        /// </summary>
+        public async Task<int> RegisterCustomerAsync(Customer data, string password)
+        {
+            int id = 0;
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                // Câu lệnh SQL chèn vào bảng Customers có cột Password
+                string sql = @"
+                    INSERT INTO Customers (CustomerName, ContactName, Province, Address, Phone, Email, Password, IsLocked)
+                    VALUES (@CustomerName, @ContactName, @Province, @Address, @Phone, @Email, @Password, @IsLocked);
+                    SELECT CAST(SCOPE_IDENTITY() as int);
+                ";
+
+                var parameters = new
+                {
+                    CustomerName = data.CustomerName ?? "",
+                    ContactName = data.ContactName ?? "",
+                    Province = data.Province ?? "",
+                    Address = data.Address ?? "",
+                    Phone = data.Phone ?? "",
+                    Email = data.Email ?? "",
+                    Password = password, // Mật khẩu truyền từ ngoài vào
+                    IsLocked = data.IsLocked
+                };
+
+                // Thực thi câu lệnh SQL bất đồng bộ
+                id = await connection.ExecuteScalarAsync<int>(sql, parameters, commandType: CommandType.Text);
+            }
+            return id;
         }
     }
 }

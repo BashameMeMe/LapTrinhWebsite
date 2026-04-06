@@ -1,0 +1,117 @@
+﻿@model SV22T1020193.Models.Security.DangKyModel
+
+@{
+    Layout = null; // Hoặc sử dụng Layout của bạn nếu có, ví dụ: Layout = "_ShopLayout";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đăng ký tài khoản</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+
+        .register-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="register-container">
+        <h3 class="text-center mb-4">ĐĂNG KÝ TÀI KHOẢN</h3>
+
+        <form asp-action="Register" asp-controller="Account" method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                    <label>Tên khách hàng <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" asp-for="CustomerName" placeholder="Nhập họ và tên..." />
+                    <span asp-validation-for="CustomerName" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 form-group mb-3">
+                    <label>Tên giao dịch</label>
+                    <input type="text" class="form-control" asp-for="ContactName" placeholder="Tên công ty hoặc biệt danh..." />
+                    <span asp-validation-for="ContactName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                    <label>Điện thoại</label>
+                    <input type="text" class="form-control" asp-for="Phone" placeholder="Nhập số điện thoại..." />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 form-group mb-3">
+                    <label>Tỉnh/Thành phố <span class="text-danger">*</span></label>
+                    <select class="form-control" asp-for="Province">
+                        <option value="">-- Chọn Tỉnh/Thành --</option>
+                        @if (ViewBag.Provinces != null)
+                        {
+                            foreach (var item in ViewBag.Provinces)
+                            {
+                                <option value="@item.ProvinceName">@item.ProvinceName</option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="Province" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label>Địa chỉ</label>
+                <input type="text" class="form-control" asp-for="Address" placeholder="Nhập địa chỉ chi tiết..." />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label>Email (Dùng làm tên đăng nhập) <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" asp-for="Email" placeholder="example@gmail.com" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                    <label>Mật khẩu <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" asp-for="Password" placeholder="Nhập mật khẩu..." />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 form-group mb-3">
+                    <label>Nhập lại mật khẩu <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="Nhập lại mật khẩu..." />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group text-center mt-4">
+                <button type="submit" class="btn btn-primary px-5">Đăng ký ngay</button>
+            </div>
+
+            <div class="text-center mt-3">
+                <p>Đã có tài khoản? <a href="~/Account/Login">Đăng nhập tại đây</a></p>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+
+</body>
+</html>

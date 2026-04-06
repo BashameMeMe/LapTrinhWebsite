@@ -1,0 +1,25 @@
+﻿@model SV22T1020193.Models.Sales.OrderDetailViewInfo
+
+<form id="frmUpdateCart" method="post" action="~/Cart/Update">
+    <input type="hidden" name="productId" value="@Model.ProductID" />
+
+    <div class="form-group mb-3">
+        <label>Tên sản phẩm</label>
+        <input type="text" class="form-control" value="@Model.ProductName" readonly />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Số lượng</label>
+        <input type="number" class="form-control" name="quantity" value="@Model.Quantity" min="0" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Giá bán</label>
+        <input type="number" class="form-control" name="salePrice" value="@Model.SalePrice" />
+    </div>
+
+    <div class="text-end">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+    </div>
+</form>

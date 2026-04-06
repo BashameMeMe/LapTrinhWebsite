@@ -80,10 +80,12 @@
 
 @section Scripts {
     <script>
+        // Hàm load dữ liệu phân trang (bạn đang comment lại)
         // document.addEventListener("DOMContentLoaded", function () {
-        //     paginationSearch(null, document.getElementById("formSearch"), 1);
+        //      paginationSearch(null, document.getElementById("formSearch"), 1);
         // });
 
+        // Hàm hiển thị chi tiết sản phẩm
         function showProductDetails(productId) {
             fetch(`/Product/Details/${productId}`)
                 .then(response => response.text())
@@ -98,9 +100,48 @@
                 });
         }
 
-        function addToCart(productId) {
-            // Placeholder for add to cart functionality
-            alert(`Thêm sản phẩm ${productId} vào giỏ hàng (chưa triển khai)`);
+        // HÀM ADD TO CART (Đã xóa hàm cũ chứa alert, chỉ giữ lại hàm AJAX chuẩn)
+                function addToCart(productId, productName, price) {
+            $.ajax({
+                url: '/Cart/AddToCart',
+                type: 'POST',
+                data: {
+                    ProductID: productId,
+                    ProductName: productName,
+                    SalePrice: price,
+                    Quantity: 1
+                },
+                success: function (response) {
+                    showToast('Đã thêm [' + productName + '] vào giỏ hàng!');
+                },
+                error: function () {
+                    showToast('Lỗi khi thêm sản phẩm!', true);
+                }
+            });
+        }
+
+        function showToast(message, isError = false) {
+            let toast = $('<div></div>')
+                .text(message)
+                .css({
+                    position: 'fixed',
+                    top: '20px',
+                    right: '20px',
+                    background: isError ? '#e74c3c' : '#2ecc71',
+                    color: '#fff',
+                    padding: '10px 20px',
+                    borderRadius: '5px',
+                    zIndex: 9999
+                });
+
+            $('body').append(toast);
+
+            setTimeout(function () {
+                toast.fadeOut(500, function () {
+                    $(this).remove();
+                });
+            }, 500);
         }
     </script>
+}
 }

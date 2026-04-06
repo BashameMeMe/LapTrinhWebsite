@@ -1,42 +1,44 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Http;
 using SV22T1020193.Models.Sales;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json; // Thêm thư viện này
 
 namespace SV22T1020193.Shop.AppCodes
 {
-    /// <summary>
-    /// Cung cấp các chức năng xử lý trên giỏ hàng, bao gồm thêm, sửa, xóa sản phẩm trong giỏ hàng, tính tổng tiền, v.v.
-    /// Giỏ hàng lưu bằng sesion
-    /// </summary>
     public static class ShoppingCartService
     {
-        /// <summary
-        /// Tên biến để lưu giỏ hàng trong session
-        /// </summary>
         private static readonly string SESSION_KEY = "ShoppingCart";
-        // Lấy giỏ hàng từ session
-        public static List<OrderDetailViewInfo> GetShoppingCart()
+
+        // Lấy giỏ hàng từ session (truyền HttpContext vào)
+        public static List<OrderDetailViewInfo> GetShoppingCart(HttpContext context)
         {
-            var cart = ApplicationContext.GetSessionData<List<OrderDetailViewInfo>>(SESSION_KEY);
+            var sessionData = context.Session.GetString(SESSION_KEY);
+            List<OrderDetailViewInfo> cart = null;
+
+            if (!string.IsNullOrEmpty(sessionData))
+            {
+                cart = JsonSerializer.Deserialize<List<OrderDetailViewInfo>>(sessionData);
+            }
+
             if (cart == null)
             {
                 cart = new List<OrderDetailViewInfo>();
-                ApplicationContext.SetSessionData(SESSION_KEY, cart);
             }
             return cart;
         }
-        // Lấy thông tin sản phẩm trong giỏ hàng
-        public static OrderDetailViewInfo? GetCartItem(int productId)
+
+        // Lấy thông tin 1 sản phẩm
+        public static OrderDetailViewInfo? GetCartItem(HttpContext context, int productId)
         {
-            var cart = GetShoppingCart();
+            var cart = GetShoppingCart(context);
             return cart.FirstOrDefault(c => c.ProductID == productId);
         }
-        // Thêm sản phẩm vào giỏ hàng
-        public static void AddToCart(OrderDetailViewInfo item)
+
+        // Thêm sản phẩm
+        public static void AddToCart(HttpContext context, OrderDetailViewInfo item)
         {
-            var cart = GetShoppingCart();
+            var cart = GetShoppingCart(context);
             var existingItem = cart.FirstOrDefault(c => c.ProductID == item.ProductID);
             if (existingItem != null)
             {
@@ -47,36 +49,40 @@ namespace SV22T1020193.Shop.AppCodes
             {
                 cart.Add(item);
             }
-            ApplicationContext.SetSessionData(SESSION_KEY, cart);
+
+            // LƯU LẠI VÀO SESSION CHUẨN ASP.NET CORE
+            context.Session.SetString(SESSION_KEY, JsonSerializer.Serialize(cart));
         }
-        // Cập nhật số lượng sản phẩm trong giỏ hàng
-        public static void UpdateCartItem(int productId, int quantity, int salePrice)
+
+        // Cập nhật
+        public static void UpdateCartItem(HttpContext context, int productId, int quantity, decimal salePrice)
         {
-            var cart = GetShoppingCart();
+            var cart = GetShoppingCart(context);
             var existingItem = cart.FirstOrDefault(c => c.ProductID == productId);
             if (existingItem != null)
             {
                 existingItem.Quantity = quantity;
                 existingItem.SalePrice = salePrice;
-                ApplicationContext.SetSessionData(SESSION_KEY, cart);
+                context.Session.SetString(SESSION_KEY, JsonSerializer.Serialize(cart));
             }
         }
-        // Xóa sản phẩm khỏi giỏ hàng
-        public static void RemoveFromCart(int productId)
+
+        // Xóa sản phẩm
+        public static void RemoveFromCart(HttpContext context, int productId)
         {
-            var cart = GetShoppingCart();
+            var cart = GetShoppingCart(context);
             var existingItem = cart.FirstOrDefault(c => c.ProductID == productId);
             if (existingItem != null)
             {
                 cart.Remove(existingItem);
-                ApplicationContext.SetSessionData(SESSION_KEY, cart);
+                context.Session.SetString(SESSION_KEY, JsonSerializer.Serialize(cart));
             }
         }
-        // Xóa toàn bô giỏ hàng
-        public static void ClearCart()
+
+        // Xóa toàn bộ giỏ hàng
+        public static void ClearCart(HttpContext context)
         {
-            ApplicationContext.SetSessionData(SESSION_KEY, new List<OrderDetailViewInfo>());
+            context.Session.Remove(SESSION_KEY);
         }
     }
-
 }
