@@ -1,5 +1,6 @@
-using SV22T1020193.Admin;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using SV22T1020193.Admin;
+using SV22T1020193.BusinessLayers;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +32,13 @@ builder.Services.AddSession(option =>
     option.IdleTimeout = TimeSpan.FromHours(2);
     option.Cookie.HttpOnly = true;
     option.Cookie.IsEssential = true;
+});
+
+builder.Services.AddScoped<AccountDataService>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    string connStr = config.GetConnectionString("LiteCommerceDB");
+    return new AccountDataService(connStr);
 });
 
 var app = builder.Build();
