@@ -34,12 +34,7 @@ builder.Services.AddSession(option =>
     option.Cookie.IsEssential = true;
 });
 
-builder.Services.AddScoped<AccountDataService>(sp =>
-{
-    var config = sp.GetRequiredService<IConfiguration>();
-    string connStr = config.GetConnectionString("LiteCommerceDB");
-    return new AccountDataService(connStr);
-});
+builder.Services.AddScoped<AccountDataService>();
 
 var app = builder.Build();
 

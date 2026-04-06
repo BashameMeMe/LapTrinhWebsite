@@ -12,18 +12,34 @@ namespace SV22T1020193.BusinessLayers
         private readonly IUserAccountRepository _customerAccountDB;
 
         /// <summary>
-        /// Khởi tạo AccountDataService sử dụng chuỗi kết nối từ lớp Configuration
+        /// Khởi tạo AccountDataService không cần truyền tham số
         /// </summary>
         public AccountDataService()
         {
-            // Lấy chuỗi kết nối trực tiếp từ Configuration
             string connectionString = Configuration.ConnectionString;
-
             _employeeAccountDB = new EmployeeAccountRepository(connectionString);
             _customerAccountDB = new CustomerAccountRepository(connectionString);
         }
 
-        // ... Các phương thức cũ giữ nguyên ...
+        #region Xử lý tài khoản Nhân viên (Dành cho Admin)
+
+        /// <summary>
+        /// Kiểm tra thông tin đăng nhập của nhân viên
+        /// </summary>
+        public async Task<UserAccount?> AuthorizeEmployeeAsync(string userName, string password)
+        {
+            return await _employeeAccountDB.AuthticateAsync(userName, password);
+        }
+
+        /// <summary>
+        /// Thay đổi mật khẩu của nhân viên
+        /// </summary>
+        public async Task<bool> ChangeEmployeePasswordAsync(string userName, string password)
+        {
+            return await _employeeAccountDB.ChangePasswordAsync(userName, password);
+        }
+
+        #endregion
 
         #region Xử lý tài khoản Khách hàng (Dành cho Shop)
 
@@ -48,7 +64,6 @@ namespace SV22T1020193.BusinessLayers
         /// </summary>
         public async Task<int> RegisterCustomerAsync(Customer data, string password)
         {
-            // Ép kiểu để gọi hàm RegisterCustomerAsync chỉ có trong CustomerAccountRepository
             var customerRepo = _customerAccountDB as CustomerAccountRepository;
             if (customerRepo != null)
             {

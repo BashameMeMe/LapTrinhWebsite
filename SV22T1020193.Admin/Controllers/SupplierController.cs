@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SV22T1020193.BusinessLayers;
 using SV22T1020193.Models.Common;
+using SV22T1020193.Models.Partner;
 
 namespace SV22T1020193.Admin.Controllers
 {
@@ -48,21 +50,47 @@ namespace SV22T1020193.Admin.Controllers
         /// <summary>
         /// Thêm mới
         /// </summary>
-        public IActionResult Create()
+        /// 
+        public async Task<IActionResult> Create()
         {
             ViewBag.Title = "Bổ sung nhà cung cấp";
-            return View("Edit");
+            ViewBag.Provinces = await DictionaryDataService.ListProvincesAsync();
+
+            return View("Edit", new Supplier());
         }
 
-        /// <summary>
-        /// Chỉnh sửa
-        /// </summary>
+        [HttpPost]
+        public async Task<IActionResult> Create(Supplier data)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Provinces = await DictionaryDataService.ListProvincesAsync();
+                return View("Edit", data);
+            }
+
+            await PartnerDataService.AddSupplierAsync(data);
+            return RedirectToAction("Index");
+        }
         public async Task<IActionResult> Edit(int id)
         {
             ViewBag.Title = "Cập nhật nhà cung cấp";
 
             var data = await PartnerDataService.GetSupplierAsync(id);
+            ViewBag.Provinces = await DictionaryDataService.ListProvincesAsync();
+
             return View(data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Supplier data)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Provinces = await DictionaryDataService.ListProvincesAsync();
+                return View(data);
+            }
+
+            await PartnerDataService.UpdateSupplierAsync(data);
+            return RedirectToAction("Index");
         }
 
         /// <summary>

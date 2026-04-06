@@ -1,104 +1,74 @@
-﻿
-<!-- Header -->
-<div class="app-content-header">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6">
-                <h3 class="mb-0">Thêm nhà cung cấp</h3>
+﻿@model SV22T1020193.Models.Partner.Supplier
+
+@{
+    bool isEdit = Model != null && Model.SupplierID > 0;
+    var provinces = ViewBag.Provinces as List<SV22T1020193.Models.DataDictionary.Province>;
+}
+
+@section PageToolBar {
+    <button type="submit" form="formEdit" class="btn btn-primary">
+        <i class="bi bi-save"></i> Lưu
+    </button>
+
+    <a href="~/Supplier" class="btn btn-secondary">
+        Quay lại
+    </a>
+}
+
+<div class="card">
+    <div class="card-body">
+        <form id="formEdit" method="post"
+              asp-action="@(isEdit ? "Edit" : "Create")">
+
+            @if (isEdit)
+            {
+                <input type="hidden" asp-for="SupplierID" />
+            }
+
+            <div class="mb-3">
+                <label>Tên nhà cung cấp</label>
+                <input asp-for="SupplierName" class="form-control" />
             </div>
-        </div>
-    </div>
-</div>
 
-<!-- Content -->
-<div class="app-content">
-    <div class="container-fluid">
-
-        <div class="card">
-            <div class="card-body">
-
-                <form method="post"
-                      asp-controller="Supplier"
-                      asp-action="Create">
-
-                    <!-- Supplier Name -->
-                    <div class="mb-3">
-                        <label class="form-label">Tên nhà cung cấp</label>
-                        <input type="text"
-                               name="SupplierName"
-                               class="form-control"
-                               placeholder="Nhập tên nhà cung cấp" />
-                    </div>
-
-                    <!-- Contact Name -->
-                    <div class="mb-3">
-                        <label class="form-label">Tên giao dịch</label>
-                        <input type="text"
-                               name="ContactName"
-                               class="form-control"
-                               placeholder="Nhập tên giao dịch" />
-                    </div>
-
-                    <!-- Phone -->
-                    <div class="mb-3">
-                        <label class="form-label">Điện thoại</label>
-                        <input type="text"
-                               name="Phone"
-                               class="form-control"
-                               placeholder="Nhập số điện thoại" />
-                    </div>
-
-                    <!-- Email -->
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email"
-                               name="Email"
-                               class="form-control"
-                               placeholder="example@email.com" />
-                    </div>
-
-                    <!-- Address -->
-                    <div class="mb-3">
-                        <label class="form-label">Địa chỉ</label>
-                        <input type="text"
-                               name="Address"
-                               class="form-control"
-                               placeholder="Nhập địa chỉ" />
-                    </div>
-
-                    <!-- Province -->
-                    <div class="mb-3">
-                        <label class="form-label">Tỉnh / Thành</label>
-                        <input type="text"
-                               name="Province"
-                               class="form-control"
-                               placeholder="Nhập tỉnh / thành phố" />
-                    </div>
-
-                    <!-- Buttons -->
-                    <div class="mt-4 d-flex gap-2">
-                        <!-- Create -->
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-save"></i> Tạo
-                        </button>
-
-                        <!-- Reset -->
-                        <button type="reset" class="btn btn-warning">
-                            <i class="bi bi-arrow-counterclockwise"></i> Xóa dữ liệu
-                        </button>
-
-                        <!-- Cancel -->
-                        <a asp-controller="Supplier"
-                           asp-action="Index"
-                           class="btn btn-secondary">
-                            <i class="bi bi-x-circle"></i> Hủy nhập
-                        </a>
-                    </div>
-
-                </form>
-
+            <div class="mb-3">
+                <label>Tên giao dịch</label>
+                <input asp-for="ContactName" class="form-control" />
             </div>
-        </div>
 
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Điện thoại</label>
+                    <input asp-for="Phone" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                    <label>Email</label>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label>Địa chỉ</label>
+                <input asp-for="Address" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Tỉnh / Thành</label>
+                <select asp-for="Province" class="form-select">
+                    <option value="">-- Chọn tỉnh / thành --</option>
+
+                    @if (provinces != null)
+                    {
+                        foreach (var p in provinces)
+                        {
+                            <option value="@p.ProvinceName">
+                                @p.ProvinceName
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+
+        </form>
     </div>
 </div>

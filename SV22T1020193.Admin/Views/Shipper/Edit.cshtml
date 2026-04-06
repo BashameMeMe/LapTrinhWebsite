@@ -1,46 +1,40 @@
-﻿@{
+﻿@model SV22T1020193.Models.Partner.Shipper
+
+@{
+    bool isEdit = Model != null && Model.ShipperID > 0;
 }
+
 @section PageToolBar {
     <button type="submit" form="formEdit" class="btn btn-primary">
-        <i class="bi bi-save"></i>
-        Lưu dữ liệu
+        <i class="bi bi-save"></i> Lưu
     </button>
 
-    <a href="~/Shipper" class="btn btn-secondary ms-1">
-        <i class="bi bi-arrow-left"></i>
+    <a href="~/Shipper" class="btn btn-secondary">
         Quay lại
     </a>
 }
 
-<div class="row justify-content-center">
-    <div class="col-12">
-        <div class="card card-primary card-outline">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
-                    <i class="bi bi-bicycle me-2"></i>
-                    Thông tin người giao hàng
-                </h5>
+<div class="card">
+    <div class="card-body">
+        <form id="formEdit" method="post"
+              asp-controller="Shipper"
+              asp-action="@(isEdit ? "Edit" : "Create")">
+
+            @if (isEdit)
+            {
+                <input type="hidden" asp-for="ShipperID" />
+            }
+
+            <div class="mb-3">
+                <label>Tên người giao hàng</label>
+                <input asp-for="ShipperName" class="form-control" />
             </div>
 
-            <div class="card-body">
-                <form id="formEdit" method="post">
-
-                    <div class="mb-3">
-                        <label class="form-label">Tên người giao hàng</label>
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Nhập tên người giao hàng" autofocus />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Điện thoại</label>
-                        <input type="tel"
-                               class="form-control"
-                               placeholder="Nhập số điện thoại" />
-                    </div>
-
-                </form>
+            <div class="mb-3">
+                <label>Điện thoại</label>
+                <input asp-for="Phone" class="form-control" />
             </div>
-        </div>
+
+        </form>
     </div>
 </div>

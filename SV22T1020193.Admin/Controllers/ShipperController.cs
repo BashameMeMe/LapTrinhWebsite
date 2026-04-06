@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SV22T1020193.Models.Common;
+using SV22T1020193.Models.Partner;
 
 namespace SV22T1020193.Admin.Controllers
 {
@@ -31,10 +32,11 @@ namespace SV22T1020193.Admin.Controllers
             return PartialView("Search", result); // AJAX
         }
 
+        // ===== GET =====
         public IActionResult Create()
         {
             ViewBag.Title = "Bổ sung người giao hàng";
-            return View("Edit");
+            return View("Edit", new Shipper());
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -44,6 +46,28 @@ namespace SV22T1020193.Admin.Controllers
             return View(data);
         }
 
+        // ===== POST =====
+        [HttpPost]
+        public async Task<IActionResult> Create(Shipper data)
+        {
+            if (!ModelState.IsValid)
+                return View("Edit", data);
+
+            await PartnerDataService.AddShipperAsync(data);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Shipper data)
+        {
+            if (!ModelState.IsValid)
+                return View(data);
+
+            await PartnerDataService.UpdateShipperAsync(data);
+            return RedirectToAction("Index");
+        }
+
+        // ===== DELETE =====
         public async Task<IActionResult> Delete(int id)
         {
             ViewBag.Title = "Xóa người giao hàng";

@@ -1,77 +1,74 @@
-﻿@{
+﻿@model SV22T1020193.Models.Partner.Supplier
+
+@{
+    bool isEdit = Model != null && Model.SupplierID > 0;
+    var provinces = ViewBag.Provinces as List<SV22T1020193.Models.DataDictionary.Province>;
 }
+
 @section PageToolBar {
     <button type="submit" form="formEdit" class="btn btn-primary">
-        <i class="bi bi-save"></i>
-        Lưu dữ liệu
+        <i class="bi bi-save"></i> Lưu
     </button>
 
-    <a href="~/Supplier" class="btn btn-secondary ms-1">
-        <i class="bi bi-arrow-left"></i>
+    <a href="~/Supplier" class="btn btn-secondary">
         Quay lại
     </a>
 }
-<div class="row justify-content-center">
-    <div class="col-12">
-        <div class="card card-primary card-outline">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
-                    <i class="bi bi-truck me-2"></i>
-                    Thông tin nhà cung cấp
-                </h5>
+
+<div class="card">
+    <div class="card-body">
+        <form id="formEdit" method="post"
+              asp-action="@(isEdit ? "Edit" : "Create")">
+
+            @if (isEdit)
+            {
+                <input type="hidden" asp-for="SupplierID" />
+            }
+
+            <div class="mb-3">
+                <label>Tên nhà cung cấp</label>
+                <input asp-for="SupplierName" class="form-control" />
             </div>
 
-            <div class="card-body">
-                <form id="formEdit" method="post">
-                    <div class="mb-3">
-                        <label class="form-label">Tên nhà cung cấp</label>
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Nhập tên nhà cung cấp" autofocus />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Tên giao dịch</label>
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Nhập tên giao dịch" />
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Điện thoại</label>
-                            <input type="tel"
-                                   class="form-control"
-                                   placeholder="Nhập số điện thoại" />
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email"
-                                   class="form-control"
-                                   placeholder="Nhập email" />
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Địa chỉ</label>
-                        <textarea class="form-control"
-                                  rows="3"
-                                  placeholder="Nhập địa chỉ"></textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Tỉnh / Thành</label>
-                        <select class="form-select">
-                            <option value="">-- Chọn tỉnh / thành --</option>
-                            <option>Hà Nội</option>
-                            <option>TP. Hồ Chí Minh</option>
-                            <option>Đà Nẵng</option>
-                            <option>Cần Thơ</option>
-                        </select>
-                    </div>
-                </form>
+            <div class="mb-3">
+                <label>Tên giao dịch</label>
+                <input asp-for="ContactName" class="form-control" />
             </div>
-        </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Điện thoại</label>
+                    <input asp-for="Phone" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                    <label>Email</label>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label>Địa chỉ</label>
+                <input asp-for="Address" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Tỉnh / Thành</label>
+                <select asp-for="Province" class="form-select">
+                    <option value="">-- Chọn tỉnh / thành --</option>
+
+                    @if (provinces != null)
+                    {
+                        foreach (var p in provinces)
+                        {
+                            <option value="@p.ProvinceName">
+                                @p.ProvinceName
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+
+        </form>
     </div>
 </div>
