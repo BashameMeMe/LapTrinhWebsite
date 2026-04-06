@@ -27,20 +27,15 @@
     <None Include="Views\Home\Privacy.cshtml" />
     <None Include="Views\Order\Create.cshtml" />
     <None Include="Views\Order\Index.cshtml" />
-    <None Include="Views\Product\Create.cshtml" />
-	  
-    <None Include="Views\Product\CreateAttributes.cshtml" />
-    <None Include="Views\Product\CreateListPhoto.cshtml" />
     <None Include="Views\Product\Delete.cshtml" />
     <None Include="Views\Product\DeleteAttributes.cshtml" />
     <None Include="Views\Product\DeletePhoto.cshtml" />
     <None Include="Views\Product\Detail.cshtml" />
     <None Include="Views\Product\Edit.cshtml" />
-    <None Include="Views\Product\EditAttributes.cshtml" />
+    <None Include="Views\Product\EditListAttribute.cshtml" />
     <None Include="Views\Product\EditPhoto.cshtml" />
     <None Include="Views\Product\Index.cshtml" />
     <None Include="Views\Product\ListAttributes.cshtml" />
-    <None Include="Views\Product\ListPhoto.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <None Include="Views\Shared\_Footer.cshtml" />
     <None Include="Views\Shared\_Header.cshtml" />

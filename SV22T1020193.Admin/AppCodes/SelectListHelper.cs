@@ -42,7 +42,8 @@ namespace SV22T1020193.Admin.AppCodes
             {
                 new SelectListItem() { Value = "0", Text = "-- Loại hàng --"}
             };
-            var input = new PaginationSearchInput() { Page = 1, PageSize = 0, SearchValue = "" };
+            // SỬA LỖI: Đổi PageSize = 0 thành PageSize = 1000 (hoặc số lớn)
+            var input = new PaginationSearchInput() { Page = 1, PageSize = 1000, SearchValue = "" };
             var result = await CatalogDataService.ListCategoriesAsync(input);
             foreach (var item in result.DataItems)
             {
@@ -65,7 +66,8 @@ namespace SV22T1020193.Admin.AppCodes
             {
                 new SelectListItem() { Value = "0", Text = "-- Nhà cung cấp --"}
             };
-            var input = new PaginationSearchInput() { Page = 1, PageSize = 0, SearchValue = "" };
+            // SỬA LỖI: Đổi PageSize = 0 thành PageSize = 1000 (hoặc số lớn)
+            var input = new PaginationSearchInput() { Page = 1, PageSize = 1000, SearchValue = "" };
             var result = await PartnerDataService.ListSuppliersAsync(input);
             foreach (var item in result.DataItems)
             {
@@ -77,6 +79,7 @@ namespace SV22T1020193.Admin.AppCodes
             }
             return list;
         }
+
         /// <summary>
         /// Danh sách khách hàng
         /// </summary>
