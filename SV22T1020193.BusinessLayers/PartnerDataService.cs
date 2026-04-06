@@ -199,6 +199,10 @@ public static class PartnerDataService
     {
         return await customerDB.ValidateEmailAsync(email, customerID);
     }
+    public static async Task<bool> ChangeCustomerPasswordAsync(int id, string newPassword)
+    {
+        return await customerDB.ChangePasswordAsync(id, newPassword);
+    }
 
     #endregion
 

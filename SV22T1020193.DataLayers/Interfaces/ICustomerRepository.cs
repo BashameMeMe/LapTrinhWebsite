@@ -17,5 +17,7 @@ namespace SV22T1020193.DataLayers.Interfaces
         /// </param>
         /// <returns></returns>
         Task<bool> ValidateEmailAsync(string email, int id = 0);
+        Task<bool> ChangePasswordAsync(int id, string newPassword);
     }
+
 }

@@ -1,6 +1,4 @@
-﻿@using SV22T1020193.Models.Common
-@model PaginationSearchInput
-
+﻿@model PaginationSearchInput
 @{
     ViewBag.Title = "Quản lý Khách hàng";
 }
@@ -18,17 +16,15 @@
               data-target="searchResult"
               onsubmit="paginationSearch(event, this, 1)">
 
-            <input type="hidden" asp-for="PageSize" />
-
             <div class="input-group">
-
-                <input type="text" asp-for="SearchValue"
+                <input type="hidden" asp-for="PageSize" />
+                <input type="text"
+                       asp-for="SearchValue"
                        class="form-control"
                        placeholder="Tên khách hàng..." autofocus />
                 <button class="btn btn-info d-flex align-items-center">
                     <i class="bi bi-search me-1"></i>
                 </button>
-
             </div>
         </form>
     </div>
@@ -39,7 +35,8 @@
 @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            paginationSearch(null, document.getElementById("formSearch"), @Model.Page);
+            paginationSearch(null, document.getElementById("formSearch"), 1);
         });
     </script>
 }
+

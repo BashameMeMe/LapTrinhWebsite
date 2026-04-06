@@ -1,18 +1,21 @@
-﻿@using SV22T1020193.Models.Common
+﻿@using SV22T1020193.Admin.AppCodes
 @model Customer
+
 @section PageToolBar {
     <button type="submit" form="formEdit" class="btn btn-primary">
-        <i class="bi bi-save"></i>
-        Lưu dữ liệu
-    </button>    
+        <i class="bi bi-save"></i> Lưu dữ liệu
+    </button>
+
     <a href="~/Customer" class="btn btn-secondary ms-1">
-        <i class="bi bi-arrow-left"></i>
-        Quay lại
+        <i class="bi bi-arrow-left"></i> Quay lại
     </a>
 }
 
 <div class="row justify-content-center">
     <div class="col-12">
+
+        @Html.ValidationMessage("Error", new { @class = "text-danger" })
+
         <div class="card card-primary card-outline">
             <div class="card-header">
                 <h5 class="card-title mb-0">
@@ -23,60 +26,77 @@
 
             <div class="card-body">
                 <form id="formEdit" method="post" action="~/Customer/SaveData">
+
                     <input type="hidden" asp-for="CustomerID" />
+
+                    <!-- Row 1 -->
                     <div class="row align-items-end">
+
                         <div class="col-md-5 mb-3">
                             <label class="form-label">Tên khách hàng</label>
-                            <input type="text" asp-for="CustomerName" class="form-control"autofocus />
-                                    <span asp-validation-for="CustomerName" class="text-danger"></span>
+                            <input asp-for="CustomerName" class="form-control" autofocus />
+                            <span asp-validation-for="CustomerName" class="text-danger"></span>
                         </div>
-                        <div class="col-md-6 mb-3">
+
+                        <div class="col-md-5 mb-3">
                             <label class="form-label">Tên giao dịch</label>
-                            <input type="text" asp-for="ContactName" class="form-control" />
+                            <input asp-for="ContactName" class="form-control" />
                         </div>
+
+                        <!-- FIX CHECKBOX -->
                         <div class="col-md-2 mb-3">
                             <label class="form-label d-block">Trạng thái</label>
+
+                            <!-- hidden để gửi false -->
+                            <input type="hidden" name="IsLocked" value="false" />
+
                             <div class="form-check form-switch mt-2">
                                 <input class="form-check-input"
                                        type="checkbox"
                                        name="IsLocked"
                                        value="true"
-                                @(Model.IsLocked == true)/>
+                                       @(Model.IsLocked == true ? "checked" : "") />
+
                                 <label class="form-check-label">
-                                    Đã Khóa
+                                    Đã bị khóa
                                 </label>
                             </div>
                         </div>
+
                     </div>
 
+                    <!-- Row 2 -->
                     <div class="row">
+
                         <div class="col-md-5 mb-3">
                             <label class="form-label">Điện thoại</label>
-                            <input type="tel" asp-for ="Phone"
-                                   class="form-control"/>
+                            <input asp-for="Phone" class="form-control" />
                         </div>
 
                         <div class="col-md-7 mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email"class="form-control"/>
-                            <span asp-validation-for="CustomerName" class="text-danger"></span>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
+
                     </div>
 
+                    <!-- Address -->
                     <div class="mb-3">
                         <label class="form-label">Địa chỉ</label>
-                        <textarea class="form-control" asp-for= "Address"
-                                  rows="3"
-                                  placeholder="Nhập địa chỉ"></textarea>
+                        <textarea asp-for="Address" class="form-control" rows="3"></textarea>
                     </div>
 
+                    <!-- Province -->
                     <div class="mb-3">
                         <label class="form-label">Tỉnh / Thành</label>
                         <select class="form-select"
-                        asp-for="Province">
+                                asp-for="Province"
+                                asp-items="await SelectListHelper.ProvincesAsync()">
                         </select>
                         <span asp-validation-for="Province" class="text-danger"></span>
                     </div>
+
                 </form>
             </div>
         </div>

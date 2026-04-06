@@ -14,7 +14,6 @@
     <None Include="Views\Category\Edit.cshtml" />
     <None Include="Views\Category\Index.cshtml" />
     <None Include="Views\Customer\Changepassword.cshtml" />
-    <None Include="Views\Customer\Create.cshtml" />
     <None Include="Views\Customer\Delete.cshtml" />
     <None Include="Views\Customer\Edit.cshtml" />
     <None Include="Views\Customer\Index.cshtml" />

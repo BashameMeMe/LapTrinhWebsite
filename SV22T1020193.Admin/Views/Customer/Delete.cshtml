@@ -4,8 +4,7 @@
 }
 
 @section PageToolBar {
-
-    @if (ViewBag.CanDelete)
+    @if ((bool?)ViewBag.AllowDelete == true)
     {
         <button type="submit" form="formDelete" class="btn btn-danger">
             <i class="bi bi-trash me-1"></i>
@@ -26,14 +25,13 @@
             <div class="card-header">
                 <h5 class="card-title mb-0 text-danger">
                     <i class="bi bi-exclamation-triangle me-2"></i>
-                    @(ViewBag.CanDelete ? "Xác nhận xóa khách hàng":"Cảnh báo")
+                    Xác nhận xóa khách hàng
                 </h5>
             </div>
 
             <div class="card-body">
-                <form id="formDelete" method="post">
-
-                    @if (ViewBag.CanDelete)
+                <form id="formDelete" method="post" action="~/Customer/Delete/@Model.CustomerID">
+                    @if (ViewBag.AllowDelete)
                     {
                         <div class="alert alert-warning d-flex align-items-center">
                             <i class="bi bi-info-circle me-2"></i>
@@ -42,11 +40,12 @@
                     }
                     else
                     {
-                        <div class="alert alert-warning d-flex align-items-center">
+                        <div class="alert alert-infor d-flex align-items-center">
                             <i class="bi bi-info-circle me-2"></i>
-                            Bạn không thể xóa khách này!
+                            Khách hàng này không thể xóa vì đã có đơn hàng
                         </div>
                     }
+
 
                     <dl class="row mb-0">
                         <dt class="col-sm-4">Tên khách hàng</dt>
@@ -59,13 +58,13 @@
                         <dd class="col-sm-8">
                             @if (Model.IsLocked == true)
                             {
-                                <span class="badge bg-success">Đã khóa</span>
+                                <span class="badge bg-warning">Đã bị khóa</span>
                             }
                             else
                             {
-                                <span class="badge bg-success">Chưa khóa</span>
+                                <span class="badge bg-success">Đang hoạt động</span>
                             }
-                            
+
                         </dd>
 
                         <dt class="col-sm-4">Điện thoại</dt>

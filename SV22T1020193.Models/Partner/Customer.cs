@@ -34,6 +34,10 @@
         /// </summary>
         public string Email { get; set; } = string.Empty;
         /// <summary>
+        /// Password
+        /// </summary>
+        public string Password { get; set; } = string.Empty;
+        /// <summary>
         /// Khách hàng hiện có bị khóa hay không?
         /// </summary>
         public bool? IsLocked { get; set; }
