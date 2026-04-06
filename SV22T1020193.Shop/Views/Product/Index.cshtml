@@ -80,12 +80,44 @@
 
 @section Scripts {
     <script>
-        // Hàm load dữ liệu phân trang (bạn đang comment lại)
-        // document.addEventListener("DOMContentLoaded", function () {
-        //      paginationSearch(null, document.getElementById("formSearch"), 1);
-        // });
+        // 1. HÀM XỬ LÝ TÌM KIẾM VÀ PHÂN TRANG BẰNG AJAX (KHÔNG RELOAD)
+        function paginationSearch(e, form, page) {
+            // Chặn sự kiện submit form hoặc click thẻ <a> mặc định (tránh reload trang)
+            if (e) {
+                e.preventDefault();
+            }
 
-        // Hàm hiển thị chi tiết sản phẩm
+            // Lấy thông tin từ form
+            let url = $(form).attr('action'); // /Product/Search
+            let method = $(form).attr('method') || 'GET';
+            let target = $(form).data('target'); // searchResult
+
+            // Lấy toàn bộ dữ liệu đang nhập trên form
+            let formData = $(form).serializeArray();
+            // Đẩy thêm số trang cần chuyển tới vào dữ liệu gửi lên Controller
+            formData.push({ name: 'page', value: page });
+
+            // Gọi AJAX
+            $.ajax({
+                url: url,
+                type: method,
+                data: $.param(formData), // Chuyển thành chuỗi query để gửi đi
+                success: function (response) {
+                    // Cập nhật lại HTML của vùng hiển thị danh sách sản phẩm
+                    $('#' + target).html(response);
+                },
+                error: function () {
+                    showToast('Lỗi không thể tải dữ liệu trang!', true);
+                }
+            });
+
+            return false;
+        }
+
+        // ==========================================
+        // CÁC HÀM CŨ CỦA BẠN GIỮ NGUYÊN BÊN DƯỚI
+        // ==========================================
+
         function showProductDetails(productId) {
             fetch(`/Product/Details/${productId}`)
                 .then(response => response.text())
@@ -100,8 +132,7 @@
                 });
         }
 
-        // HÀM ADD TO CART (Đã xóa hàm cũ chứa alert, chỉ giữ lại hàm AJAX chuẩn)
-                function addToCart(productId, productName, price) {
+        function addToCart(productId, productName, price) {
             $.ajax({
                 url: '/Cart/AddToCart',
                 type: 'POST',
@@ -140,8 +171,7 @@
                 toast.fadeOut(500, function () {
                     $(this).remove();
                 });
-            }, 500);
+            }, 1000); // Đổi thành 1000ms (1 giây) cho dễ nhìn hơn
         }
     </script>
-}
 }

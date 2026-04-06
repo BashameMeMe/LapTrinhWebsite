@@ -67,7 +67,7 @@
                     <div class="d-grid gap-3 d-md-flex">
                         @if (Model.IsSelling)
                         {
-                            <button class="btn btn-primary btn-lg rounded-pill fw-medium shadow-sm px-5" onclick="addToCart(@Model.ProductID)">
+                            <button class="btn btn-primary btn-lg rounded-pill fw-medium shadow-sm px-5" onclick="addToCart(@Model.ProductID, '@Model.ProductName', @Model.Price)">
                                 <i class="fa fa-cart-plus me-2"></i> Thêm vào giỏ hàng
                             </button>
                         }
@@ -84,3 +84,48 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        function addToCart(productId, productName, price) {
+            $.ajax({
+                url: '/Cart/AddToCart',
+                type: 'POST',
+                data: {
+                    ProductID: productId,
+                    ProductName: productName,
+                    SalePrice: price,
+                    Quantity: 1
+                },
+                success: function (response) {
+                    showToast('Đã thêm [' + productName + '] vào giỏ hàng!');
+                },
+                error: function () {
+                    showToast('Lỗi khi thêm sản phẩm!', true);
+                }
+            });
+        }
+
+        function showToast(message, isError = false) {
+            let toast = $('<div></div>')
+                .text(message)
+                .css({
+                    position: 'fixed',
+                    top: '20px',
+                    right: '20px',
+                    background: isError ? '#e74c3c' : '#2ecc71',
+                    color: '#fff',
+                    padding: '10px 20px',
+                    borderRadius: '5px',
+                    zIndex: 9999
+                });
+
+            $('body').append(toast);
+
+            setTimeout(function () {
+                toast.fadeOut(500, function () {
+                    $(this).remove();
+                });
+            }, 500);
+        }
+    </script>
+}
