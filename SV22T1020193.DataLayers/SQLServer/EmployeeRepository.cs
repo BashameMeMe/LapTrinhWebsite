@@ -147,5 +147,23 @@ namespace SV22T1020193.DataLayers.SQLServer
                 return await connection.ExecuteScalarAsync<bool>(sql, new { email, id });
             }
         }
+        public async Task<bool> ChangePasswordAsync(string userName, string password)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                string sql = @"UPDATE Employees 
+                       SET Password = @password 
+                       WHERE Email = @userName";
+
+                int rows = await connection.ExecuteAsync(sql, new
+                {
+                    userName,
+                    password
+                });
+
+                return rows > 0;
+            }
+        }
+
     }
 }

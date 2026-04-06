@@ -30,12 +30,20 @@
         /// </summary>
         public string Email { get; set; } = string.Empty;
         /// <summary>
+        /// 
+        /// </summary>
+        public string Password { get; set; } = string.Empty;
+        /// <summary>
         /// Tên file ảnh (nếu có)
         /// </summary>
         public string? Photo { get; set; }
         /// <summary>
         /// Nhân viên đang làm việc hay không?
         /// </summary>
-        public bool? IsWorking { get; set; }        
+        public bool? IsWorking { get; set; }
+        /// <summary>
+        /// RoleNames
+        /// </summary>
+        public string RoleNames { get; set; } = "employee";
     }
 }

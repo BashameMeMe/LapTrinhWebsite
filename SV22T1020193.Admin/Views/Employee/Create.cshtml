@@ -1,67 +1,59 @@
-﻿@{
-    ViewData["Title"] = ViewBag.Title ?? "Cập nhật nhân viên";
-    Layout = "_Layout";
+﻿@model SV22T1020193.Models.HR.Employee
+
+@{
+    ViewBag.Title = ViewBag.Title ?? "Cập nhật nhân viên";
 }
 
-<div class="app-content-header">
-    <div class="container-fluid">
-        <h3>@ViewData["Title"]</h3>
-    </div>
-</div>
+@section PageToolBar {
+    <button type="submit" form="formEdit" class="btn btn-primary">
+        <i class="bi bi-save"></i> Lưu
+    </button>
+    <a href="~/Employee" class="btn btn-secondary ms-1">Quay lại</a>
+}
 
-<div class="app-content">
-    <div class="container-fluid">
+<div class="card">
+    <div class="card-body">
 
-        <div class="card">
-            <div class="card-body">
+        <form id="formEdit" method="post" action="~/Employee/Save">
 
-                <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="EmployeeID" value="@Model.EmployeeID" />
 
-                    <div class="mb-3">
-                        <label class="form-label">Họ tên</label>
-                        <input type="text" name="FullName" class="form-control" required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Ngày sinh</label>
-                        <input type="date" name="BirthDate" class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Địa chỉ</label>
-                        <input type="text" name="Address" class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Điện thoại</label>
-                        <input type="text" name="Phone" class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="Email" class="form-control" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Ảnh</label>
-                        <input type="file" name="Photo" class="form-control" />
-                    </div>
-
-                    <div class="form-check mb-4">
-                        <input type="checkbox" name="IsWorking" class="form-check-input" id="IsWorking" />
-                        <label class="form-check-label" for="IsWorking">Đang làm việc</label>
-                    </div>
-
-                    <div class="text-end">
-                        <a asp-action="Index" class="btn btn-secondary me-2">Hủy</a>
-                        <button type="reset" class="btn btn-warning me-2">Reset</button>
-                        <button type="submit" class="btn btn-primary">Xác nhận</button>
-                    </div>
-
-                </form>
-
+            <div class="mb-3">
+                <label>Họ tên</label>
+                <input type="text" name="FullName" value="@Model.FullName" class="form-control" />
+                @Html.ValidationMessage("FullName")
             </div>
-        </div>
+
+            <div class="mb-3">
+                <label>Ngày sinh</label>
+                <input type="date" name="BirthDate"
+                       value="@Model.BirthDate?.ToString("yyyy-MM-dd")"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Địa chỉ</label>
+                <input type="text" name="Address" value="@Model.Address" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Điện thoại</label>
+                <input type="text" name="Phone" value="@Model.Phone" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" name="Email" value="@Model.Email" class="form-control" />
+                @Html.ValidationMessage("Email")
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" name="IsWorking" value="true"
+                       @(Model.IsWorking == true ? "checked" : "") />
+                <label>Đang làm việc</label>
+            </div>
+
+        </form>
 
     </div>
 </div>
