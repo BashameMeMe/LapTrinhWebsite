@@ -1,57 +1,51 @@
 ﻿@model SV22T1020193.Models.Sales.OrderDetailViewInfo
 @{
     Layout = null;
+    var orderId = ViewBag.OrderId as int? ?? 0;
 }
-
 <div class="modal-header">
     <h5 class="modal-title">Cập nhật mặt hàng</h5>
-    <button type="button" class="btn-close btn-close-cart"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>
 
-<div class="modal-body">
-    <form id="formEditCart" method="post" action="@Url.Action("UpdateCartItem", "Order")">
-
+<form method="post" action="~/Order/EditCartItem">
+    <div class="modal-body">
+        <input type="hidden" name="id" value="@orderId" />
         <input type="hidden" name="productId" value="@Model.ProductID" />
 
-        <div class="mb-3 text-center">
-            <img src="~/images/products/@Model.Photo"
-                 class="img-fluid"
-                 style="max-height:120px" />
+        <input type="hidden" name="salePrice" value="@Model.SalePrice" />
+
+        <div class="mb-3">
+            <label class="form-label">Mặt hàng</label>
+            <input type="text" class="form-control" value="@Model.ProductName" readonly />
         </div>
 
         <div class="mb-3">
-            <label>Tên hàng</label>
-            <input class="form-control" value="@Model.ProductName" readonly />
+            <label class="form-label">Số lượng</label>
+            <input type="number" name="quantity" class="form-control" min="1" value="@Model.Quantity" />
         </div>
 
-        <div class="mb-3">
-            <label>Đơn vị</label>
-            <input class="form-control" value="@Model.Unit" readonly />
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Đơn vị</label>
+                <input type="text" class="form-control" value="@Model.Unit" readonly />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Đơn giá</label>
+                <input type='text' class="form-control text-end" value='@Model.SalePrice.ToString("N0")' readonly />
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label>Số lượng</label>
-            <input type="number" name="quantity"
-                   class="form-control"
-                   value="@Model.Quantity" min="1" />
-        </div>
+        @if (!string.IsNullOrEmpty(Model.Photo))
+        {
+            <div class="mt-3 text-center">
+                <img src="@(Url.Content($"~/images/products/{Model.Photo}"))" class="img-fluid rounded" style="max-height:180px;" />
+            </div>
+        }
+    </div>
 
-        <div class="mb-3">
-            <label>Giá bán</label>
-            <input type="number" name="salePrice"
-                   class="form-control"
-                   value="@Model.SalePrice.ToString("0")"/>
-        </div>
-
-    </form>
-</div>
-
-<div class="modal-footer">
-    <button class="btn btn-primary" id="btnUpdateCart">
-        <i class="bi bi-check"></i> Cập nhật
-    </button>
-
-    <button class="btn btn-secondary btn-close-cart">
-        Đóng
-    </button>
-</div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Cập nhật</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+    </div>
+</form>

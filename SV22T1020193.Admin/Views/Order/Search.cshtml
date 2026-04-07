@@ -1,14 +1,9 @@
-﻿@model PagedResult<OrderViewInfo>
+﻿<!--Yes-->
+@model PagedResult<OrderViewInfo>
 @{
     Layout = null;
 }
-
-@if (Model == null)
-{
-    <p class="text-danger">Không có dữ liệu</p>
-    return;
-}
-
+<!--a-->
 <div class="mb-2 text-muted">
     Danh sách này có <strong>@Model.RowCount</strong> đơn hàng
 </div>
@@ -38,40 +33,41 @@
                             <td>@item.CustomerName</td>
                             <td>@item.CustomerPhone</td>
                             <td>@(item.AcceptTime?.ToString("dd/MM/yyyy") ?? "-")</td>
-                            <td>@(string.IsNullOrEmpty(item.EmployeeName) ? "-" : item.EmployeeName)</td>
-
-                            <!-- FIX lỗi TotalPrice -->
-                            <td class="text-end">
-                                0
-                            </td>
-
+                            <td>@item.EmployeeName</td>
+                            <td class="text-end">@item.TotalPrice.ToString("N0")</td>
                             <td class="text-center">
                                 @switch (item.Status)
                                 {
                                     case OrderStatusEnum.New:
                                         <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                                        ;
                                         break;
                                     case OrderStatusEnum.Accepted:
                                         <span class="badge bg-info text-dark">Đã duyệt</span>
+                                        ;
                                         break;
                                     case OrderStatusEnum.Shipping:
                                         <span class="badge bg-primary">Đang giao</span>
+                                        ;
                                         break;
                                     case OrderStatusEnum.Completed:
                                         <span class="badge bg-success">Hoàn tất</span>
+                                        ;
                                         break;
                                     case OrderStatusEnum.Cancelled:
                                         <span class="badge bg-danger">Bị hủy</span>
+                                        ;
                                         break;
                                     case OrderStatusEnum.Rejected:
                                         <span class="badge bg-danger">Bị từ chối</span>
+                                        ;
                                         break;
                                     default:
                                         <span class="badge bg-secondary">@item.Status</span>
+                                        ;
                                         break;
                                 }
                             </td>
-
                             <td class="text-center text-nowrap">
                                 <a href="@Url.Content("~/Order/Detail/" + item.OrderID)" class="btn btn-sm btn-primary">
                                     <i class="bi bi-receipt"></i>
@@ -96,11 +92,9 @@
     {
         <div class="card-footer">
             <ul class="pagination justify-content-center mb-0">
-
-                <!-- Prev -->
                 <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
                     <a class="page-link" href="javascript:;"
-                       onclick="paginationSearch(event, document.getElementById('formSearch'), @(Model.Page > 1 ? Model.Page - 1 : 1))">
+                       onclick="paginationSearch(event, document.getElementById('formSearch'), @(Model.Page - 1))">
                         «
                     </a>
                 </li>
@@ -124,14 +118,12 @@
                     }
                 }
 
-                <!-- Next -->
                 <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
                     <a class="page-link" href="javascript:;"
-                       onclick="paginationSearch(event, document.getElementById('formSearch'), @(Model.Page < Model.PageCount ? Model.Page + 1 : Model.PageCount))">
+                       onclick="paginationSearch(event, document.getElementById('formSearch'), @(Model.Page + 1))">
                         »
                     </a>
                 </li>
-
             </ul>
         </div>
     }

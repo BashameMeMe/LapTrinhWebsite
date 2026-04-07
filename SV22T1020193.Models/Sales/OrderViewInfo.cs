@@ -1,4 +1,6 @@
-﻿namespace SV22T1020193.Models.Sales
+﻿using SV22T1020193.Models.Sales;
+
+namespace SV22T1020193.Models.Sales
 {
     /// <summary>
     /// Thông tin đầy đủ của một đơn hàng (DTO)
@@ -22,6 +24,12 @@
         /// Email của khách hàng
         /// </summary>
         public string CustomerEmail { get; set; } = "";
+
+        /// <summary>
+        /// Tổng tiền đơn hàng
+        /// </summary>
+        public decimal TotalPrice { get; set; }
+
         /// <summary>
         /// Điện thoại khách hàng
         /// </summary>

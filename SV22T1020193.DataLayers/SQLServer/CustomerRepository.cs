@@ -3,7 +3,6 @@ using Microsoft.Data.SqlClient;
 using SV22T1020193.Models.Partner;
 using SV22T1020193.DataLayers.Interfaces;
 using SV22T1020193.Models.Common;
-using SV22T1020193.Models.Partner;
 using System.Data;
 using System.Security.Cryptography;
 using System.Text;

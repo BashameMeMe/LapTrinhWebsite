@@ -11,6 +11,7 @@ namespace SV22T1020193.Admin
         private static IHttpContextAccessor? _httpContextAccessor;
         private static IWebHostEnvironment? _webHostEnvironment;
         private static IConfiguration? _configuration;
+        public static int PAGE_SIZE = 5;
 
         /// <summary>
         /// Gọi hàm này trong Program

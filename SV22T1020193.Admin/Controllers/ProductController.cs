@@ -9,7 +9,7 @@ using SV22T1020193.Models.Catalog;
 
 namespace SV22T1020193.Admin.Controllers
 {
-    //[Authorize(Roles = $"{WebUserRoles.Administrator},{WebUserRoles.DataManager}")]
+    [Authorize]
 
     public class ProductController : Controller
     {

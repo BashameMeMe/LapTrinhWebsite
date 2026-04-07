@@ -80,27 +80,33 @@ namespace SV22T1020193.DataLayers.SQLServer
                                       c.Phone as CustomerPhone,
                                       c.Address as CustomerAddress,
                                       s.ShipperName as ShipperName, 
-                                      s.Phone as ShipperPhone
+                                      s.Phone as ShipperPhone,
+                                      ISNULL((SELECT SUM(Quantity * SalePrice) FROM OrderDetails WHERE OrderID = o.OrderID), 0) AS TotalPrice
                                FROM Orders o
                                LEFT JOIN Employees e ON o.EmployeeID = e.EmployeeID
                                LEFT JOIN Customers c ON o.CustomerID = c.CustomerID
                                LEFT JOIN Shippers s ON o.ShipperID = s.ShipperID
                                WHERE (@status = 0 OR o.Status = @status)
-                                 AND (@dateFrom IS NULL OR o.OrderTime >= @dateFrom)
-                                 AND (@dateTo IS NULL OR o.OrderTime <= @dateTo)
+                                 AND (@dateFrom IS NULL OR CAST(o.OrderTime AS DATE) >= CAST(@dateFrom AS DATE))
+                                 AND (@dateTo IS NULL OR CAST(o.OrderTime AS DATE) <= CAST(@dateTo AS DATE))
+                                 AND (@customerName = '' OR c.CustomerName LIKE N'%' + @customerName + '%')
                                ORDER BY o.OrderID DESC
                                OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY;
                                
-                               SELECT COUNT(*) FROM Orders o
+                               SELECT COUNT(*) 
+                               FROM Orders o
+                               LEFT JOIN Customers c ON o.CustomerID = c.CustomerID
                                WHERE (@status = 0 OR o.Status = @status)
-                                 AND (@dateFrom IS NULL OR o.OrderTime >= @dateFrom)
-                                 AND (@dateTo IS NULL OR o.OrderTime <= @dateTo);";
+                                 AND (@dateFrom IS NULL OR CAST(o.OrderTime AS DATE) >= CAST(@dateFrom AS DATE))
+                                 AND (@dateTo IS NULL OR CAST(o.OrderTime AS DATE) <= CAST(@dateTo AS DATE))
+                                 AND (@customerName = '' OR c.CustomerName LIKE N'%' + @customerName + '%');";
 
                 var parameters = new
                 {
                     status = (int)input.Status,
                     dateFrom = input.DateFrom,
                     dateTo = input.DateTo,
+                    customerName = input.CustomerName ?? "",
                     offset = (input.Page - 1) * input.PageSize,
                     pageSize = input.PageSize
                 };

@@ -1,210 +1,163 @@
-﻿@model Customer
+﻿@model SV22T1020193.Models.Common.PagedResult<SV22T1020193.Models.Catalog.Product>
+@using SV22T1020193.Models.Sales
+@using Microsoft.AspNetCore.Mvc.Rendering
 @{
     ViewBag.Title = "Lập đơn hàng";
+    var cart = ViewBag.Cart as List<OrderDetailViewInfo> ?? new List<OrderDetailViewInfo>();
+    var customers = ViewBag.Customers as List<SelectListItem> ?? new List<SelectListItem>();
+    var provinces = ViewBag.Provinces as List<SelectListItem> ?? new List<SelectListItem>();
+    var selectedCustomerId = ViewBag.CustomerId as int? ?? 0;
+    var selectedProvince = ViewBag.DeliveryProvince as string ?? "";
+    var deliveryAddress = ViewBag.DeliveryAddress as string ?? "";
 }
 
 <div class="row">
-    <!-- LEFT -->
-    <div class="col-4">
-        <div class="card card-outline card-primary h-100">
+    <div class="col-12 col-lg-6">
+        <div class="card card-outline card-primary mb-3">
             <div class="card-header">
-                <h5 class="mb-0">
-                    <i class="bi bi-search"></i>
-                    Lựa chọn hàng cần bán
-                </h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-search me-2"></i>Chọn sản phẩm</h5>
+                </div>
             </div>
-
             <div class="card-body">
-                <form id="formSearchProduct" method="get" action="~/Order/SearchProduct" class="mb-3">
+                <form method="get" asp-action="Create" asp-controller="Order" class="mb-3">
                     <div class="input-group">
-                        <input class="form-control" name="searchValue"
-                               placeholder="Nhập tên mặt hàng cần tìm" autofocus />
-                        <button class="btn btn-primary">
-                            <i class="bi bi-search"></i>
-                        </button>
+                        <input class="form-control" name="searchValue" value="@(ViewBag.SearchValue ?? "")" placeholder="Tìm tên mặt hàng" autofocus />
+                        <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
                     </div>
                 </form>
 
-                <!-- AJAX -->
-                <div id="searchProductResult"></div>
+                @if (Model?.DataItems != null && Model.DataItems.Any())
+                {
+                    int shown = 0;
+                    foreach (var item in Model.DataItems)
+                    {
+                        if (shown++ >= 5)
+                        {
+                            break;
+                        }
+
+                        <form method="post" asp-action="AddToCart" asp-controller="Order" class="card card-sm rounded-3 mb-3">
+                            <input type="hidden" name="productId" value="@item.ProductID" />
+                            <div class="row g-0 align-items-center">
+                                <div class="col-auto">
+                                    <img src="@(string.IsNullOrEmpty(item.Photo) ? Url.Content("~/images/products/nophoto.png") : Url.Content($"~/images/products/{item.Photo}"))"
+                                         class="img-fluid rounded-start border-end" style="width:120px; height:120px; object-fit:cover;" />
+                                </div>
+                                <div class="col">
+                                    <div class="card-body py-2 px-3">
+                                        <div class="fw-semibold mb-1">@item.ProductName</div>
+                                        <div class="text-muted small mb-2">@item.Unit</div>
+                                        <div class="text-primary fw-bold mb-3">@item.Price.ToString("N0")</div>
+                                        <div class="d-flex gap-2 align-items-center">
+                                            <input type="number" name="quantity" value="1" min="1" class="form-control form-control-sm" style="max-width:100px;" />
+                                            <button type="submit" class="btn btn-sm btn-primary flex-grow-1"><i class="bi bi-cart-plus me-1"></i>Thêm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                }
+                else
+                {
+                    <div class="text-center text-muted py-5">Không tìm thấy sản phẩm.</div>
+                }
+
+                @if (Model != null && Model.PageCount > 1)
+                {
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="small text-muted">Trang @Model.Page / @Model.PageCount</div>
+                        <div>
+                            <a class="btn btn-sm btn-outline-secondary me-2 @(Model.HasPreviousPage ? string.Empty : "disabled")"
+                               asp-action="Create"
+                               asp-controller="Order"
+                               asp-route-page="@(Model.Page - 1)"
+                               asp-route-pageSize="@(Model.PageSize)"
+                               asp-route-searchValue="@(ViewBag.SearchValue ?? "")">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                            <a class="btn btn-sm btn-outline-secondary @(Model.HasNextPage ? string.Empty : "disabled")"
+                               asp-action="Create"
+                               asp-controller="Order"
+                               asp-route-page="@(Model.Page + 1)"
+                               asp-route-pageSize="@(Model.PageSize)"
+                               asp-route-searchValue="@(ViewBag.SearchValue ?? "")">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
 
-    <!-- RIGHT -->
-    <div class="col-8">
-        <div id="showCart"></div>
+    <div class="col-12 col-lg-6">
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
 
-        <!-- FORM ORDER giữ nguyên -->
-        <div class="col-12">
-            <div id="showCart"></div>
+        <div class="card card-outline card-success mb-3">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-cart me-2"></i>Giỏ hàng</h5>
+            </div>
+            <div class="card-body">
+                @await Html.PartialAsync("ShowCart", cart)
+            </div>
+            @if (cart != null && cart.Any())
+            {
+                <a href="~/Order/ClearCart" class="btn btn-sm btn-outline-danger open-modal">
+                    <i class="bi bi-trash"></i> Xóa giỏ hàng
+                </a>
+            }
+        </div>
 
-            <!-- FORM ORDER -->
-            <div class="card card-outline card-info mt-5">
-                <div class="card-header">
-                    <h5 class="mb-0">
-                        <i class="bi bi-person"></i>
-                        Thông tin khách hàng & nơi giao hàng
-                    </h5>
-                </div>
-
-                <div class="card-body">
-                    <form id="formOrder" method="post" asp-action="CreateOrder" asp-controller="Order">
-
-                        <!-- CUSTOMER -->
-                        <div class="row mb-3 align-items-center">
-                            <label class="col-md-3 col-form-label text-md-end">
-                                Khách hàng
-                            </label>
-                            <div class="col-md-9">
-                                <select class="form-select" asp-for="CustomerID">
-                                    <option value="">-- Chọn khách hàng --</option>
-                                </select>
-                                <span asp-validation-for="CustomerID" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <!-- PROVINCE -->
-                        <div class="row mb-3 align-items-center">
-                            <label class="col-md-3 col-form-label text-md-end">
-                                Tỉnh / Thành
-                            </label>
-                            <div class="col-md-9">
-                                <select class="form-select" asp-for="Province">
-                                    <option value="">-- Chọn tỉnh --</option>
-                                </select>
-                                <span asp-validation-for="Province" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <!-- ADDRESS -->
-                        <div class="row mb-3">
-                            <label class="col-md-3 col-form-label text-md-end">
-                                Địa chỉ
-                            </label>
-                            <div class="col-md-9">
-                                <textarea class="form-control"
-                                          asp-for="Address"
-                                          rows="3"
-                                          placeholder="Nhập địa chỉ giao hàng"></textarea>
-                                <span asp-validation-for="Address" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <!-- BUTTON -->
-                        <div class="text-end">
-                            <button class="btn btn-primary px-4">
-                                <i class="bi bi-check"></i>
-                                Lập đơn hàng
-                            </button>
-                        </div>
-
-                    </form>
-                </div>
+        <div class="card card-outline card-info">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-person me-2"></i>Thông tin khách hàng</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" asp-action="Create" asp-controller="Order">
+                    <div class="mb-3">
+                        <label class="form-label">Khách hàng</label>
+                        <select name="customerId" class="form-select">
+                            @foreach (var customer in customers)
+                            {
+                                if (customer.Value == selectedCustomerId.ToString())
+                                {
+                                    <option value="@customer.Value" selected="selected">@customer.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@customer.Value">@customer.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tỉnh / Thành</label>
+                        <select name="deliveryProvince" class="form-select">
+                            @foreach (var province in provinces)
+                            {
+                                if (province.Value == selectedProvince)
+                                {
+                                    <option value="@province.Value" selected="selected">@province.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@province.Value">@province.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Địa chỉ giao hàng</label>
+                        <textarea name="deliveryAddress" class="form-control" rows="3">@deliveryAddress</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-check-circle me-1"></i> Tạo đơn hàng</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-        $(document).ready(function () {
-
-            // ================= INIT =================
-            searchProduct(1);
-            loadCart();
-
-            // ================= SEARCH PRODUCT =================
-            $("#formSearchProduct").submit(function (e) {
-                e.preventDefault();
-                searchProduct(1);
-            });
-
-            // ================= ADD / UPDATE ITEM =================
-            $(document).on("submit", ".cart-item-form", function (e) {
-                e.preventDefault();
-                var f = $(this);
-
-                $.post(f.attr("action"), f.serialize(), function () {
-                    loadCart();
-                });
-            });
-
-            // ================= OPEN EDIT =================
-            $(document).on("click", ".open-modal", function (e) {
-                e.preventDefault();
-
-                $.get($(this).attr("href"), function (html) {
-                    $("#showCart").html(html);
-                });
-            });
-
-            // ================= UPDATE CART =================
-            $(document).on("click", "#btnUpdateCart", function () {
-                var f = $("#formEditCart");
-
-                if (f.length === 0) {
-                    console.log("Không tìm thấy formEditCart");
-                    return;
-                }
-
-                $.post(f.attr("action"), f.serialize(), function (res) {
-                    console.log(res);
-
-                    if (res.code == 1) {
-                        loadCart();
-                    } else {
-                        alert(res.message);
-                    }
-                });
-            });
-
-            // ================= DELETE / CLEAR =================
-                $(document).on("click", ".ajax-cart-action", function (e) {
-        e.preventDefault();
-
-        var url = $(this).attr("href");
-
-        $.post(url, function () {
-            loadCart();
-        });
-    });
-
-            // ================= CLOSE EDIT =================
-            $(document).on("click", ".btn-close-cart", function () {
-                loadCart();
-            });
-
-            // ================= CREATE ORDER =================
-            $("#formOrder").submit(function (e) {
-                e.preventDefault();
-                var f = $(this);
-
-                $.post(f.attr("action"), f.serialize(), function (res) {
-                    if (res.success) {
-                        alert("Tạo đơn thành công!");
-                        loadCart();
-                    } else {
-                        alert(res.message);
-                    }
-                });
-            });
-        });
-
-        // ================= FUNCTIONS =================
-
-        function searchProduct(page) {
-            $.get('@Url.Action("SearchProduct", "Order")', {
-                searchValue: $("input[name='searchValue']").val(),
-                page: page,
-                pageSize: 5
-            }, function (html) {
-                $("#searchProductResult").html(html);
-            });
-        }
-
-        function loadCart() {
-            $.get('@Url.Action("ShowCart", "Order")', function (html) {
-                $("#showCart").html(html);
-            });
-        }
-</script>

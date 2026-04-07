@@ -1,74 +1,52 @@
-﻿@model PagedResult<Product>
+﻿@model SV22T1020193.Models.Common.PagedResult<SV22T1020193.Models.Catalog.Product>
+@using SV22T1020193.Models.Sales
 @{
-    Layout = null;
+    ViewBag.Title = "Tìm kiếm sản phẩm";
 }
 
-@foreach (var item in Model.DataItems)
-{
-    <form method="post" action="~/Order/AddCartItem" class="border rounded p-2 mb-2 cart-item-form">
-        <input type="hidden" name="productId" value="@item.ProductID" />
-
-        <strong>@item.ProductName</strong>
-
-        <div class="row mt-2">
-            <div class="col-4">
-                <img src="~/images/products/@item.Photo" class="img-fluid border" />
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-search me-2"></i>Tìm kiếm sản phẩm</h5>
+    </div>
+    <div class="card-body">
+        <form method="get" asp-action="SearchProduct" asp-controller="Order" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="searchValue" value="@(ViewBag.SearchValue ?? "")" class="form-control" placeholder="Nhập từ khóa" />
+                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
             </div>
-            <div class="col-8">
-                <div class="row g-2">
-                    <div class="col-7">
-                        <input class="form-control form-control-sm"
-                               name="price"
-                               value="@item.Price" />
-                    </div>
-                    <div class="col-5">
-                        <input type="number" name="quantity" value="1"
-                               class="form-control form-control-sm" />
+        </form>
+
+        @if (Model?.DataItems != null && Model.DataItems.Any())
+        {
+            foreach (var item in Model.DataItems)
+            {
+                <div class="card card-sm rounded-3 mb-3 p-3">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-3">
+                            <img src="@(string.IsNullOrEmpty(item.Photo) ? Url.Content("~/images/products/nophoto.png") : Url.Content($"~/images/products/{item.Photo}"))"
+                                 class="img-fluid rounded border" style="max-height:100px;" />
+                        </div>
+                        <div class="col-md-6">
+                            <h6>@item.ProductName</h6>
+                            <div class="text-muted">@item.Unit</div>
+                            <div class="fw-semibold text-primary">@item.Price.ToString("N0")</div>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <form method="post" asp-action="AddToCart" asp-controller="Order">
+                                <input type="hidden" name="productId" value="@item.ProductID" />
+                                <div class="input-group mb-2">
+                                    <input type="number" name="quantity" min="1" value="1" class="form-control form-control-sm" />
+                                    <button class="btn btn-sm btn-primary" type="submit"><i class="bi bi-cart-plus"></i></button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-
-                <button class="btn btn-sm btn-primary mt-2 w-100">
-                    Thêm vào giỏ
-                </button>
-            </div>
-        </div>
-    </form>
-}
-<nav class="mt-2">
-    <ul class="pagination pagination-sm justify-content-center mb-0">
-
-        <!-- Previous -->
-        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-            <a class="page-link" href="javascript:;" onclick="searchProduct(@(Model.Page - 1))">
-                <i class="bi bi-chevron-left"></i>
-            </a>
-        </li>
-
-        <!-- Page numbers -->
-        @foreach (var p in Model.GetDisplayPages())
-        {
-            if (p.IsEllipsis)
-            {
-                <li class="page-item disabled">
-                    <span class="page-link">...</span>
-                </li>
-            }
-            else
-            {
-                <li class="page-item @(p.IsCurrent ? "active" : "")">
-                    <a class="page-link" href="javascript:;" onclick="searchProduct(@p.Page)">
-                        @p.Page
-                    </a>
-                </li>
             }
         }
-
-        <!-- Next -->
-        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-            <a class="page-link" href="javascript:;" onclick="searchProduct(@(Model.Page + 1))">
-                <i class="bi bi-chevron-right"></i>
-            </a>
-        </li>
-
-    </ul>
-</nav>
+        else
+        {
+            <div class="text-center text-muted py-5">Không tìm thấy sản phẩm.</div>
+        }
+    </div>
+</div>

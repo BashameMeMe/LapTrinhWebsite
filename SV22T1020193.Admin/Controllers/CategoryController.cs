@@ -10,7 +10,7 @@ using SV22T1020193.Models.Common;
 
 namespace SV22T1020193.Admin.Controllers
 {
-    // [Authorize(Roles = $"{WebUserRoles.Administrator},{WebUserRoles.DataManager}")]
+    [Authorize(Roles = $"{WebUserRoles.Administrator},{WebUserRoles.DataManager}")]
     public class CategoryController : Controller
     {
         private const int PAGESIZE = 10;
