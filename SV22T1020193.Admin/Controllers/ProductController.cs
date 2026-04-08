@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using SV22T1020193.Admin;
-using SV22T1020193.BusinessLayers;
-using SV22T1020193.Models.Catalog;
 using SV22T1020193.BusinessLayers;
 using SV22T1020193.Models.Catalog;
 

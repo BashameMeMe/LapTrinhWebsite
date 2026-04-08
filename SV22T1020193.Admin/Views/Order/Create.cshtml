@@ -12,7 +12,7 @@
 }
 
 <div class="row">
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-4">
         <div class="card card-outline card-primary mb-3">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
@@ -50,7 +50,7 @@
                                         <div class="text-muted small mb-2">@item.Unit</div>
                                         <div class="text-primary fw-bold mb-3">@item.Price.ToString("N0")</div>
                                         <div class="d-flex gap-2 align-items-center">
-                                            <input type="number" name="quantity" value="1" min="1" class="form-control form-control-sm" style="max-width:100px;" />
+                                            <input type="number" name="quantity" value="1" min="1" class="form-control form-control-sm" style="max-width:80px;" />
                                             <button type="submit" class="btn btn-sm btn-primary flex-grow-1"><i class="bi bi-cart-plus me-1"></i>Thêm</button>
                                         </div>
                                     </div>
@@ -92,7 +92,7 @@
         </div>
     </div>
 
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-8">
         @if (!string.IsNullOrEmpty(ViewBag.Error))
         {
             <div class="alert alert-danger">@ViewBag.Error</div>
@@ -107,9 +107,11 @@
             </div>
             @if (cart != null && cart.Any())
             {
-                <a href="~/Order/ClearCart" class="btn btn-sm btn-outline-danger open-modal">
-                    <i class="bi bi-trash"></i> Xóa giỏ hàng
-                </a>
+                <div class="card-footer text-end">
+                    <a href="~/Order/ClearCart" class="btn btn-sm btn-outline-danger open-modal">
+                        <i class="bi bi-trash"></i> Xóa giỏ hàng
+                    </a>
+                </div>
             }
         </div>
 
@@ -119,41 +121,43 @@
             </div>
             <div class="card-body">
                 <form method="post" asp-action="Create" asp-controller="Order">
-                    <div class="mb-3">
-                        <label class="form-label">Khách hàng</label>
-                        <select name="customerId" class="form-select">
-                            @foreach (var customer in customers)
-                            {
-                                if (customer.Value == selectedCustomerId.ToString())
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Khách hàng</label>
+                            <select name="customerId" class="form-select">
+                                @foreach (var customer in customers)
                                 {
-                                    <option value="@customer.Value" selected="selected">@customer.Text</option>
+                                    if (customer.Value == selectedCustomerId.ToString())
+                                    {
+                                        <option value="@customer.Value" selected="selected">@customer.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@customer.Value">@customer.Text</option>
+                                    }
                                 }
-                                else
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tỉnh / Thành</label>
+                            <select name="deliveryProvince" class="form-select">
+                                @foreach (var province in provinces)
                                 {
-                                    <option value="@customer.Value">@customer.Text</option>
+                                    if (province.Value == selectedProvince)
+                                    {
+                                        <option value="@province.Value" selected="selected">@province.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@province.Value">@province.Text</option>
+                                    }
                                 }
-                            }
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tỉnh / Thành</label>
-                        <select name="deliveryProvince" class="form-select">
-                            @foreach (var province in provinces)
-                            {
-                                if (province.Value == selectedProvince)
-                                {
-                                    <option value="@province.Value" selected="selected">@province.Text</option>
-                                }
-                                else
-                                {
-                                    <option value="@province.Value">@province.Text</option>
-                                }
-                            }
-                        </select>
+                            </select>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Địa chỉ giao hàng</label>
-                        <textarea name="deliveryAddress" class="form-control" rows="3">@deliveryAddress</textarea>
+                        <textarea name="deliveryAddress" class="form-control" rows="2">@deliveryAddress</textarea>
                     </div>
                     <button type="submit" class="btn btn-primary w-100"><i class="bi bi-check-circle me-1"></i> Tạo đơn hàng</button>
                 </form>

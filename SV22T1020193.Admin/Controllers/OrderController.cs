@@ -12,7 +12,7 @@ namespace SV22T1020193.Admin.Controllers
     /// <summary>
     /// Các chức năng quản lý nghiệp vụ liên quan đến đơn hàng
     /// </summary>
-    [Authorize(Roles = WebUserRoles.Administrator)]
+    [Authorize]
     public class OrderController : Controller
     {
         private int PAGESIZE = ApplicationContext.PAGE_SIZE;

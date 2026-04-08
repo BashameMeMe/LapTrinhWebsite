@@ -42,11 +42,12 @@ namespace SV22T1020193.Admin.AppCodes
             ApplicationContext.SetSessionData(CART, cart);
         }
         //Cập nhật số lượng giá và hàng trong giỏ hàng
-        public static void UpdateCartItem(int productId,int  quantity,decimal salePrice)
+        //Cập nhật số lượng giá và hàng trong giỏ hàng
+        public static void UpdateCartItem(int productId, int quantity, decimal salePrice)
         {
             var cart = GetShoppingCart();
             var item = cart.Find(m => m.ProductID == productId);
-            if (item == null)
+            if (item != null)
             {
                 item.Quantity = quantity;
                 item.SalePrice = salePrice;
