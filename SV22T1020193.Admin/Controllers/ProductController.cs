@@ -240,7 +240,7 @@ namespace SV22T1020193.Admin.Controllers
             if (model == null || model.ProductID != id)
                 return RedirectToAction("Edit", new { id });
 
-            return View("DeleteListAttributes", model);
+            return View("DeleteAttributes", model);
         }
 
         public async Task<IActionResult> ListPhotos(int id)
