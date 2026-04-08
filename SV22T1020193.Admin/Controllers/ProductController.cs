@@ -283,24 +283,51 @@ namespace SV22T1020193.Admin.Controllers
             return View("EditPhoto", model);
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> SavePhoto(ProductPhoto data)
+        public async Task<IActionResult> SavePhoto(ProductPhoto data, IFormFile? uploadPhoto)
         {
+            // 1. XỬ LÝ UPLOAD FILE TRƯỚC KHI LƯU VÀO CSDL
+            if (uploadPhoto != null && uploadPhoto.Length > 0)
+            {
+                // Tạo một tên file mới (ghép thêm thời gian để không bị trùng tên nếu up 2 file giống nhau)
+                string fileName = $"{DateTime.Now.Ticks}_{uploadPhoto.FileName}";
+
+                // Đường dẫn tới thư mục lưu ảnh (wwwroot/images/products)
+                string folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "products");
+                string filePath = Path.Combine(folder, fileName);
+
+                // Copy file từ form lên server
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await uploadPhoto.CopyToAsync(stream);
+                }
+
+                // Gán tên file mới vừa lưu vào thuộc tính Photo để lát nữa lưu xuống DB
+                data.Photo = fileName;
+            }
+
+            // 2. KIỂM TRA VÀ CHUẨN HÓA DỮ LIỆU
             // Cột Description trong DB không cho NULL
             data.Description = string.IsNullOrWhiteSpace(data.Description) ? string.Empty : data.Description.Trim();
 
+            // Nếu tạo mới mà không up ảnh, hoặc xóa trống trường Photo thì báo lỗi
             if (string.IsNullOrWhiteSpace(data.Photo))
-                ModelState.AddModelError(nameof(data.Photo), "Vui lòng nhập tên file ảnh");
+                ModelState.AddModelError(nameof(data.Photo), "Vui lòng chọn file ảnh tải lên.");
+
             if (data.DisplayOrder < 1)
-                ModelState.AddModelError(nameof(data.DisplayOrder), "Thứ tự hiển thị phải lớn hơn 0");
+                ModelState.AddModelError(nameof(data.DisplayOrder), "Thứ tự hiển thị phải lớn hơn 0.");
+
             if (data.ProductID <= 0)
                 ModelState.AddModelError(nameof(data.ProductID), "Mã mặt hàng không hợp lệ. Hãy lưu mặt hàng trước khi thêm ảnh.");
             else if (await CatalogDataService.GetProductAsync(data.ProductID) == null)
                 ModelState.AddModelError(nameof(data.ProductID), "Mặt hàng không tồn tại trong CSDL.");
 
+            // Nếu có lỗi thì quay lại form
             if (!ModelState.IsValid)
                 return View("EditPhoto", data);
 
+            // 3. LƯU VÀO CƠ SỞ DỮ LIỆU
             try
             {
                 if (data.PhotoID == 0)
@@ -308,11 +335,13 @@ namespace SV22T1020193.Admin.Controllers
                 else
                     await CatalogDataService.UpdatePhotoAsync(data);
 
+                // Thành công thì quay lại trang chỉnh sửa sản phẩm (thêm #photos để nó tự cuộn xuống chỗ danh sách ảnh)
                 return RedirectToAction("Edit", new { id = data.ProductID });
             }
-            catch (SqlException)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("Error", "Không lưu được ảnh (ràng buộc CSDL hoặc dữ liệu không hợp lệ).");
+                // Bắt Exception chung thay vì chỉ SqlException để dễ debug hơn
+                ModelState.AddModelError("Error", "Không lưu được ảnh: " + ex.Message);
                 return View("EditPhoto", data);
             }
         }

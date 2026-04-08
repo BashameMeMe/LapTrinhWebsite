@@ -1,83 +1,77 @@
-﻿@model ProductPhoto
+﻿@model SV22T1020193.Models.Catalog.ProductPhoto
 @{
+    bool isEdit = Model.PhotoID > 0;
+    ViewBag.Title = isEdit ? "Cập nhật ảnh mặt hàng" : "Thêm ảnh mặt hàng mới";
 }
-@section PageToolBar {
-    <button type="submit" form="formEdit" class="btn btn-primary">
-        <i class="bi bi-save"></i>
-        Lưu ảnh
-    </button>
 
-    <a href="~/Product/Edit/@Model.ProductID#photos" class="btn btn-secondary ms-1">
-        <i class="bi bi-arrow-left"></i>
-        Quay lại
-    </a>
-}
-<div class="row justify-content-center">
-    <div class="col-12">
-        @Html.ValidationMessage("Error", new { @class = "text-danger" })
-        <div class="card card-outline card-info">
-            <div class="card-header">
-                <h5 class="mb-0">Thông tin ảnh mặt hàng</h5>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-white border-bottom-0 pt-4 pb-2 text-center">
+                <h4 class="mb-0 text-primary fw-bold">
+                    <i class="bi bi-image me-2"></i>@ViewBag.Title
+                </h4>
             </div>
 
-            <div class="card-body">
-                <form id="formEdit" method="post" action="~/Product/SavePhoto">
+            <form method="post" action="~/Product/SavePhoto" enctype="multipart/form-data">
+                <div class="card-body p-4 p-sm-5 pt-0">
+
+                    @Html.ValidationMessage("Error", new { @class = "text-danger text-center d-block mb-3" })
+
                     <input type="hidden" asp-for="PhotoID" />
                     <input type="hidden" asp-for="ProductID" />
+                    <input type="hidden" asp-for="Photo" />
 
-                    <div class="row mb-3 align-items-center">
-                        <label class="col-sm-3 fw-semibold">Tên file ảnh</label>
-                        <div class="col-sm-9">
-                            <input type="text" asp-for="Photo"
-                                   class="form-control"
-                                   placeholder="Ví dụ: sample.jpg" />
-                            <span asp-validation-for="Photo" class="text-danger"></span>
-                        </div>
+                    <div class="text-center mb-4">
+                        <img id="photoPreview"
+                             src="~/images/products/@(string.IsNullOrEmpty(Model.Photo) ? "nophoto.png" : Model.Photo)"
+                             class="img-thumbnail rounded-3 shadow-sm object-fit-cover"
+                             style="width: 200px; height: 200px;" alt="Preview" />
                     </div>
 
-                    <div class="row mb-3">
-                        <label class="col-sm-3 fw-semibold">Xem trước</label>
-                        <div class="col-sm-9">
-                            <img id="imgPreview"
-                                 src="~/images/products/@(string.IsNullOrWhiteSpace(Model.Photo) ? "nophoto.png" : Model.Photo)"
-                                 class="img-thumbnail"
-                                 style="max-height:200px;" />
-                        </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary small">Chọn file ảnh từ máy tính <span class="text-danger">*</span></label>
+                        <input type="file" name="uploadPhoto" accept="image/*" class="form-control form-control-lg bg-light"
+                               onchange="document.getElementById('photoPreview').src = window.URL.createObjectURL(this.files[0])" />
                     </div>
 
-                    <div class="row mb-3">
-                        <label class="col-sm-3 fw-semibold">Mô tả</label>
-                        <div class="col-sm-9">
-                            <input type="text" asp-for="Description"
-                                   class="form-control" />
-                        </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold text-secondary small">Mô tả bức ảnh</label>
+                        <input type="text" asp-for="Description" class="form-control" placeholder="Nhập mô tả ngắn gọn..." />
                     </div>
 
-                    <div class="row mb-3">
-                        <label class="col-sm-3 fw-semibold">Thứ tự hiển thị</label>
-                        <div class="col-sm-3">
-                            <input type="number" asp-for="DisplayOrder"
-                                   class="form-control"
-                                   min="1" />
-                            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                    <div class="row g-4 mb-2">
+                        <div class="col-sm-6">
+                            <label class="form-label fw-semibold text-secondary small">Thứ tự hiển thị</label>
+                            <input type="number" asp-for="DisplayOrder" class="form-control" min="1" />
+                            <span asp-validation-for="DisplayOrder" class="text-danger small"></span>
                         </div>
-                    </div>
 
-                    <div class="row mb-4">
-                        <label class="col-sm-3 fw-semibold">Trạng thái</label>
-                        <div class="col-sm-9">
-                            <div class="form-check">
-                                <input class="form-check-input" asp-for="IsHidden"
-                                       type="checkbox"
-                                       id="IsHidden" />
-                                <label class="form-check-label" for="IsHidden">
-                                    Ẩn ảnh
-                                </label>
+                        <div class="col-sm-6 d-flex align-items-end">
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input fs-5" asp-for="IsHidden" type="checkbox" role="switch" id="IsHidden" />
+                                <label class="form-check-label fw-semibold ms-2 text-dark mt-1" for="IsHidden">Ẩn ảnh này</label>
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+
+                </div>
+
+                <div class="card-footer bg-white p-4 border-top-0 rounded-bottom-4">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <a href="~/Product/Edit/@Model.ProductID#photos" class="btn btn-light border w-100 py-2 fw-semibold text-secondary rounded-3">
+                                <i class="bi bi-arrow-left me-1"></i> Quay lại
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm rounded-3">
+                                <i class="bi bi-save me-1"></i> Lưu ảnh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
